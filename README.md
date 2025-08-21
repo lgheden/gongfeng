@@ -226,14 +226,14 @@ gongfeng/
 
 ## 👥 维护者
 
-- 项目创建者: [小蜜蜂工具箱团队](https://github.com/xiaomifeng)
+- 项目创建者: [小蜜蜂工具箱团队]([https://github.com/lgheden])
 - 主要维护者: 社区贡献者
 
 ## 📞 联系方式
 
-- 问题反馈: [GitHub Issues](https://github.com/xiaomifeng/gongfeng/issues)
-- 功能建议: [GitHub Discussions](https://github.com/xiaomifeng/gongfeng/discussions)
-- 邮箱联系: support@xiaomifeng.com
+- 问题反馈: [GitHub Issues](https://github.com/lgheden/gongfeng/issues)
+- 功能建议: [GitHub Discussions](https://github.com/lgheden/gongfeng/discussions)
+- 邮箱联系: lgheden@qq.com
 
 ## 🙏 致谢
 
@@ -245,5 +245,6 @@ gongfeng/
 - [CryptoJS](https://github.com/brix/crypto-js) - 加密库
 
 ---
+
 
 ⭐ 如果这个项目对您有帮助，请给我们一个星标支持！
