@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文本处理工作流工具</title>
+    <link rel="stylesheet" href="../../shared/common.css">
+    <link rel="stylesheet" href="assets/textworkflow.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔄 文本处理工作流工具<p>强大的文本处理工具集，支持多种转换和格式化操作</p></h1>
+            <a href="../../pages/donate.html" class="donate-btn">💝 赞助</a>
+        </header>
+
+        <!-- 主要内容区域 -->
+        <div class="content">
+            <div class="modal-header">
+                <h3>流程功能</h3>
+                <div class="modal-body">
+                    <button class="btn btn-primary workflow-btn" data-id="case">大小写转换</button>
+                    <button class="btn btn-primary workflow-btn" data-id="replace">文本替换</button>
+                    <button class="btn btn-primary workflow-btn" data-id="regex">正则替换</button>
+                    <button class="btn btn-primary workflow-btn" data-id="prefix">增加前缀</button>
+                    <button class="btn btn-primary workflow-btn" data-id="suffix">增加后缀</button>
+                    <button class="btn btn-primary workflow-btn" data-id="linebreak">换行符转换</button>
+                    <button class="btn btn-primary workflow-btn" data-id="removeEmpty">删除空行</button>
+                    <button class="btn btn-primary workflow-btn" data-id="removeChars">删除字符</button>
+                    <button class="btn btn-primary workflow-btn" data-id="addLineNumbers">增加行号</button>
+                    <button class="btn btn-primary workflow-btn" data-id="removeLineNumbers">删除行号</button>
+                    <button class="btn btn-primary workflow-btn" data-id="deduplicate">项目去重</button>
+                    <button class="btn btn-primary workflow-btn" data-id="trimLines">修剪行空格</button>
+                    <button class="btn btn-primary workflow-btn" data-id="repeatText">重复文本</button>
+                    <button class="btn btn-primary workflow-btn" data-id="reverse">翻转内容</button>
+                    <button class="btn btn-primary workflow-btn" data-id="sort">修改顺序</button>
+                    <button class="btn btn-primary workflow-btn" data-id="encode">编码解码</button>
+                    <button class="btn btn-primary workflow-btn" data-id="fullwidth">全角半角</button>
+                </div>
+            </div>
+            <!-- 工作流配置区域 -->
+            <div class="workflow-config">
+                <h3>工作流程
+                    <div class="toolbar">
+<!--                        <button id="addStepBtn" class="btn btn-primary">添加步骤</button>-->
+                        <button id="clearWorkflowBtn" class="btn btn-danger">清空</button>
+                        <button id="saveWorkflowBtn" class="btn btn-success">保存</button>
+                        <button id="loadWorkflowBtn" class="btn btn-secondary">加载</button>
+                    </div>
+                </h3>
+                <div id="workflowSteps" class="workflow-steps">
+                    <!-- 工作流步骤将在这里动态生成 -->
+                </div>
+            </div>
+            <div class="input-section">
+                <h3>输入文本
+                    <div class="toolbar">
+                        <button id="processBtn" class="btn btn-primary">执行工作流</button>
+                        <button id="clearBtn" class="btn btn-danger">清空</button>
+                        <button id="loadSampleBtn" class="btn btn-secondary">加载示例</button>
+                    </div>
+                </h3>
+                <textarea id="inputArea" placeholder="请输入要处理的文本..."></textarea>
+            </div>
+
+            <div class="output-section">
+                <h3>处理结果
+                    <div class="toolbar">
+                        <button id="copyBtn" class="btn btn-success">复制结果</button>
+                        <button id="downloadBtn" class="btn btn-secondary">下载</button>
+                        <button id="compareBtn" class="btn btn-outline">对比</button>
+                    </div>
+                </h3>
+                <textarea id="outputArea" readonly placeholder="处理结果将在这里显示..."></textarea>
+            </div>
+        </div>
+
+        <!-- 统计信息 -->
+        <div class="stats-bar">
+            <div class="stat-item">
+                <span class="stat-label">字符数:</span>
+                <span id="charCount" class="stat-value">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">行数:</span>
+                <span id="lineCount" class="stat-value">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">单词数:</span>
+                <span id="wordCount" class="stat-value">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">处理时间:</span>
+                <span id="processTime" class="stat-value">0ms</span>
+            </div>
+        </div>
+
+        <!-- 状态栏 -->
+        <div id="statusBar" class="status-bar"></div>
+    </div>
+
+    <!-- 步骤配置模态框 -->
+    <div id="stepModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>配置处理步骤</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="step-config">
+                    <div class="form-group" style="display: none">
+                        <label for="stepType">步骤类型:</label>
+                        <select id="stepType" class="form-control">
+                            <option value="case">大小写转换</option>
+                            <option value="replace">文本替换</option>
+                            <option value="regex">正则替换</option>
+                            <option value="prefix">增加前缀</option>
+                            <option value="suffix">增加后缀</option>
+                            <option value="linebreak">换行符转换</option>
+                            <option value="removeEmpty">删除空行</option>
+                            <option value="removeChars">删除字符</option>
+                            <option value="addLineNumbers">增加行号</option>
+                            <option value="removeLineNumbers">删除行号</option>
+                            <option value="deduplicate">项目去重</option>
+                            <option value="trimLines">修剪行空格</option>
+                            <option value="repeatText">重复文本</option>
+                            <option value="reverse">翻转内容</option>
+                            <option value="sort">修改顺序</option>
+                            <option value="encode">编码解码</option>
+                            <option value="fullwidth">全角半角</option>
+                        </select>
+                    </div>
+                    <div id="stepParams" class="step-params">
+                        <!-- 动态参数配置区域 -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="saveStepBtn" class="btn btn-primary">保存步骤</button>
+                <button id="cancelStepBtn" class="btn btn-secondary">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 示例数据选择模态框 -->
+    <div id="sampleModal" class="modal">
+        <div class="modal-content sample-modal">
+            <div class="modal-header">
+                <h3>选择示例数据</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="sample-grid">
+                    <div class="sample-card" data-sample="text">
+                        <div class="sample">
+                            <div class="sample-icon">📝</div>
+                        <div class="sample-content">
+                            <div class="sample-title">普通文本</div>
+                            <div class="sample-desc">包含多行内容的混合文本</div>
+                        </div>
+                        </div>
+                        <div class="sample-preview">这是一个示例文本。包含多行内容...</div>
+                    </div>
+                    <div class="sample-card" data-sample="list">
+                        <div class="sample">
+                        <div class="sample-icon">📋</div>
+                        <div class="sample-content">
+                            <div class="sample-title">列表数据</div>
+                            <div class="sample-desc">水果名称列表</div>
+                        </div> </div>
+
+                        <div class="sample-preview">苹果、香蕉、橙子、葡萄...</div>
+                    </div>
+                    <div class="sample-card" data-sample="code">
+                        <div class="sample">
+                        <div class="sample-icon">💻</div>
+                        <div class="sample-content">
+                        <div class="sample-title">代码片段</div>
+                        <div class="sample-desc">JavaScript代码示例</div>
+                            </div>
+                                </div>
+
+                        <div class="sample-preview">function hello() { console.log("Hello World!"); }</div>
+                    </div>
+                    <div class="sample-card" data-sample="data">
+                        <div class="sample">
+                        <div class="sample-icon">📊</div><div class="sample-content">
+                        <div class="sample-title">数据表格</div>
+                        <div class="sample-desc">CSV格式数据</div></div></div>
+                        <div class="sample-preview">姓名,年龄,城市 张三,25,北京...</div>
+                    </div>
+                    <div class="sample-card" data-sample="email">
+                        <div class="sample">
+                        <div class="sample-icon">📧</div><div class="sample-content">
+                        <div class="sample-title">邮件列表</div>
+                        <div class="sample-desc">邮箱地址列表</div></div></div>
+                        <div class="sample-preview">user1@example.com user2@example.com...</div>
+                    </div>
+                    <div class="sample-card" data-sample="log">
+                        <div class="sample">
+                        <div class="sample-icon">📋</div><div class="sample-content">
+                        <div class="sample-title">日志文件</div>
+                        <div class="sample-desc">系统日志示例</div></div></div>
+                        <div class="sample-preview">[2024-01-01 10:00:00] INFO: 系统启动...</div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="cancelSampleBtn" class="btn btn-secondary">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 对比功能模态框 -->
+    <div id="compareModal" class="modal">
+        <div class="modal-content compare-modal">
+            <div class="modal-header">
+                <h3>文本对比</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="compare-container">
+                    <div class="compare-section">
+                        <h4>原始文本</h4>
+                        <div class="text-info">
+                            <span class="char-count">字符数: <span id="originalCharCount">0</span></span>
+                            <span class="line-count">行数: <span id="originalLineCount">0</span></span>
+                        </div>
+                        <div class="text-content" id="originalText"></div>
+                    </div>
+                    <div class="compare-section">
+                        <h4>处理后文本</h4>
+                        <div class="text-info">
+                            <span class="char-count">字符数: <span id="processedCharCount">0</span></span>
+                            <span class="line-count">行数: <span id="processedLineCount">0</span></span>
+                        </div>
+                        <div class="text-content" id="processedText"></div>
+                    </div>
+                </div>
+                <div class="compare-summary">
+                    <div class="summary-item">
+                        <span class="summary-label">字符变化:</span>
+                        <span class="summary-value" id="charChange">0</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">行数变化:</span>
+                        <span class="summary-value" id="lineChange">0</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">变化率:</span>
+                        <span class="summary-value" id="changeRate">0%</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="exportCompareBtn" class="btn btn-primary">导出对比报告</button>
+                <button id="closeCompareBtn" class="btn btn-secondary">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入模块脚本 -->
+    <script src="scripts/textworkflowTool.js"></script>
+    <script src="scripts/template.js"></script>
+    <script src="scripts/textworkflow.js"></script>
+</body>
+</html>

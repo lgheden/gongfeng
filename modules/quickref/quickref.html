@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickRef 快速参考手册</title>
+    <link rel="stylesheet" href="../../shared/common.css">
+    <link rel="stylesheet" href="quickref.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>📖 QuickRef 快速参考手册<p class="subtitle">开发者必备的快速参考速查表集合</p>
+            </h1>
+            <a href="../pages/donate.html" class="donate-btn">💝 赞助</a>
+        </header>
+
+        <div class="search-section">
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="搜索编程语言、工具或命令..." class="search-input">
+                <button id="searchBtn" class="search-btn">🔍</button>
+            </div>
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-category="all">全部</button>
+                <button class="filter-tab" data-category="programming">编程语言</button>
+                <button class="filter-tab" data-category="toolkit">工具包</button>
+                <button class="filter-tab" data-category="linux">Linux命令</button>
+                <button class="filter-tab" data-category="database">数据库</button>
+                <button class="filter-tab" data-category="frontend">前端</button>
+            </div>
+        </div>
+
+        <div class="cheatsheets-grid" id="contentGrid">
+            <!-- 内容将通过JavaScript动态生成 -->
+        </div>
+    </div>
+
+    <!-- Full-screen content container -->
+    <div id="fullscreen-content" class="fullscreen-content" style="display: none;">
+        <div class="fullscreen-header">
+            <h2 id="fullscreen-title"></h2>
+            <button class="close-btn">✖</button>
+        </div>
+        <div id="fullscreen-body" class="fullscreen-body"></div>
+    </div>
+    <script src="data/cpp.js"></script>
+    <script src="data/csharp.js"></script>
+    <script src="data/css.js"></script>
+    <script src="data/go.js"></script>
+    <script src="data/html.js"></script>
+    <script src="data/java.js"></script>
+    <script src="data/javascript.js"></script>
+    <script src="data/kotlin.js"></script>
+    <script src="data/php.js"></script>
+    <script src="data/python.js"></script>
+    <script src="data/ruby.js"></script>
+    <script src="data/rust.js"></script>
+    <script src="data/swift.js"></script>
+    <script src="data/typescript.js"></script>
+    <script src="quickref.js"></script>
+</body>
+
+</html>

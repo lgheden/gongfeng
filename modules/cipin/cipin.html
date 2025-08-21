@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>词频统计工具</title>
+    <link rel="stylesheet" href="../../shared/common.css">
+    <link rel="stylesheet" href="assets/cipin.css">
+    <link rel="stylesheet" href="../../shared/codemirror.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 词频统计工具<p>分析文本中词汇出现频率，支持多种统计模式和可视化展示</p></h1>
+            <a href="../../pages/donate.html" class="donate-btn">💝 赞助</a>
+        </header>
+
+        <!-- 配置选项栏 -->
+        <div class="options-bar">
+            <div class="option-group">
+                <label>
+                    <input type="checkbox" id="ignoreCase" checked> 忽略大小写
+                </label>
+                <label>
+                    <input type="checkbox" id="ignoreNumbers"> 忽略数字
+                </label>
+                <label>
+                    <input type="checkbox" id="ignorePunctuation"> 忽略标点符号
+                </label>
+            </div>
+            <div class="option-group">
+                <label>最小词长:</label>
+                <select id="minWordLength">
+                    <option value="1">1字符</option>
+                    <option value="2" selected>2字符</option>
+                    <option value="3">3字符</option>
+                    <option value="4">4字符</option>
+                </select>
+            </div>
+            <div class="option-group">
+                <label>显示前:</label>
+                <select id="topCount">
+                    <option value="10">10个</option>
+                    <option value="20" selected>20个</option>
+                    <option value="50">50个</option>
+                    <option value="100">100个</option>
+                </select>
+            </div>
+            <div class="option-group">
+                <label>排序方式:</label>
+                <select id="sortBy">
+                    <option value="frequency" selected>按频率</option>
+                    <option value="alphabetical">按字母</option>
+                    <option value="length">按长度</option>
+                </select>
+            </div>
+            <div class="option-group test-data-controls">
+                <label>测试数据:</label>
+                <button id="testChineseBtn" class="btn btn-sm btn-outline">中文文本</button>
+                <button id="testEnglishBtn" class="btn btn-sm btn-outline">英文文本</button>
+                <button id="testMixedBtn" class="btn btn-sm btn-outline">混合文本</button>
+                <button id="testCodeBtn" class="btn btn-sm btn-outline">代码文本</button>
+            </div>
+        </div>
+
+        <!-- 主要内容区域 -->
+        <div class="content">
+            <div class="input-section">
+                <h3>输入文本
+                    <div class="toolbar">
+                        <button id="analyzeBtn" class="btn btn-primary">开始分析</button>
+                        <button id="clearBtn" class="btn btn-danger">清空</button>
+                        <button id="copyBtn" class="btn btn-success">复制结果</button>
+                        <button id="exportBtn" class="btn btn-secondary">导出数据</button>
+                    </div>
+                </h3>
+                <div id="inputArea"></div>
+            </div>
+
+            <div class="output-section">
+                <h3>统计结果
+                    <div class="view-controls">
+                        <button id="tableViewBtn" class="btn btn-sm btn-outline active">表格视图</button>
+                        <button id="chartViewBtn" class="btn btn-sm btn-outline">图表视图</button>
+                    </div>
+                </h3>
+                <div id="outputArea">
+                    <div id="tableView" class="view-content active">
+                        <div id="wordTable"></div>
+                    </div>
+                    <div id="chartView" class="view-content">
+                        <canvas id="wordChart" width="400" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 统计信息 -->
+        <div class="stats-section">
+            <div class="stat-item">
+                <span class="stat-label">总词数:</span>
+                <span id="totalWords" class="stat-value">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">不重复词数:</span>
+                <span id="uniqueWords" class="stat-value">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">平均词长:</span>
+                <span id="avgWordLength" class="stat-value">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">分析时间:</span>
+                <span id="analysisTime" class="stat-value">0ms</span>
+            </div>
+        </div>
+
+        <!-- 状态栏 -->
+        <div id="statusBar" class="status-bar"></div>
+    </div>
+
+    <!-- 引入共享库 -->
+    <script src="../../shared/codemirror.min.js"></script>
+    <script src="../../shared/javascript.min.js"></script>
+    <script src="../../shared/pageAnalyze/view-chart.js"></script>
+
+    <!-- 引入模块脚本 -->
+    <script src="scripts/cipin.js"></script>
+</body>
+</html>

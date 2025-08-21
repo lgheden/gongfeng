@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API测试工具 - 简易版Postman</title>
+    <link rel="stylesheet" href="../../shared/common.css">
+<link rel="stylesheet" href="assets/api-tester.css">
+<link rel="stylesheet" href="../../shared/codemirror.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 API测试工具<p>快速测试API接口</p></h1>
+            <a href="../../pages/donate.html" class="donate-btn">💝 赞助</a>
+        </header>
+
+        <main class="main-content">
+            <!-- 请求配置区域 -->
+            <section class="request-section">
+                <div class="request-line">
+                    <select id="methodSelect" class="method-select">
+                        <option value="GET">GET</option>
+                        <option value="POST">POST</option>
+                        <option value="PUT">PUT</option>
+                        <option value="DELETE">DELETE</option>
+                        <option value="PATCH">PATCH</option>
+                        <option value="HEAD">HEAD</option>
+                        <option value="OPTIONS">OPTIONS</option>
+                    </select>
+                    <input type="url" id="urlInput" class="url-input" placeholder="输入API地址，例如：https://api.example.com/users" value="">
+                    <button id="sendBtn" class="send-btn">发送</button>
+                </div>
+
+                <!-- 请求配置选项卡 -->
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="params">参数</button>
+                    <button class="tab-btn" data-tab="headers">请求头</button>
+                    <button class="tab-btn" data-tab="body">请求体</button>
+                    <button class="tab-btn" data-tab="auth">认证</button>
+                    <button class="tab-btn" data-tab="websocket">WebSocket</button>
+                </div>
+
+                <!-- 参数配置 -->
+                <div id="paramsTab" class="tab-content active">
+                    <div class="params-container">
+                        <div class="params-header">
+                            <span>查询参数</span>
+                            <button id="addParamBtn" class="add-btn">+ 添加参数</button>
+                        </div>
+                        <div id="paramsList" class="params-list">
+                            <div class="param-row">
+                                <input type="text" placeholder="参数名" class="param-key">
+                                <input type="text" placeholder="参数值" class="param-value">
+                                <button class="remove-btn">×</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 请求头配置 -->
+                <div id="headersTab" class="tab-content">
+                    <div class="headers-container">
+                        <div class="headers-header">
+                            <span>请求头</span>
+                            <button id="addHeaderBtn" class="add-btn">+ 添加请求头</button>
+                        </div>
+                        <div id="headersList" class="headers-list">
+                            <div class="header-row">
+                                <input type="text" placeholder="请求头名称" class="header-key">
+                                <input type="text" placeholder="请求头值" class="header-value">
+                                <button class="remove-btn">×</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 请求体配置 -->
+                <div id="bodyTab" class="tab-content">
+                    <div class="body-container">
+                        <div class="body-type-selector">
+                            <label><input type="radio" name="bodyType" value="none" checked> 无</label>
+                            <label><input type="radio" name="bodyType" value="json"> JSON</label>
+                            <label><input type="radio" name="bodyType" value="form"> 表单数据</label>
+                            <label><input type="radio" name="bodyType" value="text"> 纯文本</label>
+                        </div>
+                        <div id="bodyEditor" class="body-editor"></div>
+                        <div id="formDataContainer" class="form-data-container" style="display: none;">
+                            <div class="form-data-header">
+                                <span>表单数据</span>
+                                <button id="addFormDataBtn" class="add-btn">+ 添加字段</button>
+                            </div>
+                            <div id="formDataList" class="form-data-list">
+                                <div class="form-data-row">
+                                    <input type="text" placeholder="字段名" class="form-key">
+                                    <input type="text" placeholder="字段值" class="form-value">
+                                    <button class="remove-btn">×</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 认证配置 -->
+                <div id="authTab" class="tab-content">
+                    <div class="auth-container">
+                        <div class="auth-type-selector">
+                            <label><input type="radio" name="authType" value="none" checked> 无认证</label>
+                            <label><input type="radio" name="authType" value="bearer"> Bearer Token</label>
+                            <label><input type="radio" name="authType" value="basic"> Basic Auth</label>
+                            <label><input type="radio" name="authType" value="apikey"> API Key</label>
+                        </div>
+                        <div id="authConfig" class="auth-config">
+                            <!-- 认证配置将根据选择的类型动态生成 -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- WebSocket配置 -->
+                <div id="websocketTab" class="tab-content">
+                    <div class="websocket-container">
+                        <div class="websocket-connection">
+                            <div class="connection-controls">
+                                <input type="url" id="wsUrlInput" class="ws-url-input" placeholder="输入WebSocket地址，例如：ws://localhost:8080/websocket" value="">
+                                <button id="wsConnectBtn" class="ws-connect-btn">连接</button>
+                                <button id="wsDisconnectBtn" class="ws-disconnect-btn" disabled>断开</button>
+                                <span id="wsStatus" class="ws-status disconnected">未连接</span>
+                            </div>
+                        </div>
+                        
+                        <div class="websocket-message">
+                            <div class="message-input">
+                                <label>发送消息:</label>
+                                <div id="wsMessageEditor" class="ws-message-editor"></div>
+                                <div class="message-controls">
+                                    <button id="wsSendBtn" class="ws-send-btn" disabled>发送消息</button>
+                                    <button id="wsClearBtn" class="ws-clear-btn">清空历史</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- 响应区域 -->
+            <section class="response-section">
+                <div class="response-header">
+                    <h3>响应结果 <button id="showTestCasesBtn" class="test-cases-btn" title="查看测试用例">📋 测试用例</button></h3>
+                   
+                    <div class="response-info">
+                        <span id="responseStatus" class="response-status"></span>
+                        <span id="responseTime" class="response-time"></span>
+                        <span id="responseSize" class="response-size"></span>
+                    </div>
+                </div>
+
+                <div class="response-tabs">
+                    <button class="response-tab-btn active" data-tab="response-body">响应体</button>
+                    <button class="response-tab-btn" data-tab="response-headers">响应头</button>
+                    <button class="response-tab-btn" data-tab="websocket-messages" style="display: none;">WebSocket消息</button>
+                </div>
+
+                <div id="responseBodyTab" class="response-tab-content active">
+                    <div class="response-controls">
+                        <button id="formatResponseBtn" class="format-btn">格式化</button>
+                        <button id="copyResponseBtn" class="copy-btn">复制</button>
+                        <select id="responseViewMode" class="view-mode-select">
+                            <option value="json">JSON</option>
+                            <option value="text">文本</option>
+                            <option value="html">HTML</option>
+                            <option value="xml">XML</option>
+                        </select>
+                    </div>
+                    <div id="responseBody" class="response-body"></div>
+                </div>
+
+                <div id="responseHeadersTab" class="response-tab-content">
+                    <div id="responseHeaders" class="response-headers"></div>
+                </div>
+                
+                <div id="websocketMessagesTab" class="response-tab-content">
+                    <div class="websocket-response-history">
+                        <div class="history-header">
+                            <h4>WebSocket消息历史</h4>
+                            <div class="history-controls">
+                                <label><input type="checkbox" id="responseAutoScrollCheckbox" checked> 自动滚动</label>
+                            </div>
+                        </div>
+                        <div id="responseWsMessageHistory" class="ws-message-history"></div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        
+        <!-- 测试用例弹窗 -->
+        <div id="testCasesModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>📋 测试用例</h3>
+                    <span class="close">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="test-case-tabs">
+                        <button class="test-case-tab active" data-type="http">HTTP示例</button>
+                        <button class="test-case-tab" data-type="websocket">WebSocket示例</button>
+                    </div>
+                    
+                    <div id="httpTestCases" class="test-case-group active">
+                        <div class="test-case" data-method="GET" data-url="https://jsonplaceholder.typicode.com/posts/1">
+                            <div class="test-case-title">GET - 获取单个文章</div>
+                            <div class="test-case-desc">测试GET请求获取JSON数据</div>
+                        </div>
+                        <div class="test-case" data-method="POST" data-url="https://jsonplaceholder.typicode.com/posts" data-body='{"title": "测试文章", "body": "这是一篇测试文章", "userId": 1}'>
+                            <div class="test-case-title">POST - 创建文章</div>
+                            <div class="test-case-desc">测试POST请求发送JSON数据</div>
+                        </div>
+                        <div class="test-case" data-method="GET" data-url="https://api.github.com/users/octocat">
+                            <div class="test-case-title">GET - GitHub用户信息</div>
+                            <div class="test-case-desc">测试GitHub API获取用户信息</div>
+                        </div>
+                        <div class="test-case" data-method="GET" data-url="https://httpbin.org/headers" data-headers='[{"key":"User-Agent","value":"API-Tester/1.0"},{"key":"Accept","value":"application/json"}]'>
+                            <div class="test-case-title">GET - 测试请求头</div>
+                            <div class="test-case-desc">测试自定义请求头</div>
+                        </div>
+                        <div class="test-case" data-method="GET" data-url="https://httpbin.org/status/404">
+                            <div class="test-case-title">GET - 错误状态测试</div>
+                            <div class="test-case-desc">测试404错误响应</div>
+                        </div>
+                    </div>
+                    
+                    <div id="websocketTestCases" class="test-case-group">
+                        <div class="ws-test-case" data-url="wss://echo.websocket.org" data-message="Hello WebSocket!">
+                            <div class="test-case-title">Echo服务器测试</div>
+                            <div class="test-case-desc">连接到WebSocket Echo服务器</div>
+                        </div>
+                        <div class="ws-test-case" data-url="wss://ws.postman-echo.com/raw" data-message='{"type": "ping", "data": "Hello from API Tester"}'>
+                            <div class="test-case-title">Postman Echo WebSocket</div>
+                            <div class="test-case-desc">测试Postman的WebSocket服务</div>
+                        </div>
+                        <div class="ws-test-case" data-url="ws://localhost:8080/websocket" data-message='{"action": "subscribe", "channel": "test"}'>
+                            <div class="test-case-title">本地WebSocket服务</div>
+                            <div class="test-case-desc">连接到本地WebSocket服务器</div>
+                        </div>
+                        <div class="ws-test-case" data-url="wss://stream.binance.com:9443/ws/btcusdt@ticker" data-message="">
+                            <div class="test-case-title">币安WebSocket流</div>
+                            <div class="test-case-desc">连接到币安实时数据流（仅连接，无需发送消息）</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 状态栏 -->
+        <div id="statusBar" class="status-bar">
+            <span id="statusText">就绪</span>
+        </div>
+    </div>
+
+    <!-- 脚本文件 -->
+    <script src="../../shared/jquery-3.3.1.min.js"></script>
+<script src="../../shared/codemirror.min.js"></script>
+<script src="../../shared/codemirror-modes.js"></script>
+<script src="scripts/api-tester.js"></script>
+</body>
+</html>

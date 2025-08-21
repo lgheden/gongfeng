@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>颜色转换及配色工具</title>
+    <link rel="stylesheet" href="../../shared/common.css">
+    <link rel="stylesheet" href="color-picker.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>🎨 颜色转换及配色工具<p>颜色格式转换、配色方案生成、页面取色器</p></h1>
+            <a href="../../pages/donate.html" class="donate-btn">💝 赞助</a>
+        </header>
+
+        <div class="main-content">
+            <!-- 颜色选择器区域 -->
+            <div class="section color-picker-section">
+                <h2>颜色选择器</h2>
+                <div class="picker-container">
+                    <div class="color-display">
+                        <div class="color-preview" id="colorPreview"></div>
+                        <input type="color" id="colorInput" value="#3498db">
+                    </div>
+                    <div class="eyedropper-container">
+                        <button id="eyedropperBtn" class="eyedropper-btn" title="从页面取色">
+                            <span class="icon">🎯</span>
+                            页面取色
+                        </button>
+                    </div>
+                    <!-- 操作按钮 -->
+                    <div class="actions">
+                        <button id="copyAllFormats" class="copy-btn">复制颜色</button>
+                        <button id="generateCSS" class="css-btn">生成CSS</button>
+                        <button id="exportPalette" class="export-btn">导出调色板</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 颜色格式转换区域 -->
+            <div class="section color-formats-section">
+                <h2>颜色格式转换</h2>
+
+                <!-- 透明度控制器 -->
+                <div class="alpha-control">
+                    <label for="alphaSlider">透明度 (Alpha)</label>
+                    <div class="alpha-slider-container">
+                        <input type="range" id="alphaSlider" min="0" max="100" value="100" class="alpha-slider">
+                        <input type="number" id="alphaInput" min="0" max="100" value="100" class="alpha-input">
+                        <span class="alpha-unit">%</span>
+                    </div>
+                </div>
+
+                <div class="formats-grid">
+                    <div class="format-item">
+                        <label for="hexInput">HEX</label>
+                        <input type="text" id="hexInput" placeholder="#3498db">
+                    </div>
+                    <div class="format-item">
+                        <label for="rgbInput">RGB</label>
+                        <input type="text" id="rgbInput" placeholder="rgb(52, 152, 219)">
+                    </div>
+                    <div class="format-item">
+                        <label for="hslInput">HSL</label>
+                        <input type="text" id="hslInput" placeholder="hsl(204, 70%, 53%)">
+                    </div>
+                    <div class="format-item">
+                        <label for="hsvaInput">HSVA</label>
+                        <input type="text" id="hsvaInput" placeholder="hsva(204, 76%, 86%, 1)">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 配色方案区域 -->
+            <div class="section color-schemes-section">
+                <h2>配色方案</h2>
+                <div class="scheme-controls">
+                    <select id="schemeType">
+                        <option value="monochromatic">单色配色</option>
+                        <option value="analogous">邻近色配色</option>
+                        <option value="complementary">互补色配色</option>
+                        <option value="triadic">三角配色</option>
+                        <option value="tetradic">四角配色</option>
+                        <option value="splitComplementary">分裂互补配色</option>
+                    </select>
+                    <button id="generateScheme" class="generate-btn">生成配色</button>
+                </div>
+                <div class="color-scheme-display" id="colorSchemeDisplay">
+                    <!-- 配色方案将在这里显示 -->
+                </div>
+            </div>
+
+            <!-- 颜色历史记录 -->
+            <div class="section color-history-section">
+                <h2>颜色历史</h2>
+                <div class="history-controls">
+                    <button id="saveColor" class="save-btn">保存当前颜色</button>
+                    <button id="clearHistory" class="clear-btn">清空历史</button>
+                </div>
+                <div class="color-history" id="colorHistory">
+                    <!-- 历史颜色将在这里显示 -->
+                </div>
+            </div>
+
+            <!-- 颜色信息面板 -->
+            <div class="section color-info-section">
+                <h2>颜色信息</h2>
+                <div class="color-info-grid">
+                    <div class="info-item">
+                        <label>亮度</label>
+                        <span id="brightnessValue">-</span>
+                    </div>
+                    <div class="info-item">
+                        <label>对比度（白色）</label>
+                        <span id="contrastWhite">-</span>
+                    </div>
+                    <div class="info-item">
+                        <label>对比度（黑色）</label>
+                        <span id="contrastBlack">-</span>
+                    </div>
+                    <div class="info-item">
+                        <label>可读性</label>
+                        <span id="readability">-</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="color-picker.js"></script>
+</body>
+
+</html>

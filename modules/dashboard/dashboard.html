@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>页面性能分析器</title>
+  <script src="/shared/pageAnalyze/tailwindcss.js"></script>
+  <script src="/shared/pageAnalyze/view-chart.js"></script>
+  <script src="/shared/pageAnalyze/jszip.min.js"></script>
+
+  <style>
+    .section {
+      margin-bottom: 1rem;
+    }
+
+    .toggle-btn {
+      cursor: pointer;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    table {
+      max-width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    th,
+    td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+      word-wrap: break-word;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    th {
+      background-color: #f4f4f4;
+    }
+
+    td:hover {
+      background-color: #f0f8ff;
+    }
+
+    .copied-tooltip {
+      position: fixed;
+      background: #333;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      z-index: 1000;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-100 p-2 font-sans">
+  <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
+    <h1 class="text-2xl font-bold mb-4">页面性能分析器</h1>
+    <!--<button id="analyzeBtn" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 mb-4">分析当前页面</button>-->
+    <div class="bg-white shadow rounded-lg p-4 mb-6">
+      <h2 class="text-xl font-semibold text-gray-700 mb-4">页面信息 <button id="viewHtmlBtn"
+          class="bg-blue-500 text-white px-2  text-base py-1 rounded hover:bg-blue-600 transition-colors" disabled>
+          <svg class="inline w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+          </svg>
+          查看页面HTML
+        </button>
+      </h2>
+      <p class="mb-2"><strong>页面URL:</strong> <span id="pageUrl" class="text-gray-600">-</span></p>
+      <p class="mb-2"><strong>页面标题:</strong> <span id="pageTitle" class="text-gray-600">-</span></p>
+
+    </div>
+    <!-- 页面性能指标和Web Vitals -->
+    <div class="section">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <!-- 页面性能指标 -->
+        <div>
+          <h2 class="text-xl font-semibold toggle-btn" data-target="performance">页面性能指标 <span
+              class="text-blue-600">▼</span></h2>
+          <div id="performance" class="mt-2 bg-gray-50 p-4 rounded-lg">
+            <p class="mb-2">导航开始时间: <span id="navStart" class="font-mono text-blue-600">-</span></p>
+            <p class="mb-2">页面加载时间: <span id="loadTime" class="font-mono text-blue-600">-</span> ms</p>
+            <p class="mb-2">DOM内容加载: <span id="domContent" class="font-mono text-blue-600">-</span> ms</p>
+            <p class="mb-2">首次绘制 (FP): <span id="firstPaint" class="font-mono text-blue-600">-</span> ms</p>
+            <p class="mb-2">首次内容绘制 (FCP): <span id="firstContentfulPaint" class="font-mono text-blue-600">-</span> ms
+            </p>
+          </div>
+        </div>
+
+        <!-- Web Vitals -->
+        <div>
+          <h2 class="text-xl font-semibold toggle-btn" data-target="webVitals">Web Vitals 指标 <span
+              class="text-blue-600">▼</span></h2>
+          <div id="webVitals" class="mt-2 bg-gray-50 p-4 rounded-lg">
+            <p class="mb-2">最大内容绘制 (LCP): <span id="lcp" class="font-mono text-green-600">-</span> ms</p>
+            <p class="mb-2">累计布局偏移 (CLS): <span id="cls" class="font-mono text-green-600">-</span></p>
+            <p class="mb-2">首次输入延迟 (FID): <span id="fid" class="font-mono text-green-600">-</span> ms</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Web Vitals 图表 -->
+      <div class="mt-4">
+        <canvas id="vitalsChart" class="w-full" height="100"></canvas>
+      </div>
+    </div>
+
+    <!-- 网络请求统计 -->
+    <div class="section">
+      <h2 class="text-xl font-semibold toggle-btn" data-target="requests">网络请求统计 <span class="text-blue-600">▼</span>
+      </h2>
+      <div id="requests" class="mt-2 hidden">
+        <div class="flex justify-between items-center mb-4">
+          <p class="text-lg">总请求数: <span id="requestCount" class="font-bold text-blue-600">-</span></p>
+          <div class="space-x-2">
+            <button id="exportRequestsCSV"
+              class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600 transition-colors">
+              <svg class="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                </path>
+              </svg>
+              导出CSV
+            </button>
+          </div>
+        </div>
+        <div class="overflow-x-auto max-h-[500px] overflow-y-auto border rounded-lg">
+          <table id="requestTable" class="w-full bg-white">
+            <thead class="sticky top-0 bg-gray-100">
+              <tr>
+                <th class="w-2/5 p-2 text-left">URL</th>
+                <th class="w-1/6 p-2 text-left">方法</th>
+                <th class="w-1/4 p-2 text-left">请求体</th>
+                <th class="w-1/6 p-2 text-left">状态</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 资源加载统计 -->
+    <div class="section">
+      <h2 class="text-xl font-semibold toggle-btn" data-target="resources">资源加载统计 <span class="text-blue-600">▼</span>
+      </h2>
+      <div id="resources" class="mt-2 hidden">
+        <div class="flex justify-between items-center">
+          <div class="flex gap-6">
+            <p class="mb-2 text-lg">资源数量: <span id="resourceCount" class="font-bold text-green-600">-</span></p>
+            <p class="text-lg">总传输大小: <span id="totalSize" class="font-bold text-green-600">-</span> KB</p>
+          </div>
+          <div class="flex space-x-2">
+            <div class="relative inline-block">
+              <button id="downloadDropdownBtn"
+                class="bg-green-500 text-white px-3 py-1 rounded text-sm hover:bg-green-600 transition-colors flex items-center">
+                <svg class="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                </svg>
+                下载资源
+                <svg class="inline w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </button>
+              <div id="downloadDropdownMenu"
+                class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10 border">
+                <div class="py-1">
+                  <button data-type="all"
+                    class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    <svg class="inline w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                    </svg>
+                    下载所有资源
+                  </button>
+                  <button data-type="images"
+                    class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    <svg class="inline w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                      </path>
+                    </svg>
+                    下载图片资源
+                  </button>
+                  <button data-type="scripts"
+                    class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    <svg class="inline w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                    </svg>
+                    下载JS文件
+                  </button>
+                  <button data-type="stylesheets"
+                    class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    <svg class="inline w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z">
+                      </path>
+                    </svg>
+                    下载CSS文件
+                  </button>
+                  <button data-type="fonts"
+                    class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    <svg class="inline w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
+                      </path>
+                    </svg>
+                    下载字体文件
+                  </button>
+                </div>
+              </div>
+            </div>
+            <button id="exportResourcesCSV"
+              class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600 transition-colors">
+              <svg class="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                </path>
+              </svg>
+              导出CSV
+            </button>
+          </div>
+        </div>
+        <canvas id="resourceChart" class="w-full mb-4" height="100"></canvas>
+        <div class="overflow-x-auto max-h-[500px] overflow-y-auto border rounded-lg">
+          <table id="resourceTable" class="w-full bg-white">
+            <thead class="sticky top-0 bg-gray-100">
+              <tr>
+                <th class="w-2/5 p-2 text-left">URL</th>
+                <th class="w-1/6 p-2 text-left">类型</th>
+                <th class="w-1/6 p-2 text-left">大小 (KB)</th>
+                <th class="w-1/6 p-2 text-left">加载时间 (ms)</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 错误统计 -->
+    <div class="section">
+      <h2 class="text-xl font-semibold toggle-btn" data-target="errors">错误统计 <span class="text-blue-600">▼</span></h2>
+      <div id="errors" class="mt-2 hidden">
+        <div class="flex justify-between items-center mb-4">
+          <p class="text-lg">错误总数: <span id="errorCount" class="font-bold text-red-600">-</span></p>
+          <div class="space-x-2">
+            <button id="exportErrorsCSV"
+              class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600 transition-colors">
+              <svg class="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                </path>
+              </svg>
+              导出CSV
+            </button>
+          </div>
+        </div>
+        <div class="overflow-x-auto max-h-[500px] overflow-y-auto border rounded-lg">
+          <table id="errorTable" class="w-full bg-white">
+            <thead class="sticky top-0 bg-gray-100">
+              <tr>
+                <th class="w-1/6 p-2 text-left">类型</th>
+                <th class="w-2/5 p-2 text-left">消息</th>
+                <th class="w-1/4 p-2 text-left">文件</th>
+                <th class="w-1/6 p-2 text-left">行号</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HTML查看弹窗 -->
+  <div id="htmlModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg shadow-xl max-w-6xl w-full max-h-[90vh] flex flex-col">
+      <!-- 弹窗头部 -->
+      <div class="flex items-center justify-between p-4 border-b">
+        <h3 class="text-xl font-semibold text-gray-900">页面HTML源码</h3>
+        <div class="flex items-center space-x-2">
+          <button id="copyHtmlBtn"
+            class="bg-green-500 text-white px-3 py-1 rounded text-sm hover:bg-green-600 transition-colors">
+            <svg class="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z">
+              </path>
+            </svg>
+            复制
+          </button>
+          <button id="closeHtmlModal" class="text-gray-400 hover:text-gray-600 transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- 弹窗内容 -->
+<div class="flex flex-col h-screen">
+  <div class="flex-1 overflow-hidden p-4 max-h-[79vh]">
+    <div class="h-full overflow-auto bg-gray-50 rounded border">
+      <pre 
+        id="htmlContent" 
+        class="h-full p-4 text-sm font-mono whitespace-pre-wrap break-words overflow-wrap-anywhere"
+      ></pre>
+    </div>
+  </div>
+</div>
+    </div>
+  </div>
+
+  <script src="scripts/dashboard.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>代码美化工具</title>
+    <link rel="stylesheet" href="../../shared/common.css">
+    <link rel="stylesheet" href="assets/code-beautifier.css">
+    <link rel="stylesheet" href="../../shared/codemirror.min.css">
+    <link rel="stylesheet" href="../../shared/foldgutter.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>🎨 代码美化工具<p>格式化、美化和高亮显示各种编程语言代码</p>
+            </h1>
+            <a href="../../pages/donate.html" class="donate-btn">💝 赞助</a>
+        </header>
+        
+        <div class="options-bar">
+            <div class="option-group">
+                <label>编程语言:</label>
+                <select id="languageSelect">
+                    <option value="javascript">JavaScript</option>
+                    <option value="html">HTML</option>
+                    <option value="css">CSS</option>
+                    <option value="json">JSON</option>
+                    <option value="xml">XML</option>
+                    <option value="sql">SQL</option>
+                    <option value="python">Python</option>
+                    <option value="java">Java</option>
+                    <option value="csharp">C#</option>
+                    <option value="cpp">C++</option>
+                    <option value="php">PHP</option>
+                    <option value="go">Go</option>
+                    <option value="rust">Rust</option>
+                    <option value="typescript">TypeScript</option>
+                    <option value="markdown">Markdown</option>
+                </select>
+            </div>
+            
+            <div class="option-group">
+                <label>缩进方式:</label>
+                <select id="indentType">
+                    <option value="spaces">空格</option>
+                    <option value="tabs">Tab</option>
+                </select>
+            </div>
+            
+            <div class="option-group">
+                <label>缩进大小:</label>
+                <select id="indentSize">
+                    <option value="2" selected>2</option>
+                    <option value="4">4</option>
+                    <option value="8">8</option>
+                </select>
+            </div>
+            
+            <div class="option-group">
+                <label>
+                    <input type="checkbox" id="showLineNumbers" checked> 显示行号
+                </label>
+                <label>
+                    <input type="checkbox" id="enableFolding" checked> 启用代码折叠
+                </label>
+                <label>
+                    <input type="checkbox" id="wrapLines" checked> 自动换行
+                </label>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="input-section">
+                <h3>输入代码
+                    <div class="toolbar">
+                        <button id="beautifyBtn" class="btn btn-primary">美化代码</button>
+                        <button id="minifyBtn" class="btn btn-secondary">压缩代码</button>
+                        <button id="validateBtn" class="btn btn-info">语法检查</button>
+                        <button id="exampleBtn" class="btn btn-warning">📝 示例代码</button>
+                        <button id="clearBtn" class="btn btn-danger">清空</button>
+                        <button id="copyInputBtn" class="btn btn-success">复制输入</button>
+                    </div>
+                </h3>
+                <div id="codeInput"></div>
+                <div class="file-upload">
+                    <input type="file" id="fileInput" accept=".js,.html,.css,.json,.xml,.sql,.py,.java,.cs,.cpp,.php,.go,.rs,.ts,.md,.txt" style="display: none;">
+                    <button id="uploadBtn" class="btn btn-outline">📁 上传文件</button>
+                    <span class="file-info" id="fileInfo"></span>
+                </div>
+            </div>
+
+            <div class="output-section">
+                <h3>美化结果
+                    <div class="toolbar">
+                        <button id="copyOutputBtn" class="btn btn-success">复制结果</button>
+                        <button id="downloadBtn" class="btn btn-primary">下载文件</button>
+                        <button id="previewBtn" class="btn btn-info">预览</button>
+                    </div>
+                </h3>
+                <div id="codeOutput"></div>
+                <div class="stats" id="codeStats">
+                    <span>行数: <span id="lineCount">0</span></span>
+                    <span>字符数: <span id="charCount">0</span></span>
+                    <span>大小: <span id="fileSize">0 B</span></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="preview-section" id="previewSection" style="display: none;">
+            <h3>代码预览</h3>
+            <div class="preview-container">
+                <iframe id="previewFrame" sandbox="allow-scripts allow-same-origin"></iframe>
+            </div>
+        </div>
+
+        <div id="statusBar" class="status-bar"></div>
+    </div>
+
+    <script src="../../shared/codemirror.min.js"></script>
+    <script src="../../shared/javascript.min.js"></script>
+    <script src="../../shared/foldcode.js"></script>
+    <script src="../../shared/foldgutter.js"></script>
+    <script src="../../shared/brace-fold.js"></script>
+    <script src="../../shared/codemirror-modes.js"></script>
+     <script src="../../shared/json5.min.js"></script>
+     <!-- Prettier and plugins -->
+     <script src="lib/standalone.js"></script>
+     <script src="lib/plugins/babel.js"></script>
+     <script src="lib/plugins/estree.js"></script>
+     <script src="lib/plugins/html.js"></script>
+     <script src="lib/plugins/postcss.js"></script>
+     <script src="lib/plugins/typescript.js"></script>
+     <script src="lib/plugins/markdown.js"></script>
+     <script type="module" src="scripts/code-beautifier.js?v=7"></script>
+</body>
+
+</html>

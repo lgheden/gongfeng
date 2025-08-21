@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>二维码生成器</title>
+    <link rel="stylesheet" href="../../shared/common.css">
+    <link rel="stylesheet" href="qr-code.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📱 二维码工具 <p>生成和解码二维码</p></h1>
+            <a href="../../pages/donate.html" class="donate-btn">💝 赞助</a>
+        </header>
+        
+        <!-- Tab导航 -->
+        <div class="tab-navigation">
+            <button class="tab-btn active" data-tab="generator">生成二维码</button>
+            <button class="tab-btn" data-tab="decoder">解码二维码</button>
+        </div>
+        
+        <!-- 生成器标签页 -->
+        <div id="generator" class="tab-content active">
+            <div class="generator-section">
+                <div class="generator-layout">
+                    <!-- 左侧：输入内容区域 -->
+                    <div class="input-column">
+                        <div class="content-type-selector">
+                            <label>内容类型：</label>
+                            <select id="contentType">
+                                <option value="text">文本</option>
+                                <option value="url">网址</option>
+                                <option value="email">邮箱</option>
+                                <option value="phone">电话</option>
+                                <option value="sms">短信</option>
+                                <option value="wifi">WiFi</option>
+                                <option value="vcard">名片</option>
+                            </select>
+                        </div>
+                    
+                        <!-- 文本输入 -->
+                        <div id="textInput" class="input-group">
+                            <label>输入内容：</label>
+                            <textarea id="qrContent" placeholder="请输入要生成二维码的内容" rows="4"></textarea>
+                        </div>
+                        
+                        <!-- URL输入 -->
+                        <div id="urlInput" class="input-group" style="display:none;">
+                            <label>网址：</label>
+                            <input type="url" id="urlContent" placeholder="https://example.com">
+                        </div>
+                        
+                        <!-- 邮箱输入 -->
+                        <div id="emailInput" class="input-group" style="display:none;">
+                            <label>邮箱地址：</label>
+                            <input type="email" id="emailContent" placeholder="example@email.com">
+                            <label>主题：</label>
+                            <input type="text" id="emailSubject" placeholder="邮件主题（可选）">
+                            <label>内容：</label>
+                            <textarea id="emailBody" placeholder="邮件内容（可选）" rows="3"></textarea>
+                        </div>
+                        
+                        <!-- 电话输入 -->
+                        <div id="phoneInput" class="input-group" style="display:none;">
+                            <label>电话号码：</label>
+                            <input type="tel" id="phoneContent" placeholder="+86 138 0013 8000">
+                        </div>
+                        
+                        <!-- 短信输入 -->
+                        <div id="smsInput" class="input-group" style="display:none;">
+                            <label>手机号码：</label>
+                            <input type="tel" id="smsPhone" placeholder="138 0013 8000">
+                            <label>短信内容：</label>
+                            <textarea id="smsContent" placeholder="短信内容" rows="3"></textarea>
+                        </div>
+                        
+                        <!-- WiFi输入 -->
+                        <div id="wifiInput" class="input-group" style="display:none;">
+                            <label>网络名称(SSID)：</label>
+                            <input type="text" id="wifiSSID" placeholder="WiFi名称">
+                            <label>密码：</label>
+                            <input type="password" id="wifiPassword" placeholder="WiFi密码">
+                            <label>加密类型：</label>
+                            <select id="wifiSecurity">
+                                <option value="WPA">WPA/WPA2</option>
+                                <option value="WEP">WEP</option>
+                                <option value="nopass">无密码</option>
+                            </select>
+                            <label>
+                                <input type="checkbox" id="wifiHidden"> 隐藏网络
+                            </label>
+                        </div>
+                        
+                        <!-- 名片输入 -->
+                        <div id="vcardInput" class="input-group" style="display:none;">
+                            <div class="vcard-row">
+                                <div class="vcard-item">
+                                    <label>姓名：</label>
+                                    <input type="text" id="vcardName" placeholder="姓名">
+                                </div>
+                                <div class="vcard-item">
+                                    <label>公司：</label>
+                                    <input type="text" id="vcardOrg" placeholder="公司名称">
+                                </div>
+                            </div>
+                            <div class="vcard-row">
+                                <div class="vcard-item">
+                                    <label>职位：</label>
+                                    <input type="text" id="vcardTitle" placeholder="职位">
+                                </div>
+                                <div class="vcard-item">
+                                    <label>电话：</label>
+                                    <input type="tel" id="vcardPhone" placeholder="电话号码">
+                                </div>
+                            </div>
+                            <div class="vcard-row">
+                                <div class="vcard-item">
+                                    <label>邮箱：</label>
+                                    <input type="email" id="vcardEmail" placeholder="邮箱地址">
+                                </div>
+                                <div class="vcard-item">
+                                    <label>网址：</label>
+                                    <input type="url" id="vcardUrl" placeholder="个人网址">
+                                </div>
+                            </div>
+                            <label>地址：</label>
+                            <textarea id="vcardAddress" placeholder="详细地址" rows="2"></textarea>
+                        </div>
+                        
+                        <div class="toolbar">
+                            <button id="generateBtn" class="btn btn-primary">生成二维码</button>
+                            <button id="clearBtn" class="btn btn-secondary">清空</button>
+                            <button id="resetBtn" class="btn btn-info">重置为默认设置</button>
+                        </div>
+                    </div>
+                    
+                    <!-- 中间：配置项区域 -->
+                    <div class="config-column">
+                        <h4>基本配置</h4>
+                        <div class="config-section">
+                            <div class="config-item">
+                                <label>纠错级别：</label>
+                                <select id="errorLevel">
+                                    <option value="L">低 (7%)</option>
+                                    <option value="M" selected>中 (15%)</option>
+                                    <option value="Q">较高 (25%)</option>
+                                    <option value="H">高 (30%)</option>
+                                </select>
+                            </div>
+                            <div class="config-item">
+                                <label>尺寸：</label>
+                                <select id="qrSize">
+                                    <option value="200">200x200</option>
+                                    <option value="300" selected>300x300</option>
+                                    <option value="400">400x400</option>
+                                    <option value="500">500x500</option>
+                                </select>
+                            </div>
+                            <div class="config-item">
+                                <label>边距留白：</label>
+                                <input type="number" id="qrPadding" value="10" min="0" max="100" step="1" style="width: 80px;"> px
+                            </div>
+                        </div>
+                        
+                        <h4>样式配置</h4>
+                        <div class="config-section style-config">
+                            <div class="config-item">
+                                <label>🎨 二维码样式：</label>
+                                <select id="qrStyle">
+                                    <option value="classic">经典方块</option>
+                                    <option value="rounded">圆角方块</option>
+                                    <option value="dots">圆点</option>
+                                    <option value="liquid">液体风格</option>
+                                    <option value="gradient">渐变色</option>
+                                </select>
+                            </div>
+                            <div class="config-item">
+                                <label>🌈 颜色主题：</label>
+                                <select id="colorTheme">
+                                    <option value="classic">经典黑白</option>
+                                    <option value="blue">海洋蓝</option>
+                                    <option value="purple">紫罗兰</option>
+                                    <option value="green">森林绿</option>
+                                    <option value="orange">活力橙</option>
+                                    <option value="pink">樱花粉</option>
+                                    <option value="rainbow">彩虹渐变</option>
+                                    <option value="custom">自定义</option>
+                                </select>
+                            </div>
+                            <div class="config-item">
+                                <label>✨ 动画效果：</label>
+                                <select id="animationType">
+                                    <option value="none">无动画</option>
+                                    <option value="fadeIn">淡入</option>
+                                    <option value="zoomIn">缩放</option>
+                                    <option value="slideIn">滑入</option>
+                                    <option value="bounce">弹跳</option>
+                                    <option value="pulse">脉冲</option>
+                                    <option value="rotate">旋转</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- 自定义颜色 -->
+                        <div class="config-section custom-colors" id="customColorSection" style="display:none;">
+                            <div class="config-item">
+                                <label>前景色：</label>
+                                <input type="color" id="foregroundColor" value="#000000">
+                            </div>
+                            <div class="config-item">
+                                <label>背景色：</label>
+                                <input type="color" id="backgroundColor" value="#ffffff">
+                            </div>
+                            <div class="config-item">
+                                <label>渐变色：</label>
+                                <input type="color" id="gradientColor" value="#666666">
+                            </div>
+                        </div>
+                        
+                        <h4>中间图标</h4>
+                        <div class="config-section">
+                            <div class="config-item logo-config">
+                                <label>
+                                    <input type="checkbox" id="enableLogo"> 添加中间图标
+                                </label>
+                            </div>
+                            <div class="config-item logo-upload" id="logoUploadSection" style="display:none;">
+                                <label>选择图标：</label>
+                                <div class="logo-upload-area">
+                                    <input type="file" id="logoInput" accept="image/*" style="display:none;">
+                                    <button id="logoUploadBtn" class="btn btn-outline">选择图片</button>
+                                    <div id="logoPreview" class="logo-preview" style="display:none;">
+                                        <img id="logoImage" src="" alt="图标预览">
+                                        <button id="removeLogo" class="btn btn-small">×</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="config-item logo-size" id="logoSizeSection" style="display:none;">
+                                <label>图标大小：</label>
+                                <select id="logoSize">
+                                    <option value="0.1">10%</option>
+                                    <option value="0.15" selected>15%</option>
+                                    <option value="0.2">20%</option>
+                                    <option value="0.25">25%</option>
+                                    <option value="0.3">30%</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 右侧：生成结果区域 -->
+                    <div class="result-section result-card">
+                            <h3>📱 生成结果</h3>
+                            <div class="qr-display">
+                                <div id="qrCodeContainer">
+                                    <div class="qr-placeholder">点击"生成二维码"按钮生成</div>
+                                </div>
+                                <div class="qr-actions">
+                                    <button id="downloadBtn" class="btn btn-success" style="display:none;">下载二维码</button>
+                                    <button id="copyImageBtn" class="btn btn-info" style="display:none;">复制图片</button>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 解码器标签页 -->
+        <div id="decoder" class="tab-content">
+            <div class="decoder-layout">
+                <div class="upload-section">
+                    <div class="upload-area" id="uploadArea">
+                        <div class="upload-content">
+                            <div class="upload-icon">📷</div>
+                            <p>拖拽图片到此处或点击选择文件</p>
+                            <p class="upload-hint">支持 JPG、PNG、GIF 格式</p>
+                        </div>
+                        <input type="file" id="fileInput" accept="image/*" style="display:none;">
+                    </div>
+                    
+                    <div class="camera-section">
+                        <button id="cameraBtn" class="btn btn-primary">使用摄像头扫描</button>
+                        <div id="cameraContainer" style="display:none;">
+                            <video id="cameraVideo" autoplay></video>
+                            <canvas id="cameraCanvas" style="display:none;"></canvas>
+                            <div class="camera-controls">
+                                <button id="captureBtn" class="btn btn-success">拍照识别</button>
+                                <button id="stopCameraBtn" class="btn btn-secondary">停止摄像头</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="decode-result">
+                    <div class="result-item">
+                        <label>解码结果：</label>
+                        <div id="decodeResult" class="decode-content"></div>
+                    </div>
+                    <div class="result-item">
+                        <label>内容类型：</label>
+                        <div id="contentTypeResult"></div>
+                    </div>
+                    <div class="result-actions">
+                        <button id="copyResultBtn" class="btn btn-success" style="display:none;">复制结果</button>
+                        <button id="openLinkBtn" class="btn btn-info" style="display:none;">打开链接</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="statusBar" class="status-bar"></div>
+    </div>
+    
+    <!-- 引入jQuery库 -->
+    <script src="../../shared/jquery-3.3.1.min.js"></script>
+    <!-- 引入二维码生成库 -->
+    <script src="../../shared/jquery.qrcode.min.js"></script>
+    <!-- 引入二维码解码库 -->
+    <script src="../../shared/jsQR.js"></script>
+    <!-- 引入主脚本 -->
+    <script src="qr-code.js"></script>
+</body>
+</html>

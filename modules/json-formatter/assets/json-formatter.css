@@ -1,0 +1,500 @@
+/* 移除#jsonOutput的自定义样式，让它使用CodeMirror的默认样式 */
+
+/* JSON格式化工具特定样式 */
+.container {
+    padding: 10px 10px 0 10px !important;
+}
+
+#jsonInput {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.input-section .CodeMirror,
+.output-section .CodeMirror,
+.input-section #jsonOutput,
+.output-section #jsonOutput {
+    flex: 1;
+    min-height: 0;
+    height: 100%;
+    max-height: 100%;
+    overflow: hidden;
+}
+
+/* 确保输入和输出区域高度一致 */
+.input-section,
+.output-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+    max-height: 100%;
+    overflow: hidden;
+}
+
+.input-section h3,
+.output-section h3 {
+    flex-shrink: 0;
+    margin-bottom: 10px;
+}
+
+.json-formatter-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.json-valid {
+    border-color: #28a745 !important;
+    background-color: #f8fff9;
+}
+
+.json-invalid {
+    border-color: #dc3545 !important;
+    background-color: #fff8f8;
+}
+
+.json-key {
+    color: #0066cc;
+    font-weight: 600;
+}
+
+.json-string {
+    color: #009900;
+}
+
+.json-number {
+    color: #cc6600;
+}
+
+.json-boolean {
+    color: #9900cc;
+    font-weight: 600;
+}
+
+.json-null {
+    color: #999999;
+    font-style: italic;
+}
+
+.json-bracket {
+    color: #666666;
+    font-weight: bold;
+}
+
+.line-numbers {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 40px;
+    background: #f1f3f4;
+    border-right: 1px solid #e9ecef;
+    padding: 15px 8px;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 12px;
+    color: #666;
+    line-height: 1.5;
+    user-select: none;
+}
+
+/* 移除jsonOutput的特定样式，使用CodeMirror统一样式 */
+
+.copy-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #28a745;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+}
+
+.json-error {
+    color: #dc3545;
+    background: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 10px;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 13px;
+}
+
+.json-stats {
+    margin-left: 10px;
+    display: flex;
+    gap: 10px;
+    font-size: 12px;
+    color: #666;
+}
+
+.json-stats span {
+    background: #e9ecef;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+/* 选项栏样式 */
+.options-bar {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 4px;
+    padding: 6px 12px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.option-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.option-group label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: #495057;
+    cursor: pointer;
+    user-select: none;
+    margin-bottom: 0;
+}
+
+.option-group input[type="checkbox"] {
+    margin: 0;
+    cursor: pointer;
+}
+
+.option-group select {
+    padding: 2px 6px;
+    border: 1px solid #ced4da;
+    border-radius: 3px;
+    font-size: 12px;
+    background: white;
+    cursor: pointer;
+}
+
+/* 折叠功能样式 */
+.json-collapsible {
+    position: relative;
+}
+
+.collapse-toggle {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-right: 4px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+    color: #6c757d;
+    vertical-align: middle;
+    line-height: 1;
+}
+
+.collapse-toggle:hover {
+    color: #007bff;
+    transform: scale(1.1);
+}
+
+.collapse-toggle.collapsed {
+    color: #007bff;
+}
+
+.collapse-toggle::before {
+    content: '▼';
+}
+
+.collapse-toggle.collapsed::before {
+    content: '▶';
+}
+
+.json-collapsed {
+    display: none;
+}
+
+.collapse-indicator {
+    color: #6c757d;
+    font-style: italic;
+    cursor: pointer;
+    margin-left: 4px;
+}
+
+.collapse-indicator:hover {
+    color: #007bff;
+}
+
+/* 折叠控制按钮样式 */
+.collapse-controls {
+    border-left: 1px solid #dee2e6;
+    padding-left: 16px;
+    margin-left: 16px;
+}
+
+.btn-sm {
+    padding: 4px 8px;
+    font-size: 12px;
+    border-radius: 4px;
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid #6c757d;
+    color: #6c757d;
+    cursor: pointer;
+}
+
+.btn-outline:hover {
+    background: #6c757d;
+    color: white;
+}
+
+/* 行号样式增强 */
+.json-output-with-lines {
+    display: flex;
+    background: #f8f9fa;
+    border: 2px solid #e9ecef;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.json-line-numbers {
+    background: #f1f3f4;
+    border-right: 1px solid #e9ecef;
+    padding: 15px 8px;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 14px;
+    color: #666;
+    line-height: 1.5;
+    user-select: none;
+    white-space: pre;
+    text-align: right;
+    min-width: 40px;
+    flex-shrink: 0;
+}
+
+.json-content-with-lines {
+    flex: 1;
+    padding: 15px;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 14px;
+    white-space: pre-wrap;
+    line-height: 1.5;
+    overflow-x: auto;
+}
+
+/* 排序指示器 */
+.json-sorted {
+    position: relative;
+}
+
+.json-sorted::before {
+    content: '↕';
+    position: absolute;
+    right: -20px;
+    top: 0;
+    color: #28a745;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+/* CodeMirror 编辑器样式 */
+.CodeMirror {
+    border: 2px solid #e9ecef;
+    border-radius: 4px;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 13px;
+    height: 100%;
+    max-height: 100%;
+    background: #ffffff;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.CodeMirror.json-valid {
+    border-color: #28a745;
+    background-color: #f8fff9;
+}
+
+.CodeMirror.json-invalid {
+    border-color: #dc3545;
+    background-color: #fff8f8;
+}
+
+.CodeMirror-focused {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* CodeMirror 滚动条样式优化 */
+.CodeMirror-scroll {
+    overflow: auto !important;
+    max-height: 100% !important;
+}
+
+.CodeMirror-scrollbar-filler {
+    background-color: transparent;
+}
+
+/* 优化大数据量时的性能 */
+.CodeMirror-lines {
+    padding: 4px 0;
+}
+
+.CodeMirror pre {
+    padding: 0 4px;
+    line-height: 1.4;
+}
+
+.CodeMirror-placeholder {
+    color: #6c757d;
+    font-style: italic;
+}
+
+.CodeMirror-gutters {
+    background: #f8f9fa;
+    border-right: 1px solid #e9ecef;
+}
+
+.CodeMirror-linenumber {
+    color: #6c757d;
+    font-size: 12px;
+}
+
+.CodeMirror-cursor {
+    border-left: 2px solid #007bff;
+}
+
+.CodeMirror-selected {
+    background: rgba(0, 123, 255, 0.1);
+}
+
+.CodeMirror-line::selection,
+.CodeMirror-line > span::selection,
+.CodeMirror-line > span > span::selection {
+    background: rgba(0, 123, 255, 0.2);
+}
+
+.CodeMirror-line::-moz-selection,
+.CodeMirror-line > span::-moz-selection,
+.CodeMirror-line > span > span::-moz-selection {
+    background: rgba(0, 123, 255, 0.2);
+}
+
+/* 折叠容器样式 */
+.json-collapsible-container {
+    border: 2px solid #e9ecef;
+    border-radius: 4px;
+    background: #ffffff;
+    padding: 12px;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 13px;
+    height: 100%;
+    overflow: auto;
+    white-space: pre;
+    line-height: 1.4;
+    flex: 1;
+}
+
+.json-collapsible-container.json-valid {
+    border-color: #28a745;
+    background-color: #f8fff9;
+}
+
+.json-collapsible-container.json-invalid {
+    border-color: #dc3545;
+    background-color: #fff8f8;
+}
+
+/* 折叠容器行号样式 */
+.json-collapsible-container.json-output-with-lines {
+    display: flex;
+    padding: 0;
+}
+
+.json-collapsible-container .json-line-numbers {
+    background-color: #f8f9fa;
+    border-right: 1px solid #e9ecef;
+    color: #6c757d;
+    font-size: 12px;
+    padding: 15px 8px;
+    text-align: right;
+    min-width: 40px;
+    user-select: none;
+    white-space: pre;
+    line-height: 1.5;
+}
+
+.json-collapsible-container .json-content-with-lines {
+    flex: 1;
+    padding: 15px;
+    overflow: auto;
+    white-space: pre;
+    line-height: 1.5;
+}
+
+.toolbar{margin-bottom:0;float: right;}
+.output-section input{flex: 1;
+    padding: 6px 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 12px;
+    min-height: 28px;}
+
+.btn{padding: 6px 12px; font-size: 12px; border-radius: 4px; border: 1px solid #dee2e6; background: #f8f9fa; color: #495057; cursor: pointer; transition: none !important; transform: none !important;}
+.btn:hover{background: #e9ecef; border-color: #adb5bd; transform: none !important; box-shadow: none !important;}
+.btn:active{transform: none !important;}
+
+/* 工具栏按钮颜色样式 */
+.btn-primary{background: #007bff !important; color: white !important; border-color: #007bff !important;}
+.btn-primary:hover{background: #0056b3 !important; border-color: #0056b3 !important;}
+.btn-secondary{background: #6c757d !important; color: white !important; border-color: #6c757d !important;}
+.btn-secondary:hover{background: #545b62 !important; border-color: #545b62 !important;}
+.btn-info{background: #17a2b8 !important; color: white !important; border-color: #17a2b8 !important;}
+.btn-info:hover{background: #117a8b !important; border-color: #117a8b !important;}
+.btn-warning{background: #ffc107 !important; color: #212529 !important; border-color: #ffc107 !important;}
+.btn-warning:hover{background: #e0a800 !important; border-color: #e0a800 !important;}
+.btn-danger{background: #dc3545 !important; color: white !important; border-color: #dc3545 !important;}
+.btn-danger:hover{background: #c82333 !important; border-color: #c82333 !important;}
+.btn-success{background: #28a745 !important; color: white !important; border-color: #28a745 !important;}
+.btn-success:hover{background: #1e7e34 !important; border-color: #1e7e34 !important;}
+
+/* 覆盖common.css中的.content样式，确保JSON格式化工具使用正确的布局 */
+.content {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+    flex: 1 !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+}
+
+/* 测试数据按钮样式 */
+.test-data-controls {
+    border-left: 1px solid #dee2e6;
+    padding-left: 16px;
+    margin-left: 16px;
+}
+
+.test-data-controls .btn {
+    padding: 4px 8px;
+    margin-right: 4px;
+    font-size: 11px;
+}

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoji表情符号工具</title>
+    <link rel="stylesheet" href="../../shared/common.css">
+    <link rel="stylesheet" href="emoji.css">
+</head>
+
+<body>
+    <div class="emoji-container">
+        <!-- 顶部标题栏 -->
+        <header>
+            <h1>Emoji 表情工具
+                <p>搜索 · 分类 · 一键复制</p>
+            </h1>
+            <a href="../../pages/donate.html" class="donate-link">
+                <span class="donate-icon">💝</span>
+                <span>赞助</span>
+            </a>
+        </header>
+
+        <!-- 工具栏 -->
+        <div class="toolbar">
+            <div class="search-box">
+                <div class="search-icon">🔍</div>
+                <input type="text" id="searchInput" placeholder="搜索表情符号、关键词..." class="search-input" autocomplete="off"
+                    spellcheck="false">
+                <div class="search-shortcut">Ctrl+K</div>
+                <div class="search-results-count" id="searchResultsCount">0</div>
+                <button id="clearBtn" class="clear-btn" title="清空搜索">
+                    <span>✕</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 分类标签 -->
+        <div class="category-bar">
+            <div class="category-scroll">
+                <button class="category-chip active" data-category="all">
+                    <span class="chip-icon">🌟</span>
+                    <span class="chip-text">全部</span>
+                </button>
+                <button class="category-chip" data-category="smileys">
+                    <span class="chip-icon">😀</span>
+                    <span class="chip-text">笑脸</span>
+                </button>
+                <button class="category-chip" data-category="people">
+                    <span class="chip-icon">👤</span>
+                    <span class="chip-text">人物</span>
+                </button>
+                <button class="category-chip" data-category="animals">
+                    <span class="chip-icon">🐱</span>
+                    <span class="chip-text">动物</span>
+                </button>
+                <button class="category-chip" data-category="food">
+                    <span class="chip-icon">🍎</span>
+                    <span class="chip-text">食物</span>
+                </button>
+                <button class="category-chip" data-category="tech">
+                    <span class="chip-icon">💻</span>
+                    <span class="chip-text">科技</span>
+                </button>
+                <button class="category-chip" data-category="activities">
+                    <span class="chip-icon">⚽</span>
+                    <span class="chip-text">活动</span>
+                </button>
+                <button class="category-chip" data-category="travel">
+                    <span class="chip-icon">🚗</span>
+                    <span class="chip-text">旅行</span>
+                </button>
+                <button class="category-chip" data-category="objects">
+                    <span class="chip-icon">💡</span>
+                    <span class="chip-text">物品</span>
+                </button>
+                <button class="category-chip" data-category="symbols">
+                    <span class="chip-icon">❤️</span>
+                    <span class="chip-text">符号</span>
+                </button>
+                <button class="category-chip" data-category="flags">
+                    <span class="chip-icon">🏳️</span>
+                    <span class="chip-text">旗帜</span>
+                </button>
+                <button class="category-chip" data-category="nature">
+                    <span class="chip-icon">🌿</span>
+                    <span class="chip-text">自然</span>
+                </button>
+                <div class="total-count" id="totalCount">
+                    <span class="count-label">总计:</span>
+                    <span class="count-number" id="totalNumber">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 表情网格 -->
+        <div class="emoji-content">
+            <div class="emoji-grid" id="emojiGrid">
+                <!-- 表情符号将通过JavaScript动态加载 -->
+            </div>
+        </div>
+
+        <!-- 复制提示 -->
+        <div class="copy-notification" id="copyToast">
+            <div class="notification-content">
+                <span class="notification-emoji"></span>
+                <span class="notification-text">已复制到剪贴板</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="emoji.js"></script>
+</body>
+
+</html>

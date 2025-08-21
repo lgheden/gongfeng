@@ -1,0 +1,25 @@
+{
+  "name": "gongfeng-userscripts",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "User scripts collection for browser extension",
+  "main": "js/userscripts-example/index.js",
+  "scripts": {
+    "test": "node js/userscripts-example/index.js"
+  },
+  "keywords": [
+    "userscripts",
+    "browser-extension"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@prettier/plugin-php": "^0.24.0",
+    "@prettier/plugin-xml": "^3.4.2",
+    "prettier": "^3.6.2",
+    "prettier-plugin-sql": "^0.19.2"
+  },
+  "devDependencies": {
+    "prettier-plugin-java": "^2.7.4"
+  }
+}

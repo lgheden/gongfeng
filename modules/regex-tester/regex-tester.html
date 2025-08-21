@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>正则表达式调试工具</title>
+    <link rel="stylesheet" href="../../shared/common.css">
+<link rel="stylesheet" href="regex-tester.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔍 正则表达式调试工具<p>在线测试和调试正则表达式</p></h1>
+            <a href="../../pages/donate.html" class="donate-btn">💝 赞助</a>
+        </header>
+        
+        <div class="regex-section">
+            <div class="regex-input-group">
+                <label for="regexInput">正则表达式</label>
+                <div class="regex-input-container">
+                    <span class="regex-delimiter">/</span>
+                    <input type="text" id="regexInput" placeholder="输入正则表达式...">
+                    <span class="regex-delimiter">/</span>
+                    <div class="flags-container">
+                        <label><input type="checkbox" id="flagG" value="g" checked> g</label>
+                        <label><input type="checkbox" id="flagI" value="i"> i</label>
+                        <label><input type="checkbox" id="flagM" value="m"> m</label>
+                        <label><input type="checkbox" id="flagS" value="s"> s</label>
+                        <label><input type="checkbox" id="flagU" value="u"> u</label>
+                        <label><input type="checkbox" id="flagY" value="y"> y</label>
+                    </div>
+                    <div class="toolbar-buttons">
+                        <button id="testBtn" class="btn btn-primary">测试匹配</button>
+                        <button id="replaceBtn" class="btn btn-secondary">替换测试</button>
+                        <button id="clearBtn" class="btn btn-danger">清空</button>
+                        <button id="saveBtn" class="btn btn-success">保存模式</button>
+                        <button id="loadBtn" class="btn btn-info">加载模式</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="replace-section" style="display: none;">
+                <label for="replaceInput">替换为</label>
+                <input type="text" id="replaceInput" placeholder="替换文本 (支持 $1, $2 等捕获组)">
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="input-section">
+                <h3>测试文本</h3>
+                <textarea id="testText" placeholder="输入要测试的文本..."></textarea>
+                <div class="text-stats">
+                    <span id="textLength">字符数: 0</span>
+                    <span id="lineCount">行数: 1</span>
+                </div>
+            </div>
+            
+            <div class="output-section">
+                <h3>匹配结果</h3>
+                <div id="matchResults"></div>
+                <div class="match-stats">
+                    <span id="matchCount">匹配数: 0</span>
+                    <span id="groupCount">捕获组: 0</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="details-section">
+            <div class="groups-section">
+                <h3>捕获组详情</h3>
+                <div id="groupsDetails"></div>
+            </div>
+            
+            <div class="explanation-section">
+                <h3>正则表达式说明</h3>
+                <div id="regexExplanation"></div>
+            </div>
+        </div>
+        
+        <div class="quick-patterns">
+            <h3>常用正则模式</h3>
+            <div class="pattern-grid">
+                <button class="pattern-btn" data-pattern="\d+" data-desc="数字">数字</button>
+                <button class="pattern-btn" data-pattern="[a-zA-Z]+" data-desc="字母">字母</button>
+                <button class="pattern-btn" data-pattern="\w+" data-desc="单词字符">单词</button>
+                <button class="pattern-btn" data-pattern="\s+" data-desc="空白字符">空白</button>
+                <button class="pattern-btn" data-pattern="^.+$" data-desc="整行匹配">整行</button>
+                <button class="pattern-btn" data-pattern="\b\w+\b" data-desc="完整单词">完整单词</button>
+                <button class="pattern-btn" data-pattern="\d{4}-\d{2}-\d{2}" data-desc="日期格式">日期</button>
+                <button class="pattern-btn" data-pattern="\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b" data-desc="邮箱地址">邮箱</button>
+                <button class="pattern-btn" data-pattern="https?://[^\s]+" data-desc="URL链接">URL</button>
+                <button class="pattern-btn" data-pattern="\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}" data-desc="IP地址">IP地址</button>
+                <button class="pattern-btn" data-pattern="1[3-9]\d{9}" data-desc="手机号码">手机号</button>
+                <button class="pattern-btn" data-pattern="[1-9]\d{5}(18|19|20)\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])\d{3}[0-9Xx]" data-desc="身份证号">身份证</button>
+            </div>
+        </div>
+        
+        <div id="statusBar" class="status-bar"></div>
+    </div>
+    
+    <script src="regex-tester.js"></script>
+</body>
+</html>

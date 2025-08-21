@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据库表结构转Java对象</title>
+    <link rel="stylesheet" href="../../shared/common.css">
+<link rel="stylesheet" href="assets/db-to-java.css">
+<link rel="stylesheet" href="../../shared/codemirror.min.css">
+<link rel="stylesheet" href="../../shared/foldgutter.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🗄️ 数据库工具集 <p>数据库表结构与Java实体类互转工具</p></h1>
+            <a href="../../pages/donate.html" class="donate-btn">💝 赞助</a>
+        </header>
+        
+        <!-- Tab导航 -->
+        <div class="tab-navigation">
+            <button class="tab-btn active" data-tab="ddl-to-java">DDL转Java</button>
+            <button class="tab-btn" data-tab="java-to-ddl">Java转DDL</button>
+        </div>
+        
+        <!-- DDL转Java Tab -->
+        <div id="ddl-to-java-tab" class="tab-content active">
+        <!-- 输入和配置区域 -->
+        <div class="main-section">
+            <div class="input-area">
+                <div class="input-header">
+                    <h3>输入DDL语句</h3>
+                    <div class="input-actions">
+                        <button id="clearBtn" class="btn btn-danger">清空</button>
+                    </div>
+                </div>
+                <div id="ddlInput"></div>
+                <div class="text-info">
+                    <span id="inputLength">字符数: 0</span>
+                    <span id="tableCount">表数量: 0</span>
+                </div>
+            </div>
+            
+            <div class="config-area">
+                <h3>配置选项</h3>
+                <div class="config-compact">
+                    <div class="config-row">
+                        <div class="config-item">
+                            <label class="config-label">数据库：</label>
+                            <div class="radio-group-inline">
+                                <label class="radio-label-inline">
+                                    <input type="radio" name="dbType" value="mysql" checked>
+                                    <span class="radio-custom-inline"></span>
+                                    MySQL
+                                </label>
+                                <label class="radio-label-inline">
+                                    <input type="radio" name="dbType" value="postgresql">
+                                    <span class="radio-custom-inline"></span>
+                                    PostgreSQL
+                                </label>
+                                <label class="radio-label-inline">
+                                    <input type="radio" name="dbType" value="oracle">
+                                    <span class="radio-custom-inline"></span>
+                                    Oracle
+                                </label>
+                                <label class="radio-label-inline">
+                                    <input type="radio" name="dbType" value="sqlserver">
+                                    <span class="radio-custom-inline"></span>
+                                    SQL Server
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="config-item">
+                            <label class="config-label">命名：</label>
+                            <div class="radio-group-inline">
+                                <label class="radio-label-inline">
+                                    <input type="radio" name="naming" value="camelCase" checked>
+                                    <span class="radio-custom-inline"></span>
+                                    驼峰
+                                </label>
+                                <label class="radio-label-inline">
+                                    <input type="radio" name="naming" value="PascalCase">
+                                    <span class="radio-custom-inline"></span>
+                                    帕斯卡
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="config-item">
+                            <label class="config-label">包名：</label>
+                            <input type="text" id="packageName" class="package-input" placeholder="com.example.entity" value="com.example.entity">
+                        </div>
+                    </div>
+                    
+                    <div class="config-row">
+                        <div class="config-item full-width">
+                            <label class="config-label">生成选项：</label>
+                            <div class="checkbox-group-inline">
+                                <label class="checkbox-label-inline">
+                                    <input type="checkbox" name="generateOptions" value="getterSetter" id="generateGetterSetter" checked>
+                                    <span class="checkbox-custom-inline"></span>
+                                    Getter/Setter
+                                </label>
+                                <label class="checkbox-label-inline">
+                                    <input type="checkbox" name="generateOptions" value="constructor" id="generateConstructor">
+                                    <span class="checkbox-custom-inline"></span>
+                                    构造函数
+                                </label>
+                                <label class="checkbox-label-inline">
+                                    <input type="checkbox" name="generateOptions" value="toString" id="generateToString">
+                                    <span class="checkbox-custom-inline"></span>
+                                    toString
+                                </label>
+                                <label class="checkbox-label-inline">
+                                    <input type="checkbox" name="generateOptions" value="jpa" id="generateJPA" checked>
+                                    <span class="checkbox-custom-inline"></span>
+                                    JPA注解
+                                </label>
+                                <label class="checkbox-label-inline">
+                                    <input type="checkbox" name="generateOptions" value="validation" id="generateValidation">
+                                    <span class="checkbox-custom-inline"></span>
+                                    验证注解
+                                </label>
+                                <label class="checkbox-label-inline">
+                                    <input type="checkbox" name="generateOptions" value="lombok" id="generateLombok">
+                                    <span class="checkbox-custom-inline"></span>
+                                    Lombok
+                                </label>
+                                <label class="checkbox-label-inline">
+                                    <input type="checkbox" name="generateOptions" value="swagger" id="generateSwagger">
+                                    <span class="checkbox-custom-inline"></span>
+                                    Swagger
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+
+            </div>
+        </div>
+        
+        <!-- 输出和示例区域 -->
+        <div class="output-examples-container">
+            <!-- 输出区域 -->
+            <div class="output-section">
+                <div class="output-header">
+                    <h3>生成的Java代码</h3>
+                    <div class="result-actions">
+                        <button id="convertBtn" class="btn btn-primary">生成代码</button>
+                        <button id="copyBtn" class="btn btn-success">复制结果</button>
+                        <button id="downloadBtn" class="btn btn-info">下载文件</button>
+                    </div>
+                </div>
+                <div class="output-content">
+                    <div id="javaOutput"></div>
+                </div>
+                <div class="text-info">
+                    <span id="outputLength">字符数: 0</span>
+                    <span id="classCount">类数量: 0</span>
+                </div>
+            </div>
+            
+            <!-- 示例区域 -->
+            <div class="examples-section">
+                <h3>示例DDL</h3>
+                <div class="examples-grid">
+                    <button class="example-btn" data-example="user">用户表</button>
+                    <button class="example-btn" data-example="product">商品表</button>
+                    <button class="example-btn" data-example="order">订单表</button>
+                    <button class="example-btn" data-example="complex">系统用户</button>
+                    <button class="example-btn" data-example="blog">博客文章</button>
+                    <button class="example-btn" data-example="permission">权限管理</button>
+                    <button class="example-btn" data-example="log">操作日志</button>
+                    <button class="example-btn" data-example="ecommerce">商品SKU</button>
+                </div>
+            </div>
+        </div>
+        </div>
+        
+        <!-- Java转DDL Tab -->
+        <div id="java-to-ddl-tab" class="tab-content">
+        <!-- 输入和配置区域 -->
+        <div class="main-section">
+            <div class="input-area">
+                <div class="input-header">
+                    <h3>输入Java实体类</h3>
+                    <div class="input-actions">                       
+                        <button id="clearJavaBtn" class="btn btn-danger">清空</button>
+                    </div>
+                </div>
+                <div id="javaInput"></div>
+                <div class="text-info">
+                    <span id="javaInputLength">字符数: 0</span>
+                    <span id="javaClassCount">类数量: 0</span>
+                </div>
+            </div>
+            
+            <div class="config-area">
+                <h3>配置选项</h3>
+                <div class="config-compact">
+                    <div class="config-row">
+                        <div class="config-item">
+                            <label class="config-label">目标数据库：</label>
+                            <div class="radio-group-inline">
+                                <label class="radio-label-inline">
+                                    <input type="radio" name="targetDbType" value="mysql" checked>
+                                    <span class="radio-custom-inline"></span>
+                                    MySQL
+                                </label>
+                                <label class="radio-label-inline">
+                                    <input type="radio" name="targetDbType" value="postgresql">
+                                    <span class="radio-custom-inline"></span>
+                                    PostgreSQL
+                                </label>
+                                <label class="radio-label-inline">
+                                    <input type="radio" name="targetDbType" value="oracle">
+                                    <span class="radio-custom-inline"></span>
+                                    Oracle
+                                </label>
+                                <label class="radio-label-inline">
+                                    <input type="radio" name="targetDbType" value="sqlserver">
+                                    <span class="radio-custom-inline"></span>
+                                    SQL Server
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="config-item">
+                            <label class="config-label">表名策略：</label>
+                            <div class="radio-group-inline">
+                                <label class="radio-label-inline">
+                                    <input type="radio" name="tableNaming" value="snake_case" checked>
+                                    <span class="radio-custom-inline"></span>
+                                    下划线
+                                </label>
+                                <label class="radio-label-inline">
+                                    <input type="radio" name="tableNaming" value="camelCase">
+                                    <span class="radio-custom-inline"></span>
+                                    驼峰
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="config-row">
+                        <div class="config-item full-width">
+                            <label class="config-label">生成选项：</label>
+                            <div class="checkbox-group-inline">
+                                <label class="checkbox-label-inline">
+                                    <input type="checkbox" name="ddlOptions" value="ifNotExists" id="generateIfNotExists" checked>
+                                    <span class="checkbox-custom-inline"></span>
+                                    IF NOT EXISTS
+                                </label>
+                                <label class="checkbox-label-inline">
+                                    <input type="checkbox" name="ddlOptions" value="comments" id="generateComments" checked>
+                                    <span class="checkbox-custom-inline"></span>
+                                    字段注释
+                                </label>
+                                <label class="checkbox-label-inline">
+                                    <input type="checkbox" name="ddlOptions" value="indexes" id="generateIndexes">
+                                    <span class="checkbox-custom-inline"></span>
+                                    索引
+                                </label>
+                                <label class="checkbox-label-inline">
+                                    <input type="checkbox" name="ddlOptions" value="constraints" id="generateConstraints" checked>
+                                    <span class="checkbox-custom-inline"></span>
+                                    约束
+                                </label>
+                                <label class="checkbox-label-inline">
+                                    <input type="checkbox" name="ddlOptions" value="charset" id="generateCharset" checked>
+                                    <span class="checkbox-custom-inline"></span>
+                                    字符集
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+
+            </div>
+        </div>
+        
+        <!-- 输出和示例区域 -->
+        <div class="output-examples-container">
+            <!-- 输出区域 -->
+            <div class="output-section">
+                <div class="output-header">
+                    <h3>生成的DDL语句</h3>
+                    <div class="result-actions">
+                        <button id="convertJavaBtn" class="btn btn-primary">生成代码</button>
+                        <button id="copyDdlBtn" class="btn btn-success">复制结果</button>
+                        <button id="downloadDdlBtn" class="btn btn-info">下载文件</button>
+                    </div>
+                </div>
+                <div class="output-content">
+                    <div id="ddlOutput"></div>
+                </div>
+                <div class="text-info">
+                    <span id="ddlOutputLength">字符数: 0</span>
+                    <span id="ddlTableCount">表数量: 0</span>
+                </div>
+            </div>
+            
+            <!-- 示例区域 -->
+            <div class="examples-section">
+                <h3>示例Java实体类</h3>
+                <div class="examples-grid">
+                    <button class="example-btn" data-example="user-entity">用户实体</button>
+                    <button class="example-btn" data-example="product-entity">商品实体</button>
+                    <button class="example-btn" data-example="order-entity">订单实体</button>
+                    <button class="example-btn" data-example="complex-entity">系统用户</button>
+                    <button class="example-btn" data-example="blog-entity">博客文章</button>
+                    <button class="example-btn" data-example="permission-entity">权限管理</button>
+                    <button class="example-btn" data-example="log-entity">操作日志</button>
+                    <button class="example-btn" data-example="ecommerce-entity">商品SKU</button>
+                </div>
+            </div>
+        </div>
+        </div>
+        
+        <div id="statusBar" class="status-bar"></div>
+    </div>
+    
+    <script src="../../shared/jquery-3.3.1.min.js"></script>
+<script src="../../shared/codemirror.min.js"></script>
+<script src="../../shared/codemirror-modes.js"></script>
+<script src="scripts/db-to-java.js"></script>
+<script src="../../shared/foldcode.js"></script>
+<script src="../../shared/foldgutter.js"></script>
+</body>
+</html>

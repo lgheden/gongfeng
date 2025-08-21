@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小蜜蜂工具箱</title>
+    <link rel="stylesheet" href="assets/popup.css">
+</head>
+<body>
+    <div class="popup-container">
+        <!-- 头部 -->
+        <div class="popup-header">
+            <div class="logo">
+                <img src="../../icons/logo2.png" alt="小蜜蜂工具箱" class="logo-icon">
+                <h1>小蜜蜂工具箱</h1>
+            </div>
+            <div class="header-actions">
+                <button class="header-btn" id="moduleManagerBtn" title="模块管理">
+                    <span class="btn-icon">⚙️</span>
+                    <span class="btn-text">管理</span>
+                </button>
+                <div class="version">v1.0.0</div>
+            </div>
+        </div>
+
+        <!-- 搜索区域 -->
+        <div class="search-container">
+            <div class="search-input-wrapper">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" class="search-input" placeholder="搜索工具..." autocomplete="off">
+            </div>
+        </div>
+
+        <!-- 工具列表容器 -->
+        <div class="tools-container" id="toolsContainer">
+            <!-- 工具列表将通过JavaScript动态生成 -->
+        </div>
+
+        <!-- 页脚 -->
+        <div class="popup-footer">
+            <div class="footer-links">
+                <a href="#" id="aboutLink" title="关于">关于</a>
+                <span class="separator">|</span>
+                <a href="#" id="feedbackLink" title="反馈">反馈</a>
+                <span class="separator">|</span>
+                <a href="#" id="helpLink" title="帮助">帮助</a>
+                <span class="separator">|</span>
+                <a href="#" id="donateLink" title="捐赠">捐赠</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入配置文件 -->
+    <script src="../config/modules-config.js"></script>
+    
+    <!-- 引入主要脚本 -->
+    <script src="scripts/popup.js"></script>
+</body>
+</html> 

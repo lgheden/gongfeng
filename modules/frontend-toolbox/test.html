@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>前端工具箱测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .test-section h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .test-result {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        .success {
+            color: #28a745;
+        }
+        .error {
+            color: #dc3545;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🛠️ 前端工具箱模块测试</h1>
+        
+        <div class="test-section">
+            <h3>1. CSS生成器测试</h3>
+            <button onclick="testCssGenerator()">测试CSS生成</button>
+            <div id="cssTestResult" class="test-result"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>2. 代码格式化测试</h3>
+            <button onclick="testCodeFormatter()">测试代码格式化</button>
+            <div id="formatTestResult" class="test-result"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>3. 颜色转换测试</h3>
+            <button onclick="testColorConverter()">测试颜色转换</button>
+            <div id="colorTestResult" class="test-result"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>4. 输入验证测试</h3>
+            <button onclick="testInputValidation()">测试输入验证</button>
+            <div id="validationTestResult" class="test-result"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>5. 运行所有测试</h3>
+            <button onclick="runAllTests()">运行所有测试</button>
+            <div id="allTestsResult" class="test-result"></div>
+        </div>
+    </div>
+
+    <script src="scripts/frontendToolboxTool.js"></script>
+    <script>
+        const tool = new FrontendToolboxTool();
+        let testResults = [];
+
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            return `[${timestamp}] ${message}`;
+        }
+
+        function testCssGenerator() {
+            const result = document.getElementById('cssTestResult');
+            result.innerHTML = '';
+            
+            try {
+                // 测试基本CSS生成
+                const cssOptions = {
+                    elementType: 'div',
+                    width: 200,
+                    height: 50,
+                    backgroundColor: '#007bff',
+                    borderRadius: 10
+                };
+                
+                const generatedCss = tool.generateCSS(cssOptions);
+                result.innerHTML += log('✓ CSS生成器测试通过', 'success') + '\n';
+                result.innerHTML += '生成的CSS:\n' + generatedCss + '\n';
+                
+            } catch (error) {
+                result.innerHTML += log('✗ CSS生成器测试失败: ' + error.message, 'error') + '\n';
+            }
+        }
+
+        function testCodeFormatter() {
+            const result = document.getElementById('formatTestResult');
+            result.innerHTML = '';
+            
+            try {
+                // 测试JSON格式化
+                const testJson = '{"name":"test","value":123,"items":[1,2,3]}';
+                const formattedJson = tool.formatCode(testJson, 'json');
+                result.innerHTML += log('✓ JSON格式化测试通过', 'success') + '\n';
+                result.innerHTML += '格式化结果:\n' + formattedJson + '\n';
+                
+                // 测试JavaScript压缩
+                const testJs = `
+                    function test() {
+                        var x = 1;
+                        var y = 2;
+                        return x + y;
+                    }
+                `;
+                const minifiedJs = tool.minifyCode(testJs, 'javascript');
+                result.innerHTML += log('✓ JavaScript压缩测试通过', 'success') + '\n';
+                result.innerHTML += '压缩结果:\n' + minifiedJs + '\n';
+                
+            } catch (error) {
+                result.innerHTML += log('✗ 代码格式化测试失败: ' + error.message, 'error') + '\n';
+            }
+        }
+
+        function testColorConverter() {
+            const result = document.getElementById('colorTestResult');
+            result.innerHTML = '';
+            
+            try {
+                // 测试HEX到其他格式转换
+                const hexColor = '#ff0000';
+                const converted = tool.convertColor(hexColor, 'hex');
+                result.innerHTML += log('✓ 颜色转换测试通过', 'success') + '\n';
+                result.innerHTML += 'HEX: ' + converted.hex + '\n';
+                result.innerHTML += 'RGB: ' + converted.rgb + '\n';
+                result.innerHTML += 'HSL: ' + converted.hsl + '\n';
+                
+                // 测试RGB到其他格式转换
+                const rgbColor = '0, 255, 0';
+                const converted2 = tool.convertColor(rgbColor, 'rgb');
+                result.innerHTML += log('✓ RGB转换测试通过', 'success') + '\n';
+                result.innerHTML += 'RGB: ' + converted2.rgb + '\n';
+                result.innerHTML += 'HEX: ' + converted2.hex + '\n';
+                
+            } catch (error) {
+                result.innerHTML += log('✗ 颜色转换测试失败: ' + error.message, 'error') + '\n';
+            }
+        }
+
+        function testInputValidation() {
+            const result = document.getElementById('validationTestResult');
+            result.innerHTML = '';
+            
+            try {
+                // 测试有效输入
+                const validHex = tool.validateInput('#ff0000', 'hex');
+                result.innerHTML += log('✓ 有效HEX验证通过', 'success') + '\n';
+                
+                const validRgb = tool.validateInput('255, 0, 0', 'rgb');
+                result.innerHTML += log('✓ 有效RGB验证通过', 'success') + '\n';
+                
+                // 测试无效输入
+                try {
+                    tool.validateInput('invalid', 'hex');
+                    result.innerHTML += log('✗ 无效HEX验证失败', 'error') + '\n';
+                } catch (error) {
+                    result.innerHTML += log('✓ 无效HEX验证正确捕获错误', 'success') + '\n';
+                }
+                
+            } catch (error) {
+                result.innerHTML += log('✗ 输入验证测试失败: ' + error.message, 'error') + '\n';
+            }
+        }
+
+        function runAllTests() {
+            const result = document.getElementById('allTestsResult');
+            result.innerHTML = '';
+            
+            result.innerHTML += log('开始运行所有测试...') + '\n';
+            
+            // 运行所有测试
+            testCssGenerator();
+            testCodeFormatter();
+            testColorConverter();
+            testInputValidation();
+            
+            result.innerHTML += log('所有测试完成！', 'success') + '\n';
+            result.innerHTML += '请查看上方各个测试结果。';
+        }
+
+        // 页面加载完成后自动运行一个简单测试
+        window.addEventListener('load', function() {
+            console.log('前端工具箱模块加载完成');
+            console.log('工具类实例:', tool);
+        });
+    </script>
+</body>
+</html> 

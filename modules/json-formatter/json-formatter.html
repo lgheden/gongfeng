@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON格式化工具</title>
+    <link rel="stylesheet" href="../../shared/common.css">
+    <link rel="stylesheet" href="assets/json-formatter.css">
+    <link rel="stylesheet" href="../../shared/codemirror.min.css">
+    <link rel="stylesheet" href="../../shared/foldgutter.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>📝 JSON格式化工具<p>格式化、压缩和验证JSON数据，支持注释、尾随逗号等扩展语法</p>
+            </h1>
+            <a href="../../pages/donate.html" class="donate-btn">💝 赞助</a>
+        </header>
+        <div class="options-bar">
+            <div class="option-group">
+                <label>
+                    <input type="checkbox" id="enableCollapse"> 启用折叠
+                </label>
+                <label>
+                    <input type="checkbox" id="sortKeys"> 自动排序键名
+                </label>
+                <label>
+                    <input type="checkbox" id="showLineNumbers"> 显示行号
+                </label>
+            </div>
+            <div class="option-group">
+                <label>缩进大小:</label>
+                <select id="indentSize">
+                    <option value="2" selected>2空格</option>
+                    <option value="4">4空格</option>
+                    <option value="\t">Tab</option>
+                </select>
+            </div>
+            <div class="option-group collapse-controls" id="collapseControls" style="display: none;">
+                <button id="collapseAllBtn" class="btn btn-sm btn-outline">全部折叠</button>
+                <button id="expandAllBtn" class="btn btn-sm btn-outline">全部展开</button>
+                <label>折叠级别:</label>
+                <select id="collapseLevel">
+                    <option value="0">不折叠</option>
+                    <option value="1">1级</option>
+                    <option value="2" selected>2级</option>
+                    <option value="3">3级</option>
+                    <option value="4">4级</option>
+                    <option value="5">5级</option>
+                </select>
+            </div>
+            <div class="option-group test-data-controls">
+                <label>测试数据:</label>
+                <button id="testSimpleBtn" class="btn btn-sm btn-outline">简单对象</button>
+                <button id="testJson5Btn" class="btn btn-sm btn-outline">JSON语法</button>
+                <button id="testComplexBtn" class="btn btn-sm btn-outline">复杂数据</button>
+                <button id="testArrayBtn" class="btn btn-sm btn-outline">数组数据</button>
+                <button id="testNestedBtn" class="btn btn-sm btn-outline">嵌套结构</button>
+            </div>
+        </div>
+
+
+
+        <div class="content">
+            <div class="input-section">
+                <h3>输入JSON
+                    <div class="toolbar">
+
+                        <button id="formatBtn" class="btn btn-primary">格式化</button>
+                        <button id="compressBtn" class="btn btn-secondary">压缩</button>
+                        <button id="validateBtn" class="btn btn-info">验证</button>
+                        <button id="sortBtn" class="btn btn-warning">排序</button>
+                        <button id="clearBtn" class="btn btn-danger">清空</button>
+                        <button id="copyBtn" class="btn btn-success">复制结果</button>
+                    </div>
+                </h3>
+                <div id="jsonInput"></div>
+            </div>
+
+            <div class="output-section">
+                <h3>格式化结果 <input type="text" id="search-input"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="输入搜索内容..."></h3>
+                <div id="jsonOutput"></div>
+            </div>
+        </div>
+
+        <div id="statusBar" class="status-bar"></div>
+    </div>
+
+    <script src="../../shared/json5.min.js"></script>
+    <script src="../../shared/codemirror.min.js"></script>
+    <script src="../../shared/javascript.min.js"></script>
+    <script src="../../shared/foldcode.js"></script>
+    <script src="../../shared/foldgutter.js"></script>
+    <script src="../../shared/brace-fold.js"></script>
+    <script src="../../shared/codemirror-modes.js"></script>
+    <script src="scripts/json-formatter.js"></script>
+</body>
+
+</html>

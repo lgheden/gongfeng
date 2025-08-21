@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>编码解码工具</title>
+    <link rel="stylesheet" href="../../shared/common.css">
+    <link rel="stylesheet" href="assets/encoder-decoder.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔐 编码解码工具<p>常用编码解码转换工具</p></h1>
+            <a href="../../pages/donate.html" class="donate-btn">💝 赞助</a>
+        </header>
+        
+        <!-- 控制区域 -->
+        <div class="control-section">
+            <div class="toolbar-encoding-row">
+                <div class="action-buttons">
+                    <button id="encodeBtn" class="btn btn-primary">编码</button>
+                    <button id="decodeBtn" class="btn btn-secondary">解码</button>
+                    <button id="clearBtn" class="btn btn-danger">清空</button>
+                    <button id="swapBtn" class="btn btn-info">交换</button>
+                    <button id="copyBtn" class="btn btn-success">复制结果</button>
+                </div>
+                
+                <div class="encoding-types-inline">
+                    <label>编码类型：</label>
+                    <label class="radio-label-compact">
+                        <input type="radio" name="encodingType" value="base64" checked>
+                        <span class="radio-custom"></span>
+                        Base64
+                    </label>
+                    <label class="radio-label-compact">
+                        <input type="radio" name="encodingType" value="url">
+                        <span class="radio-custom"></span>
+                        URL
+                    </label>
+                    <label class="radio-label-compact">
+                        <input type="radio" name="encodingType" value="html">
+                        <span class="radio-custom"></span>
+                        HTML
+                    </label>
+                    <label class="radio-label-compact">
+                        <input type="radio" name="encodingType" value="unicode">
+                        <span class="radio-custom"></span>
+                        Unicode
+                    </label>
+                    <label class="radio-label-compact">
+                        <input type="radio" name="encodingType" value="hex">
+                        <span class="radio-custom"></span>
+                        Hex
+                    </label>
+                    <label class="radio-label-compact">
+                        <input type="radio" name="encodingType" value="binary">
+                        <span class="radio-custom"></span>
+                        Binary
+                    </label>
+                    <label class="radio-label-compact">
+                        <input type="radio" name="encodingType" value="md5">
+                        <span class="radio-custom"></span>
+                        MD5
+                    </label>
+                    <label class="radio-label-compact">
+                        <input type="radio" name="encodingType" value="sha1">
+                        <span class="radio-custom"></span>
+                        SHA1
+                    </label>
+                    <label class="radio-label-compact">
+                        <input type="radio" name="encodingType" value="sha256">
+                        <span class="radio-custom"></span>
+                        SHA256
+                    </label>
+                    <label class="radio-label-compact">
+                        <input type="radio" name="encodingType" value="jwt">
+                        <span class="radio-custom"></span>
+                        JWT
+                    </label>
+                </div>
+                
+                <!-- 当前模式指示器 -->
+                <div class="mode-indicator-inline">
+                    <span class="mode-label">当前模式：</span>
+                    <span id="currentModeText" class="mode-text">编码模式</span>
+                    <span class="mode-icon">⚡</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 主要内容区域 - 左右分栏 -->
+        <div class="main-content">
+            <!-- 输入区域 -->
+            <div class="input-section">
+            <h3>输入文本</h3>
+            <textarea id="inputText" placeholder="请输入要编码/解码的文本..."></textarea>
+                <div class="text-info">
+                    <span id="inputLength">字符数: 0</span>
+                    <span id="inputBytes">字节数: 0</span>
+                </div>
+            </div>
+            
+            <!-- 输出区域 -->
+            <div class="output-section">
+            <h3>输出结果</h3>
+            <textarea id="outputText" readonly></textarea>
+                <div class="text-info">
+                    <span id="outputLength">字符数: 0</span>
+                    <span id="outputBytes">字节数: 0</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 底部辅助区域 -->
+        <div class="bottom-section">
+            <div class="left-bottom">
+                <div class="quick-actions">
+                    <h3>快速操作</h3>
+                    <div class="action-grid">
+                        <button class="action-btn" data-action="base64-encode">Base64编码</button>
+                        <button class="action-btn" data-action="base64-decode">Base64解码</button>
+                        <button class="action-btn" data-action="url-encode">URL编码</button>
+                        <button class="action-btn" data-action="url-decode">URL解码</button>
+                        <button class="action-btn" data-action="html-encode">HTML编码</button>
+                        <button class="action-btn" data-action="html-decode">HTML解码</button>
+                        <button class="action-btn" data-action="unicode-encode">Unicode编码</button>
+                        <button class="action-btn" data-action="unicode-decode">Unicode解码</button>
+                        <button class="action-btn" data-action="hex-encode">十六进制编码</button>
+                        <button class="action-btn" data-action="hex-decode">十六进制解码</button>
+                        <button class="action-btn" data-action="md5-hash">MD5哈希</button>
+                        <button class="action-btn" data-action="sha256-hash">SHA256哈希</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="right-bottom">
+                <div class="examples-section">
+                    <h3>示例数据</h3>
+                    <div class="examples-grid">
+                        <button class="example-btn" data-text="Hello, World!">普通文本</button>
+                        <button class="example-btn" data-text="你好，世界！">中文文本</button>
+                        <button class="example-btn" data-text="https://www.example.com/path?param=value&other=测试">URL示例</button>
+                        <button class="example-btn" data-text="&lt;div class=&quot;test&quot;&gt;HTML &amp; 特殊字符 &lt; &gt; &amp; &quot; '&lt;/div&gt;">HTML示例</button>
+                        <button class="example-btn" data-text="SGVsbG8sIFdvcmxkIQ==">Base64示例</button>
+                        <button class="example-btn" data-text="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c">JWT示例</button>
+                        <button class="example-btn" data-text='{"name":"张三","age":25,"city":"北京"}'>JSON数据</button>
+                        <button class="example-btn" data-text="<?xml version='1.0' encoding='UTF-8'?><root><item>测试</item></root>">XML数据</button>
+                        <button class="example-btn" data-text="SELECT * FROM users WHERE name = '张三' AND age > 18;">SQL语句</button>
+                        <button class="example-btn" data-text="48656c6c6f20576f726c6421">十六进制</button>
+                        <button class="example-btn" data-text="\u4f60\u597d\uff0c\u4e16\u754c\uff01">Unicode编码</button>
+                        <button class="example-btn" data-text="2024-01-15T10:30:00Z">时间戳</button>
+                        <button class="example-btn" data-text="!@#$%^&*()_+-=[]{}|;':&quot;,./<>?">特殊符号</button>
+                        <button class="example-btn" data-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit.">英文长文本</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="statusBar" class="status-bar"></div>
+    </div>
+    
+    <script src="../../shared/jquery-3.3.1.min.js"></script>
+    <script src="../../shared/crypto-js.min.js"></script>
+    <script src="../../shared/base64-decoder.js"></script>
+    <script src="scripts/encoder-decoder.js"></script>
+</body>
+</html>

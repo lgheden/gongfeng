@@ -1,0 +1,687 @@
+/* Cron表达式生成器样式 - 紧凑布局 */
+
+/* 全局样式 */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 12px;
+    line-height: 1.4;
+    color: #333;
+    background: #f5f5f5;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    max-width: none;
+    margin: 0;
+    padding: 10px;
+    gap: 10px;
+}
+
+/* 头部样式 */
+header {
+    text-align: center;
+    margin-bottom: 8px;
+    padding: 8px 16px;
+    color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+}
+
+header h1 {
+    text-align: left;
+    font-size: 16px;
+    margin-bottom: 4px;
+    font-weight: 600;
+    margin: 0;
+    color: white;
+}
+
+header h1 p {
+    text-align: left;
+    margin: 2px 0 0 0;
+    font-size: 12px;
+    opacity: 0.9;
+    color: white;
+}
+
+/* 主要内容布局 */
+.main-content {
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 auto;
+    gap: 10px;
+}
+
+.top-section,
+.bottom-section {
+    display: flex;
+    gap: 10px;
+    flex: 0 0 auto;
+    min-height: 0;
+}
+
+.top-section {
+    flex: 0 0 auto;
+}
+
+.bottom-section {
+    flex: 0 0 auto;
+}
+
+/* 主要区域 */
+.generator-section,
+.parser-section,
+.examples-section,
+.result-section {
+    display: flex;
+    flex-direction: column;
+    background: white;
+    border-radius: 6px;
+    padding: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    gap: 10px;
+}
+
+/* 滚动条样式 */
+.generator-section::-webkit-scrollbar,
+.parser-section::-webkit-scrollbar,
+.examples-section::-webkit-scrollbar,
+.result-section::-webkit-scrollbar {
+    width: 6px;
+}
+
+.generator-section::-webkit-scrollbar-track,
+.parser-section::-webkit-scrollbar-track,
+.examples-section::-webkit-scrollbar-track,
+.result-section::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.generator-section::-webkit-scrollbar-thumb,
+.parser-section::-webkit-scrollbar-thumb,
+.examples-section::-webkit-scrollbar-thumb,
+.result-section::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+.generator-section::-webkit-scrollbar-thumb:hover,
+.parser-section::-webkit-scrollbar-thumb:hover,
+.examples-section::-webkit-scrollbar-thumb:hover,
+.result-section::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* 配置区域 */
+.time-config {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.config-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    min-height: 32px;
+}
+
+.config-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 28px;
+}
+
+.config-item label {
+    font-weight: 500;
+    color: #333;
+    font-size: 12px;
+    width: 80px;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.config-item select,
+.config-item input {
+    padding: 6px 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 12px;
+    min-height: 28px;
+    background: white;
+}
+
+.config-item select:focus,
+.config-item input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 2px rgba(102,126,234,0.2);
+}
+
+/* Radio按钮组样式 */
+.radio-group {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.radio-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+    color: #333;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    width: auto;
+    text-align: left;
+}
+
+.radio-label:hover {
+    background-color: #f0f0f0;
+}
+
+.radio-label input[type="radio"] {
+    margin: 0;
+    width: 16px;
+    height: 16px;
+    accent-color: #667eea;
+    cursor: pointer;
+}
+
+.radio-label input[type="radio"]:checked + .radio-text {
+    color: #667eea;
+    font-weight: 600;
+}
+
+.radio-text {
+    white-space: nowrap;
+    transition: color 0.2s ease;
+}
+
+/* 模式切换 */
+.mode-section {
+    background: #f8f9fa;
+    border-radius: 6px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.time-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* 高级模式字段 */
+.cron-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.field-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 32px;
+    flex-wrap: wrap;
+}
+
+.field-group label {
+    font-weight: 500;
+    color: #333;
+    font-size: 12px;
+    width: 80px;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.field-group input {
+    width: 300px;
+    padding: 6px 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 12px;
+    min-height: 28px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.field-group input.invalid {
+    border-color: #e74c3c;
+    box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.2);
+    background-color: #fdf2f2;
+}
+
+.field-error {
+    color: #e74c3c;
+    font-size: 11px;
+    margin-left: 8px;
+    font-style: italic;
+}
+
+.field-help {
+    font-size: 11px;
+    color: #666;
+    font-style: italic;
+    white-space: nowrap;
+}
+
+/* 工具栏 */
+.toolbar {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+
+    min-height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-primary {
+    background: #667eea;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #5a6fd8;
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #545b62;
+}
+
+.btn-success {
+    background: #28a745;
+    color: white;
+}
+
+.btn-success:hover {
+    background: #1e7e34;
+}
+
+.btn-sm {
+    padding: 4px 8px;
+    font-size: 11px;
+    min-height: 24px;
+}
+
+/* 结果显示 */
+.result-section h3 {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+}
+
+.result-display {
+    background: #f8f9fa;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.cron-result {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.cron-result label {
+    font-weight: 500;
+    font-size: 12px;
+    width: 100px;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.cron-result input {
+    flex: 1;
+    min-width: 200px;
+    padding: 6px 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 12px;
+    background: white;
+    min-height: 28px;
+}
+
+.description-result {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.description-result label {
+    font-weight: 500;
+    font-size: 12px;
+    width: 100px;
+    text-align: right;
+}
+
+#cronDescription {
+    padding: 8px;
+    background: #e7f3ff;
+    border-left: 3px solid #667eea;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.next-runs {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.next-runs label {
+    font-weight: 500;
+    font-size: 12px;
+    width: 100px;
+    text-align: right;
+}
+
+#nextRunsList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    overflow-y: auto;
+}
+
+#nextRunsList li {
+    padding: 6px 8px;
+    background: white;
+    border-radius: 4px;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 11px;
+    min-height: 24px;
+    display: flex;
+    align-items: center;
+}
+
+/* 解析器 */
+.input-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-direction: row;
+}
+
+.input-section label {
+    font-weight: 500;
+    font-size: 12px;
+    width: 120px;
+    text-align: right;
+}
+
+.input-group {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.input-group input {
+    flex: 1;
+    padding: 6px 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 12px;
+    min-height: 28px;
+}
+
+.parse-result {
+    background: #f8f9fa;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.result-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex-direction: row;
+    align-items: center;
+}
+
+.result-item label {
+    font-weight: 500;
+    font-size: 12px;
+    color: #333;
+    width: 100px;
+    text-align: right;
+}
+
+#parseDescription {
+    padding: 8px;
+    background: #e7f3ff;
+    border-left: 3px solid #667eea;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+#fieldBreakdown {
+    background: white;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 11px;
+    line-height: 1.4;
+    max-height: 120px;
+    overflow-y: auto;
+}
+
+/* 示例区域 */
+.examples-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 10px;
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+}
+
+.example-item {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 10px;
+    cursor: pointer;
+    min-height: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+}
+
+.example-item:hover {
+    border-color: #667eea;
+    box-shadow: 0 2px 8px rgba(102,126,234,0.15);
+
+}
+
+.example-cron {
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    color: #667eea;
+    word-break: break-all;
+}
+
+.example-desc {
+    color: #666;
+    font-size: 11px;
+    line-height: 1.3;
+}
+
+/* 状态栏 */
+.status-bar {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 500;
+    z-index: 1000;
+
+    max-width: 300px;
+}
+
+.status-bar.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.status-bar.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.status-bar.info {
+    background: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .container {
+        padding: 6px;
+        gap: 6px;
+    }
+    
+    .top-section,
+    .bottom-section {
+        flex-direction: column;
+    }
+    
+    .config-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 6px;
+    }
+    
+    .config-item {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 4px;
+    }
+    
+    .config-item label {
+        min-width: auto;
+    }
+    
+    .field-group {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 4px;
+    }
+    
+    .field-group label {
+        min-width: auto;
+    }
+    
+    .examples-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .cron-result {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 6px;
+    }
+    
+    .cron-result label {
+        min-width: auto;
+    }
+    
+    .input-group {
+        flex-direction: column;
+        gap: 6px;
+    }
+    
+    .toolbar {
+        gap: 6px;
+    }
+}
+
+/* 动画效果已移除 */
+
+/* 通用工具类 */
+.full-width {
+    width: 100%;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.visible {
+    display: block !important;
+}
+
+/* 确保所有h3标题统一样式 */
+h3 {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #e9ecef;
+}

@@ -1,0 +1,435 @@
+/* 全屏紧凑布局 */
+.container {
+    height: 100vh;
+    overflow: hidden;
+    padding: 5px;
+}
+
+.regex-section {
+    background: white;
+    border-radius: 6px;
+    padding: 8px 15px;
+    margin-bottom: 5px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+}
+
+/* 紧凑的工具栏样式 */
+.toolbar {
+    margin-bottom: 8px;
+    gap: 8px;
+}
+
+.toolbar .btn {
+    padding: 6px 12px;
+    font-size: 12px;
+}
+
+/* 正则表达式输入框旁边的按钮组 */
+.toolbar-buttons {
+    display: flex;
+    gap: 6px;
+    margin-left: 15px;
+    flex-wrap: wrap;
+}
+
+.toolbar-buttons .btn {
+    padding: 4px 8px;
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+.regex-input-group {
+    margin-bottom: 8px;
+}
+
+.regex-input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+}
+
+.regex-input-container {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: #f8f9fa;
+    border: 2px solid #e9ecef;
+    border-radius: 6px;
+    padding: 10px;
+    transition: border-color 0.3s ease;
+    flex-wrap: wrap;
+}
+
+.regex-input-container:focus-within {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.regex-delimiter {
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 18px;
+    font-weight: bold;
+    color: #667eea;
+}
+
+#regexInput {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 16px;
+    padding: 5px;
+    outline: none;
+}
+
+.flags-container {
+    display: flex;
+    gap: 10px;
+    margin-left: 10px;
+}
+
+.flags-container label {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #666;
+    margin: 0;
+    cursor: pointer;
+}
+
+.flags-container input[type="checkbox"] {
+    margin: 0;
+}
+
+.replace-section {
+    margin-top: 15px;
+}
+
+.replace-section label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+}
+
+#replaceInput {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #e9ecef;
+    border-radius: 6px;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+#replaceInput:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* 紧凑的统计信息 */
+.text-stats, .match-stats {
+    display: flex;
+    gap: 8px;
+    margin-top: 5px;
+    font-size: 11px;
+    color: #666;
+    flex-shrink: 0;
+}
+
+.text-stats span, .match-stats span {
+    background: #e9ecef;
+    padding: 2px 6px;
+    border-radius: 3px;
+}
+
+/* 紧凑的状态栏 */
+.status-bar {
+    flex-shrink: 0;
+    padding: 5px;
+    font-size: 12px;
+}
+
+/* 全屏内容区域布局 */
+.content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.input-section, .output-section {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.input-section h3, .output-section h3 {
+    margin-bottom: 5px;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+#testText {
+    flex: 1;
+    min-height: 0;
+    resize: none;
+    border: 2px solid #e9ecef;
+    border-radius: 6px;
+    padding: 12px;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+#testText:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+#matchResults {
+    background: #f8f9fa;
+    border: 2px solid #e9ecef;
+    border-radius: 6px;
+    padding: 12px;
+    flex: 1;
+    min-height: 0;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 14px;
+    white-space: pre-wrap;
+    overflow-y: auto;
+    overflow-x: auto;
+    line-height: 1.5;
+    word-break: break-all;
+    overflow-wrap: break-word;
+    max-width: 100%;
+}
+
+.match-highlight {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 3px;
+    padding: 1px 2px;
+    margin: 0 1px;
+}
+
+.match-group {
+    background: #d1ecf1;
+    border: 1px solid #bee5eb;
+    border-radius: 3px;
+    padding: 1px 2px;
+    margin: 0 1px;
+}
+
+/* 紧凑的详情区域 */
+.details-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 8px;
+    flex-shrink: 0;
+    max-height: 200px;
+    overflow: hidden;
+}
+
+@media (max-width: 768px) {
+    .details-section {
+        grid-template-columns: 1fr;
+        max-height: 150px;
+    }
+}
+
+.groups-section, .explanation-section {
+    background: white;
+    border-radius: 6px;
+    padding: 10px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+}
+
+.groups-section h3, .explanation-section h3 {
+    margin-bottom: 8px;
+    color: #333;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+#groupsDetails {
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.group-item {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 4px;
+    padding: 8px 12px;
+    margin-bottom: 8px;
+    word-break: break-all;
+    overflow-wrap: break-word;
+    overflow-x: auto;
+    max-width: 100%;
+}
+
+.group-index {
+    font-weight: bold;
+    color: #667eea;
+}
+
+.group-value {
+    color: #28a745;
+    margin-left: 10px;
+}
+
+#regexExplanation {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #555;
+}
+
+.explanation-item {
+    background: #f8f9fa;
+    border-left: 4px solid #667eea;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    border-radius: 0 4px 4px 0;
+}
+
+.explanation-pattern {
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-weight: bold;
+    color: #667eea;
+}
+
+.explanation-desc {
+    margin-top: 5px;
+    color: #666;
+}
+
+/* 紧凑的快速模式区域 */
+.quick-patterns {
+    background: white;
+    border-radius: 6px;
+    padding: 10px;
+    margin-bottom: 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+    max-height: 120px;
+    overflow-y: auto;
+}
+
+.quick-patterns h3 {
+    margin-bottom: 8px;
+    color: #333;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.pattern-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 6px;
+}
+
+.pattern-btn {
+    padding: 6px 10px;
+    border: 1px solid #e9ecef;
+    border-radius: 4px;
+    background: #f8f9fa;
+    color: #333;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+}
+
+.pattern-btn:hover {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.pattern-btn:active {
+    transform: translateY(0);
+}
+
+/* 匹配结果样式 */
+.match-success {
+    border-color: #28a745 !important;
+    background-color: #f8fff9;
+}
+
+.match-error {
+    border-color: #dc3545 !important;
+    background-color: #fff8f8;
+}
+
+.no-matches {
+    color: #6c757d;
+    font-style: italic;
+    text-align: center;
+    padding: 20px;
+}
+
+/* 正则表达式错误提示 */
+.regex-error {
+    background: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 10px;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 13px;
+}
+
+/* 动画效果 */
+@keyframes highlight {
+    0% { background-color: #fff3cd; }
+    50% { background-color: #ffeaa7; }
+    100% { background-color: #fff3cd; }
+}
+
+.match-highlight.animate {
+    animation: highlight 0.5s ease;
+}
+
+/* 工具提示 */
+.tooltip {
+    position: relative;
+    cursor: help;
+}
+
+.tooltip::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 1000;
+}
+
+.tooltip:hover::after {
+    opacity: 1;
+}

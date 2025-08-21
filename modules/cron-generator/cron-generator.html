@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cron表达式生成器</title>
+    <link rel="stylesheet" href="../../shared/common.css">
+    <link rel="stylesheet" href="assets/cron-generator.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⏰ Cron表达式生成器 <p>生成和解析Cron定时任务表达式</p></h1>
+            <a href="../../pages/donate.html" class="donate-btn">💝 赞助</a>
+        </header>
+        
+        <!-- 主要内容区域 -->
+        <div class="main-content">
+            <!-- 上半部分：生成器和解析器 -->
+            <div class="top-section">
+                <!-- 左侧：生成器 -->
+                <div class="generator-section">
+                <h3>生成表达式</h3>
+                <div class="time-config">
+                    <div class="config-row">
+                        <div class="config-item">
+                            <label>类型：</label>
+                            <div class="radio-group">
+                                <label class="radio-label">
+                                    <input type="radio" id="cronTypeSimple" name="cronType" value="simple" checked>
+                                    <span class="radio-text">简单模式</span>
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" id="cronTypeAdvanced" name="cronType" value="advanced">
+                                    <span class="radio-text">高级模式</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 简单模式 -->
+                    <div id="simpleMode" class="mode-section">
+                        <div class="config-row">
+                            <div class="config-item">
+                                <label>执行频率：</label>
+                                <select id="frequency">
+                                    <option value="minute">每分钟</option>
+                                    <option value="hour">每小时</option>
+                                    <option value="day">每天</option>
+                                    <option value="week">每周</option>
+                                    <option value="month">每月</option>
+                                    <option value="year">每年</option>
+                                    <option value="custom">自定义</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div id="timeDetails" class="time-details">
+                            <div class="config-row">
+                                <div class="config-item">
+                                    <label>时间：</label>
+                                    <input type="time" id="executeTime" value="00:00">
+                                </div>
+                                <div class="config-item" id="dayOfWeekSection" style="display:none;">
+                                    <label>星期：</label>
+                                    <select id="dayOfWeek">
+                                        <option value="1">星期一</option>
+                                        <option value="2">星期二</option>
+                                        <option value="3">星期三</option>
+                                        <option value="4">星期四</option>
+                                        <option value="5">星期五</option>
+                                        <option value="6">星期六</option>
+                                        <option value="0">星期日</option>
+                                    </select>
+                                </div>
+                                <div class="config-item" id="dayOfMonthSection" style="display:none;">
+                                    <label>日期：</label>
+                                    <input type="number" id="dayOfMonth" min="1" max="31" value="1">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 高级模式 -->
+                    <div id="advancedMode" class="mode-section" style="display:none;">
+                        <div class="cron-fields">
+                            <div class="field-group">
+                                <label>秒 (0-59):</label>
+                                <input type="text" id="seconds" value="0" placeholder="0" 
+                                       pattern="^(\*|\?|[0-5]?[0-9]|\*/[0-9]+|[0-5]?[0-9]-[0-5]?[0-9]|([0-5]?[0-9],)*[0-5]?[0-9])$" 
+                                       title="请输入有效的秒值：0-59、*、?、*/n、范围或逗号分隔的值">
+                                <span class="field-help">* 表示所有值</span>
+                            </div>
+                            <div class="field-group">
+                                <label>分 (0-59):</label>
+                                <input type="text" id="minutes" value="*" placeholder="*" 
+                                       pattern="^(\*|\?|[0-5]?[0-9]|\*/[0-9]+|[0-5]?[0-9]-[0-5]?[0-9]|([0-5]?[0-9],)*[0-5]?[0-9])$" 
+                                       title="请输入有效的分钟值：0-59、*、?、*/n、范围或逗号分隔的值">
+                                <span class="field-help">*/5 表示每5分钟</span>
+                            </div>
+                            <div class="field-group">
+                                <label>时 (0-23):</label>
+                                <input type="text" id="hours" value="*" placeholder="*" 
+                                       pattern="^(\*|\?|[01]?[0-9]|2[0-3]|\*/[0-9]+|([01]?[0-9]|2[0-3])-([01]?[0-9]|2[0-3])|([01]?[0-9]|2[0-3],)*([01]?[0-9]|2[0-3]))$" 
+                                       title="请输入有效的小时值：0-23、*、?、*/n、范围或逗号分隔的值">
+                                <span class="field-help">0-23 表示范围</span>
+                            </div>
+                            <div class="field-group">
+                                <label>日 (1-31):</label>
+                                <input type="text" id="dayOfMonthAdv" value="*" placeholder="*" 
+                                       pattern="^(\*|\?|[1-9]|[12][0-9]|3[01]|\*/[0-9]+|([1-9]|[12][0-9]|3[01])-([1-9]|[12][0-9]|3[01])|([1-9]|[12][0-9]|3[01],)*([1-9]|[12][0-9]|3[01])|L|LW|[1-9]W|[12][0-9]W|3[01]W)$" 
+                                       title="请输入有效的日期值：1-31、*、?、L、LW、nW、范围或逗号分隔的值">
+                                <span class="field-help">? 表示不指定</span>
+                            </div>
+                            <div class="field-group">
+                                <label>月 (1-12):</label>
+                                <input type="text" id="month" value="*" placeholder="*" 
+                                       pattern="^(\*|\?|[1-9]|1[0-2]|\*/[0-9]+|([1-9]|1[0-2])-([1-9]|1[0-2])|([1-9]|1[0-2],)*([1-9]|1[0-2])|JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC|(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)-(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)|((JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC),)*(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC))$" 
+                                       title="请输入有效的月份值：1-12、JAN-DEC、*、?、范围或逗号分隔的值">
+                                <span class="field-help">JAN-DEC 或 1-12</span>
+                            </div>
+                            <div class="field-group">
+                                <label>周 (0-7):</label>
+                                <input type="text" id="dayOfWeekAdv" value="?" placeholder="?" 
+                                       pattern="^(\*|\?|[0-7]|\*/[0-9]+|[0-7]-[0-7]|([0-7],)*[0-7]|SUN|MON|TUE|WED|THU|FRI|SAT|(SUN|MON|TUE|WED|THU|FRI|SAT)-(SUN|MON|TUE|WED|THU|FRI|SAT)|((SUN|MON|TUE|WED|THU|FRI|SAT),)*(SUN|MON|TUE|WED|THU|FRI|SAT)|[0-7]#[1-5]|(SUN|MON|TUE|WED|THU|FRI|SAT)#[1-5]|[0-7]L|(SUN|MON|TUE|WED|THU|FRI|SAT)L)$" 
+                                       title="请输入有效的星期值：0-7、SUN-SAT、*、?、#n、L、范围或逗号分隔的值">
+                                <span class="field-help">SUN-SAT 或 0-7</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="toolbar">
+                    <button id="generateBtn" class="btn btn-primary">生成表达式</button>
+                    <button id="clearBtn" class="btn btn-secondary">清空</button>
+                </div>
+                </div>
+                
+                <!-- 右侧：解析器 -->
+                <div class="parser-section">
+                <h3>解析表达式</h3>
+                <div class="input-section">
+                    <label>输入Cron表达式：</label>
+                    <div class="input-group">
+                        <input type="text" id="cronInput" placeholder="0 0 12 * * ?">
+                        <button id="parseBtn" class="btn btn-primary">解析</button>
+                    </div>
+                </div>
+                
+                <div class="parse-result">
+                    <div class="result-item">
+                        <label>表达式描述：</label>
+                        <div id="parseDescription"></div>
+                    </div>
+                    <div class="result-item">
+                        <label>字段解析：</label>
+                        <div id="fieldBreakdown"></div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            
+            <!-- 下半部分：结果和示例 -->
+            <div class="bottom-section">
+                <!-- 生成结果区域 -->
+                <div class="result-section">
+                    <h3>生成结果</h3>
+                    <div class="result-display">
+                        <div class="cron-result">
+                            <label>Cron表达式：</label>
+                            <input type="text" id="cronResult" readonly>
+                            <button id="copyBtn" class="btn btn-success btn-sm">复制</button>
+                        </div>
+                        <div class="description-result">
+                            <label>描述：</label>
+                            <div id="cronDescription"></div>
+                        </div>
+                        <div class="next-runs">
+                            <label>接下来执行时间：</label>
+                            <ul id="nextRunsList"></ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 示例区域 -->
+                <div class="examples-section">
+                <h3>常用Cron表达式示例</h3>
+                <div class="examples-grid">
+                    <div class="example-item" data-cron="0 0 12 * * ?">
+                        <div class="example-cron">0 0 12 * * ?</div>
+                        <div class="example-desc">每天中午12点执行</div>
+                    </div>
+                    <div class="example-item" data-cron="0 */5 * * * ?">
+                        <div class="example-cron">0 */5 * * * ?</div>
+                        <div class="example-desc">每5分钟执行一次</div>
+                    </div>
+                    <div class="example-item" data-cron="0 0 9 * * MON-FRI">
+                        <div class="example-cron">0 0 9 * * MON-FRI</div>
+                        <div class="example-desc">工作日上午9点执行</div>
+                    </div>
+                    <div class="example-item" data-cron="0 0 0 1 * ?">
+                        <div class="example-cron">0 0 0 1 * ?</div>
+                        <div class="example-desc">每月1号凌晨执行</div>
+                    </div>
+                    <div class="example-item" data-cron="0 0 2 * * SUN">
+                        <div class="example-cron">0 0 2 * * SUN</div>
+                        <div class="example-desc">每周日凌晨2点执行</div>
+                    </div>
+                    <div class="example-item" data-cron="0 30 10,14,16 * * ?">
+                        <div class="example-cron">0 30 10,14,16 * * ?</div>
+                        <div class="example-desc">每天10:30、14:30、16:30执行</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="statusBar" class="status-bar"></div>
+    </div>
+    
+    <script src="scripts/cron-generator.js"></script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>优质设计网站</title>
+    <link rel="stylesheet" href="../../shared/common.css">
+    <link rel="stylesheet" href="assets/web-navigation.css">
+    <link rel="stylesheet" href="../../shared/codemirror.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>🌐 优质设计网站<p>收集整理各类优质设计网站，提供便捷的导航服务</p>
+            </h1>
+            <a href="../../pages/donate.html" class="donate-btn">💝 赞助</a>
+        </header>
+
+        <!-- 搜索和筛选栏 -->
+        <div class="search-bar">
+            <div class="search-input-group">
+                <input type="text" id="searchInput" placeholder="搜索网站名称、描述或分类..." class="search-input">
+                <button id="searchBtn" class="btn btn-primary">搜索</button>
+                <button id="clearSearchBtn" class="btn btn-secondary">重置</button>
+            </div>
+            <div class="filter-group">
+                <label>分类筛选:</label>
+                <select id="categoryFilter" class="filter-select">
+                    <option value="">全部分类</option>
+                </select>
+                <label>排序方式:</label>
+                <select id="sortFilter" class="filter-select">
+                    <option value="name">按名称</option>
+                    <option value="category">按分类</option>
+                    <option value="recent">最近添加</option>
+                </select>
+
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">总网站数:</span>
+                <span id="totalWebsites" class="stat-value">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">收藏数量:</span>
+                <span id="favoritesCount" class="stat-value">0</span>
+            </div>
+            <div class="toolbar">
+                <button id="exportBtn" class="btn btn-success">导出收藏</button>
+                <button id="importBtn" class="btn btn-secondary">导入收藏</button>
+            </div>
+        </div>
+
+        <!-- 主要内容区域 -->
+        <div class="content">
+            <!-- 分类导航 -->
+            <div class="categories-section">
+                <h3>分类导航
+                    <div class="view-controls">
+                        <button id="gridViewBtn" class="btn btn-sm btn-outline active">网格视图</button>
+                        <button id="listViewBtn" class="btn btn-sm btn-outline">列表视图</button>
+                    </div>
+                </h3>
+                <div id="categoriesContainer" class="categories-grid">
+                    <!-- 分类卡片将在这里动态生成 -->
+                </div>
+            </div>
+
+            <!-- 网站列表 -->
+            <div class="websites-section">
+                <div id="websitesContainer" class="websites-grid">
+                    <!-- 网站卡片将在这里动态生成 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 网站详情模态框 -->
+    <div id="websiteModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">网站详情</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="website-detail">
+                    <div class="website-logo">
+                        <img id="modalLogo" src="" alt="网站Logo">
+                    </div>
+                    <div class="website-info">
+                        <h4 id="modalName"></h4>
+                        <p id="modalDesc"></p>
+                        <p class="website-url" id="modalUrl"></p>
+                        <p class="website-category" id="modalCategory"></p>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button id="visitBtn" class="btn btn-primary">访问网站</button>
+                    <button id="favoriteBtn" class="btn btn-outline">收藏</button>
+                    <button id="copyUrlBtn" class="btn btn-secondary">复制链接</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入共享库 -->
+    <script src="../../shared/codemirror.min.js"></script>
+    <script src="../../shared/javascript.min.js"></script>
+    <script src="../../shared/pageAnalyze/view-chart.js"></script>
+
+    <!-- 引入模块脚本 -->
+    <script src="scripts/web-navigation.js"></script>
+</body>
+
+</html>

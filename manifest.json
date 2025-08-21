@@ -1,0 +1,42 @@
+{
+   "action": {
+      "default_icon": {
+         "128": "icons/logo2.png",
+         "16": "icons/logo2.png",
+         "32": "icons/logo2.png",
+         "48": "icons/logo2.png"
+      },
+      "default_popup": "core/popup/popup.html",
+      "default_title": "小蜜蜂工具箱"
+   },
+   "background": {
+      "service_worker": "core/background.js"
+   },
+   "content_scripts": [ {
+      "css": [ "shared/content-script.css" ],
+      "js": [ "core/content-script.js", "shared/jquery-3.3.1.min.js", "shared/evalCore.min.js", "shared/pageAnalyze/web-vitals.iife.js" ],
+      "matches": [ "\u003Call_urls>" ],
+      "run_at": "document_end"
+   } ],
+   "content_security_policy": {
+      "extension_pages": "script-src 'self'; object-src 'self'"
+   },
+   "description": "程序员日常开发必备工具集合，包含JSON格式化、计算器、正则表达式调试、编码解码、时间戳转换等实用功能",
+   "host_permissions": [ "https://xmf.anyitv.com/*" ],
+   "icons": {
+      "128": "icons/logo2.png",
+      "16": "icons/logo2.png",
+      "32": "icons/logo2.png",
+      "48": "icons/logo2.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAq8vDfTeH5ZvYMLBsghQQXCk3UT3cY2Wz7mnRrfx02UTxrOH17wjuDfdf+ATQkzYB4rfTounEUR4egxR5/K7hzbHnUQaLAc6+gGn1i/FxsIo8nms1K3cweR/swWYfd5udPWn8R/h3Xa1IEgXxyRLsE3VMAHNrEc/i7IKdD5Cl/7SEwwNELC1nbb85XnJsXyglHyx9yox8OYoJsSQTvvGTgElRBFjuPOHL10QWDT/n16qOKrQERMr/SwGTsuCi5XM406GECjRQdlOnMSfjqYcxl3GW1TYsBzxByH7ZAidtp1opeSdF8cbpdfKV938WNDhBUEaXV8ITlTPHlktoZwcaMwIDAQAB",
+   "manifest_version": 3,
+   "name": "小蜜蜂工具箱",
+   "permissions": [ "storage", "clipboardWrite", "clipboardRead", "activeTab", "tabs", "scripting", "contextMenus", "webRequest", "webNavigation" ],
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "1.0.0",
+   "web_accessible_resources": [ {
+      "matches": [ "\u003Call_urls>" ],
+      "resources": [ "modules/*/*.html", "shared/*.css", "shared/*.js", "core/*.js", "core/*.html", "pages/*.html", "shared/colorPicker/*.js", "shared/screenshot/*.js" ]
+   } ]
+}

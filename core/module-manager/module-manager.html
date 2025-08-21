@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模块管理 - 小蜜蜂工具箱</title>
+    <link rel="stylesheet" href="../../shared/common.css">
+    <link rel="stylesheet" href="assets/module-manager.css">
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-left">
+                <img src="../../icons/logo.png" alt="小蜜蜂" class="logo">
+                <h1>模块管理中心</h1>
+            </div>
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <span class="stat-label">总模块数:</span>
+                    <span id="totalModules" class="stat-value">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Popup:</span>
+                    <span id="installedModules" class="stat-value">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">右键菜单:</span>
+                    <span id="contextMenuModules" class="stat-value">0</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <button id="resetBtn" class="btn btn-secondary">🔄 重置默认</button>
+            </div>
+        </header>
+
+        <div class="content">
+            <!-- 快速配置方案与预览区域 -->
+            <div class="config-preview-container">
+                <!-- 快速配置方案 -->
+                <div class="quick-config-section">
+                    <h3>⚡ 快速配置方案</h3>
+                    <div class="config-presets">
+                        <div class="preset-item" data-preset="developer">
+
+                            <div class="preset-info">
+                                <div class="preset-name">
+                                    <div class="preset-icon">👨‍💻</div>开发者套装
+                                </div>
+                                <div class="preset-desc">JSON格式化、正则调试、编码解码、时间戳转换</div>
+                            </div>
+                            <button class="preset-btn btn btn-primary">应用</button>
+                        </div>
+
+                        <div class="preset-item" data-preset="designer">
+
+                            <div class="preset-info">
+                                <div class="preset-name">
+                                    <div class="preset-icon">🎨</div>设计师套装
+                                </div>
+                                <div class="preset-desc">颜色工具、二维码生成、图片转换、页面截图</div>
+                            </div>
+                            <button class="preset-btn btn btn-primary">应用</button>
+                        </div>
+
+                        <div class="preset-item" data-preset="productivity">
+
+                            <div class="preset-info">
+                                <div class="preset-name">
+                                    <div class="preset-icon">⚡</div>效率办公
+                                </div>
+                                <div class="preset-desc">文本对比、API测试、Cron生成器、快速参考</div>
+                            </div>
+                            <button class="preset-btn btn btn-primary">应用</button>
+                        </div>
+
+                        <div class="preset-item" data-preset="minimal">
+
+                            <div class="preset-info">
+                                <div class="preset-name">
+                                    <div class="preset-icon">🎯</div>精简模式
+                                </div>
+                                <div class="preset-desc">仅保留最常用的JSON格式化和计算器工具</div>
+                            </div>
+                            <button class="preset-btn btn btn-primary">应用</button>
+                        </div>
+
+                        <div class="preset-item" data-preset="full">
+                            <div class="preset-info">
+                                <div class="preset-name">
+                                    <div class="preset-icon">🚀</div>完整套装
+                                </div>
+                                <div class="preset-desc">安装所有可用模块，适合重度用户</div>
+                            </div>
+                            <button class="preset-btn btn btn-primary">应用</button>
+                        </div>
+                    </div>
+
+                    <!-- 模块列表 -->
+                    <div class="modules-container">
+                        <div class="modules-header">
+                            <h3>📦 可用模块列表</h3>
+                            <div class="modules-header-right">
+                                <input type="text" id="searchInput" placeholder="搜索模块..." class="search-input">
+                                <button id="searchBtn" class="btn btn-outline">🔍</button>
+                                <div class="modules-count">
+                                    <span id="filteredCount">0</span> 个模块
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="modulesList" class="modules-list">
+                            <!-- 模块项将通过JavaScript动态生成 -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Popup菜单预览 -->
+                <div class="preview-section">
+                    <div class="preview-header-section">
+                        <h3>📋 菜单预览</h3>
+                        <div class="toolbar-right">
+                            <button id="installAllBtn" class="btn btn-success">📦 全部添加</button>
+                            <button id="uninstallAllBtn" class="btn btn-danger">🗑️ 全部移除</button>
+                        </div>
+                    </div>
+                    <div id="popupPreview" class="popup-preview">
+                        <div class="preview-header">
+                            <div class="preview-logo">
+                                <img src="../../icons/logo.png" alt="小蜜蜂" class="preview-logo-icon">
+                                <span>小蜜蜂工具箱</span>
+                            </div>
+                        </div>
+                        <div class="preview-search">
+                            <input type="text" placeholder="搜索工具..." class="preview-search-input" disabled>
+                        </div>
+                        <div id="previewModules" class="preview-modules">
+                            <!-- 预览模块列表 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+        </div>
+    </div>
+
+    <!-- 模块详情弹窗 -->
+    <div id="moduleModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">模块详情</h3>
+                <button id="modalClose" class="modal-close">×</button>
+            </div>
+            <div class="modal-body">
+                <div id="modalContent"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="modalCancel" class="btn btn-secondary">取消</button>
+                <button id="modalConfirm" class="btn btn-primary">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入配置文件 -->
+    <script src="../config/modules-config.js"></script>
+    <script src="scripts/module-manager.js"></script>
+</body>
+
+</html>

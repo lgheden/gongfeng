@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>程序员Prompt库 - 工蜂工具箱</title>
+    <link rel="stylesheet" href="../../shared/common.css">
+     <link rel="stylesheet" href="assets/prompt-library.css">
+     <link rel="stylesheet" href="../../shared/codemirror.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 程序员Prompt库<p>精选优质Prompt模板，提升开发效率</p></h1>
+            <a href="../../pages/donate.html" class="donate-btn">💝 赞助</a>
+        </header>
+
+        <!-- 搜索和筛选区域 -->
+        <div class="search-panel">
+            <div class="search-group">
+                <div class="search-input-wrapper">
+                    <input type="text" id="searchInput" placeholder="搜索Prompt..." class="search-input">
+                    <button id="searchBtn" class="search-btn">🔍</button>
+                </div>
+                <div class="filter-group">
+                    <select id="categoryFilter" class="filter-select">
+                        <option value="">所有分类</option>
+                    </select>
+                    <select id="languageFilter" class="filter-select">
+                        <option value="">所有语言</option>
+                    </select>
+                    <select id="difficultyFilter" class="filter-select">
+                        <option value="">所有难度</option>
+                        <option value="初级">初级</option>
+                        <option value="中级">中级</option>
+                        <option value="高级">高级</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主要内容区域 -->
+        <div class="main-content">
+            <!-- 左侧：Prompt列表 -->
+            <div class="prompt-list-panel">
+                <div class="panel-header">
+                    <h3>📋 Prompt列表</h3>
+                    <div class="list-stats">
+                        <span id="totalCount">0</span> 个Prompt
+                    </div>
+                </div>
+                <div class="prompt-list" id="promptList">
+                    <!-- Prompt项目将通过JavaScript动态生成 -->
+                </div>
+            </div>
+
+            <!-- 右侧：Prompt详情 -->
+            <div class="prompt-detail-panel">
+                <div class="panel-header">
+                    <div class="header-title-section">
+                        <h3 id="promptDetailTitle"></h3>
+                    </div>
+                    <div class="detail-actions">
+                        <button id="copyPromptBtn" class="btn btn-primary" >📋 复制Prompt</button>
+                        <button id="favoriteDetailBtn" class="btn btn-outline">🤍 收藏</button>
+                    </div>
+                </div>
+                <div class="prompt-detail" id="promptDetail">
+                    <div class="empty-state">
+                        <div class="empty-icon">📝</div>
+                        <p>请从左侧选择一个Prompt查看详情</p>
+                    </div>
+                    
+                    <!-- Prompt详情内容 -->
+                    <div class="detail-content" style="display: none;">
+                        
+                        <div class="detail-prompt-examples-container">
+                            <div class="detail-prompt">
+                                <h3>📝 Prompt内容</h3>
+                                <div class="prompt-content">
+                                    <div id="promptContent"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-examples" id="promptExamples">
+                                <!-- 示例将在这里显示 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 收藏夹模态框 -->
+        <div id="favoritesModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>⭐ 我的收藏</h3>
+                    <button class="modal-close" id="closeFavoritesModal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div id="favoritesList" class="favorites-list">
+                        <!-- 收藏的Prompt将在这里显示 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 浮动操作按钮 -->
+        <div class="floating-actions">
+            <button id="showFavoritesBtn" class="fab" title="查看收藏">
+                ⭐
+                <span id="favoritesCount" class="fab-badge">0</span>
+            </button>
+
+        </div>
+    </div>
+
+
+
+    <script src="../../shared/jquery-3.3.1.min.js"></script>
+    <script src="../../shared/codemirror.min.js"></script>
+    
+    <!-- 加载prompt-data.js来管理数据 -->
+    <script src="data/prompt-data.js"></script>
+    <script src="data/prompt-data-inline.js"></script>
+     
+     <!-- 加载所有Prompt数据文件 -->
+     <script src="data/code-generation-prompts.js"></script>
+     <script src="data/code-review-prompts.js"></script>
+     <script src="data/debugging-prompts.js"></script>
+     <script src="data/api-development-prompts.js"></script>
+     <script src="data/api-documentation-prompts.js"></script>
+     <script src="data/database-design-prompts.js"></script>
+     <script src="data/database-prompts.js"></script>
+     <script src="data/mobile-development-prompts.js"></script>
+     <script src="data/ai-ml-prompts.js"></script>
+     <script src="data/frontend-prompts.js"></script>
+     <script src="data/backend-prompts.js"></script>
+     <script src="data/devops-prompts.js"></script>
+     <script src="data/testing-prompts.js"></script>
+     <script src="data/security-performance-prompts.js"></script>
+     <script src="data/project-framework-prompts.js"></script>
+     
+     <!-- 加载语言特定的Prompt数据文件 -->
+     <script src="data/python-prompts.js"></script>
+     <script src="data/javascript-prompts.js"></script>
+     <script src="data/java-prompts.js"></script>
+     <script src="data/cpp-prompts.js"></script>
+     <script src="data/go-prompts.js"></script>
+    
+    <script src="scripts/prompt-library.js"></script>
+</body>
+</html>

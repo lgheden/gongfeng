@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>打赏支持</title>
+    <link rel="stylesheet" href="../shared/common.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #fff;
+            min-height: 100vh;
+            padding: 10px;
+        }
+
+        .donate-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #007bff, #4197f2);
+            padding: 20px 30px;
+            text-align: center;
+            color: white;
+        }
+
+        .donate-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .content-main {
+            padding: 10px 10px;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .donate-message {
+            background: linear-gradient(135deg, #f8f9ff, #e8f4fd);
+            border-radius: 16px;
+            padding: 30px;
+            border: 1px solid rgba(102, 126, 234, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .donate-message::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .message-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .message-content {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+        .message-content p{
+            text-indent: 2em;
+        }
+
+        .features-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-2px);
+        }
+
+        .feature-icon {
+            font-size: 18px;
+        }
+
+        .feature-text {
+            font-size: 14px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .qr-section {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+
+        .partners-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .partner-item {
+            background: white;
+            border-radius: 20px;
+            padding: 10px 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .partner-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .partner-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .partner-avatar {
+            font-size: 48px;
+        }
+
+        .partner-name {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .partner-role {
+            font-size: 14px;
+            color: #667eea;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .partner-desc {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        .qr-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .qr-modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .qr-modal-header {
+            padding: 10px 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .qr-modal-header h3 {
+            margin: 0;
+            font-size: 20px;
+            color: #333;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 28px;
+            color: #999;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+
+        .close-btn:hover {
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .qr-codes {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .qr-item {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .qr-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, var(--brand-color), var(--brand-color-light));
+        }
+
+        .qr-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .wechat {
+            --brand-color: #07c160;
+            --brand-color-light: #38d973;
+        }
+
+        .alipay {
+            --brand-color: #1677ff;
+            --brand-color-light: #4096ff;
+        }
+
+        .qr-label {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--brand-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .qr-code {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 20px;
+            border: 3px solid #f0f0f0;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fafafa;
+            position: relative;
+            transition: border-color 0.3s ease;
+        }
+
+        .qr-item:hover .qr-code {
+            border-color: var(--brand-color);
+        }
+
+        .qr-placeholder {
+            color: #999;
+            font-size: 14px;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        .qr-description {
+            color: #666;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .donate-footer {
+            background: #f8f9fa;
+            padding: 30px;
+            text-align: center;
+            border-top: 1px solid #eee;
+        }
+
+        .footer-content {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .footer-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .footer-text {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.4;
+            margin-bottom: 10px;
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            color: #333;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-btn:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .header {
+                padding: 30px 20px;
+            }
+
+            .donate-title {
+                font-size: 28px;
+            }
+
+            .content-main {
+                padding: 10px;
+            }
+
+            .partners-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .qr-codes {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 20px;
+            }
+
+            .qr-code {
+                width: 180px;
+                height: 180px;
+            }
+
+            .qr-modal-content {
+                margin: 10% auto;
+                width: 95%;
+            }
+
+            .back-btn {
+                top: 20px;
+                left: 20px;
+                padding: 10px 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .features-list {
+                grid-template-columns: 1fr;
+            }
+
+            .qr-item {
+                padding: 20px;
+            }
+
+            .partner-item {
+                padding: 20px 15px;
+            }
+
+            .partner-avatar {
+                font-size: 40px;
+            }
+
+            .qr-modal-header {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="donate-container">
+        <div class="header">
+            <h1 class="donate-title">💝 支持开发者</h1>
+            <p class="subtitle">开源路上，每一行代码都凝聚心血。您的一杯咖啡，就是点燃我们继续前行的火种！</p>
+
+        </div>
+
+        <div class="content-main">
+            <div class="qr-section">
+                <p style="text-align: center; color: #666; margin-bottom: 20px;">点击合伙人头像查看赞助二维码</p>
+                <div class="partners-grid">
+                    <div class="partner-item" data-partner="li">
+                        <div class="partner-avatar">👨‍💻</div>
+                        <div class="partner-name">李先生</div>
+                    </div>
+                    
+                    <div class="partner-item" data-partner="peng">
+                        <div class="partner-avatar">👩‍🎨</div>
+                        <div class="partner-name">彭女士</div>
+                    </div>
+                </div>
+
+                <div class="qr-modal" id="qrModal">
+                    <div class="qr-modal-content">
+                        <div class="qr-modal-header">
+                            <h3 id="modalTitle">感谢您的支持</h3>
+                            <button class="close-btn">&times;</button>
+                        </div>
+                        <div class="qr-codes" id="qrCodes">
+                            <!-- 动态生成收款码 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="donate-message">
+                <div class="message-title">
+                    <span>🎉</span>
+                    <span>感谢您的使用</span>
+                </div>
+                <div class="message-content">
+                    <p>感谢您使用我们的工具集合！如果这些工具对您的工作有所帮助，您的打赏将是对我们最大的鼓励和支持。</p>
+                    <p>每一份支持都将激励我们持续改进和开发更多实用的工具，让更多开发者受益。</p>
+                </div>
+
+                <div class="features-list">
+                    <div class="feature-item">
+                        <span class="feature-icon">🚀</span>
+                        <span class="feature-text">持续优化现有功能</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✨</span>
+                        <span class="feature-text">开发更多实用工具</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🐛</span>
+                        <span class="feature-text">及时修复问题和bug</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">📱</span>
+                        <span class="feature-text">保持工具的免费使用</span>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 20px; font-weight: 600; color: #333;">
+                    <span>❤️ 再次感谢您的支持！</span>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="donate-footer">
+            <div class="footer-content">
+                <div class="footer-title">💡 其他支持方式</div>
+                <div class="footer-text">您也可以通过GitHub给我们点个Star来支持我们</div>
+                <a href="https://github.com/lgheden/gongfeng" target="_blank" style="display: inline-block; margin: 15px 0; padding: 12px 24px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; text-decoration: none; border-radius: 25px; font-weight: 600; font-size: 14px; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(102, 126, 234, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(102, 126, 234, 0.3)'">
+                    ⭐ 前往GitHub点Star
+                </a>
+                <div class="footer-text">任何建议和反馈都欢迎联系我们</div>
+            </div>
+        </div>
+    </div>
+    <script src="donate.js"></script>
+</body>
+
+</html>

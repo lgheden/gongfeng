@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>时间戳转换工具</title>
+    <link rel="stylesheet" href="../../shared/common.css">
+    <link rel="stylesheet" href="assets/timestamp-converter.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⏰ 时间戳转换工具<p>时间戳与日期时间互相转换</p></h1>
+            <a href="../../pages/donate.html" class="donate-btn">💝 赞助</a>
+        </header>
+        
+        <!-- 控制区域 - 合并toolbar和current-time-section -->
+        <div class="control-section">
+            <div class="toolbar-time-row">
+                <div class="action-buttons">
+                    <button id="nowBtn" class="btn btn-primary">当前时间</button>
+                    <button id="convertBtn" class="btn btn-secondary">转换</button>
+                    <button id="clearBtn" class="btn btn-danger">清空</button>
+                    <button id="copyTimestampBtn" class="btn btn-success">复制时间戳</button>
+                    <button id="copyDateBtn" class="btn btn-info">复制日期</button>
+                    
+                    <div class="current-time-inline">
+                        <div class="time-item-inline">
+                            <label>当前时间戳 (秒)</label>
+                            <input type="text" id="currentTimestampSec" readonly>
+                        </div>
+                        <div class="time-item-inline">
+                            <label>当前时间戳 (毫秒)</label>
+                            <input type="text" id="currentTimestampMs" readonly>
+                        </div>
+                        <div class="time-item-inline">
+                            <label>当前日期时间</label>
+                            <input type="text" id="currentDateTime" readonly>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 主要内容区域 - 全屏紧凑布局 -->
+        <div class="main-content">
+            <!-- 左侧区域：时间戳转日期 -->
+            <div class="left-section">
+                <div class="input-section">
+                    <h3>时间戳转日期</h3>
+                    <div class="form-group">
+                        <label for="timestampInput">时间戳</label>
+                        <div class="input-with-unit">
+                            <input type="text" id="timestampInput" placeholder="输入时间戳...">
+                            <select id="timestampUnit">
+                                <option value="seconds">秒</option>
+                                <option value="milliseconds" selected>毫秒</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="timestamp-results">
+                        <div class="form-group">
+                            <label>本地时间</label>
+                            <input type="text" id="localTime" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>UTC时间</label>
+                            <input type="text" id="utcTime" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>ISO 8601</label>
+                            <input type="text" id="isoTime" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>相对时间</label>
+                            <input type="text" id="relativeTime" readonly>
+                        </div>
+                    </div>
+                    
+                    <div class="quick-timestamps-section">
+                        <div class="timestamp-grid">
+                            <button class="timestamp-btn" data-offset="0">现在</button>
+                            <button class="timestamp-btn" data-offset="3600">1小时后</button>
+                            <button class="timestamp-btn" data-offset="86400">1天后</button>
+                            <button class="timestamp-btn" data-offset="604800">1周后</button>
+                            <button class="timestamp-btn" data-offset="2592000">1月后</button>
+                            <button class="timestamp-btn" data-offset="31536000">1年后</button>
+                            <button class="timestamp-btn" data-offset="-3600">1小时前</button>
+                            <button class="timestamp-btn" data-offset="-86400">1天前</button>
+                            <button class="timestamp-btn" data-offset="-604800">1周前</button>
+                            <button class="timestamp-btn" data-offset="-2592000">1月前</button>
+                            <button class="timestamp-btn" data-offset="-31536000">1年前</button>
+                            <button class="timestamp-btn" data-timestamp="0">Unix纪元</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="format-examples">
+                    <h3>常用时间格式</h3>
+                    <div class="format-grid">
+                        <div class="form-group">
+                            <label>YYYY-MM-DD HH:mm:ss</label>
+                            <input type="text" id="format1" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>YYYY/MM/DD HH:mm:ss</label>
+                            <input type="text" id="format2" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>DD/MM/YYYY HH:mm:ss</label>
+                            <input type="text" id="format3" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>MM/DD/YYYY HH:mm:ss</label>
+                            <input type="text" id="format4" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>RFC 2822</label>
+                            <input type="text" id="format5" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>中文格式</label>
+                            <input type="text" id="format6" readonly>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 右侧区域：日期转时间戳 -->
+            <div class="right-section">
+                <div class="output-section">
+                    <h3>日期转时间戳</h3>
+                    <div class="datetime-input-group">
+                        <div class="datetime-inputs">
+                            <div class="form-group">
+                                <label for="manualDateTimeInput">完整日期时间</label>
+                                <input type="text" id="manualDateTimeInput" placeholder="例: 2024-01-15 14:30:25">
+                            </div>
+                            <div class="form-group">
+                                <label for="dateInput">日期</label>
+                                <input type="date" id="dateInput">
+                            </div>
+                            <div class="form-group">
+                                <label for="timeInput">时间</label>
+                                <input type="time" id="timeInput" step="1">
+                            </div>
+                            <div class="form-group">
+                                <label for="timezoneSelect">时区</label>
+                                <select id="timezoneSelect">
+                                    <option value="local">本地时区</option>
+                                    <option value="utc">UTC</option>
+                                    <option value="+8">UTC+8 (北京)</option>
+                                    <option value="+9">UTC+9 (东京)</option>
+                                    <option value="-5">UTC-5 (纽约)</option>
+                                    <option value="-8">UTC-8 (洛杉矶)</option>
+                                    <option value="+0">UTC+0 (伦敦)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="datetime-results">
+                        <div class="form-group">
+                            <label>时间戳 (秒)</label>
+                            <input type="text" id="resultTimestampSec" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>时间戳 (毫秒)</label>
+                            <input type="text" id="resultTimestampMs" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>ISO 8601</label>
+                            <input type="text" id="resultIsoTime" readonly>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                <div class="time-calculator">
+                    <h3>时间计算器</h3>
+                    <div class="calculator-section">
+                        <div class="form-group">
+                            <label>基准时间戳</label>
+                            <input type="text" id="baseTimestamp" placeholder="输入基准时间戳...">
+                        </div>
+                        <div class="calc-operations">
+                            <div class="operation-row">
+                                <button class="calc-btn" data-operation="add" data-value="3600">+1小时</button>
+                                <button class="calc-btn" data-operation="subtract" data-value="3600">-1小时</button>
+                                <button class="calc-btn" data-operation="add" data-value="86400">+1天</button>
+                                <button class="calc-btn" data-operation="subtract" data-value="86400">-1天</button>
+                            </div>
+                            <div class="operation-row">
+                                <button class="calc-btn" data-operation="add" data-value="604800">+1周</button>
+                                <button class="calc-btn" data-operation="subtract" data-value="604800">-1周</button>
+                                <button class="calc-btn" data-operation="add" data-value="2592000">+1月</button>
+                                <button class="calc-btn" data-operation="subtract" data-value="2592000">-1月</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>计算结果</label>
+                            <input type="text" id="calcResult" readonly>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="statusBar" class="status-bar"></div>
+    </div>
+    
+    <script src="scripts/timestamp-converter.js"></script>
+</body>
+</html>

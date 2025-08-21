@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>页面截图工具</title>
+    <link rel="stylesheet" href="../../shared/common.css">
+<link rel="stylesheet" href="page-screenshot.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📸 页面截图工具</h1>
+            <p>截取当前浏览器标签页的内容</p>
+            <a href="../../pages/donate.html" class="donate-btn">💝 赞助</a>
+        </div>
+
+        <div class="main-content">
+            <!-- 当前页面信息 -->
+            <div class="section">
+                <h3>📄 当前页面信息</h3>
+                <div class="page-info">
+                    <div class="info-item">
+                        <label>页面标题：</label>
+                        <span id="pageTitle">正在获取...</span>
+                    </div>
+                    <div class="info-item">
+                        <label>页面URL：</label>
+                        <span id="pageUrl">正在获取...</span>
+                    </div>
+                    <div class="info-item">
+                        <label>页面尺寸：</label>
+                        <span id="pageSize">正在获取...</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 截图配置 -->
+            <div class="section">
+                <h3>⚙️ 截图配置</h3>
+                <div class="config-grid">
+                    <div class="config-item">
+                        <label for="screenshotFormat">图片格式：</label>
+                        <select id="screenshotFormat">
+                            <option value="png">PNG (无损)</option>
+                            <option value="jpeg">JPEG (有损)</option>
+                            <option value="webp">WebP (现代)</option>
+                        </select>
+                    </div>
+
+                    <div class="config-item">
+                        <label for="imageQuality">图片质量：</label>
+                        <div class="quality-control">
+                            <input type="range" id="imageQuality" min="10" max="100" value="90" step="10">
+                            <span id="qualityValue">90%</span>
+                        </div>
+                    </div>
+
+                    <div class="config-item">
+                        <label for="captureMode">截图模式：</label>
+                        <select id="captureMode">
+                            <option value="visible">可见区域</option>
+                            <option value="full">整个页面</option>
+                        </select>
+                    </div>
+
+                    <div class="config-item">
+                        <label>
+                            <input type="checkbox" id="includeScrollbars"> 包含滚动条
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 操作按钮 -->
+            <div class="section">
+                <div class="action-buttons">
+                    <button id="captureBtn" class="btn btn-primary">
+                        📸 截取当前页面
+                    </button>
+                    <button id="refreshPageInfo" class="btn btn-secondary">
+                        🔄 刷新页面信息
+                    </button>
+                </div>
+            </div>
+
+            <!-- 状态显示 -->
+            <div class="section">
+                <div id="statusArea" class="status-area">
+                    <div id="statusText" class="status-text">准备就绪，点击截取按钮开始截图</div>
+                    <div id="progressBar" class="progress-bar" style="display: none;">
+                        <div class="progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 截图预览 -->
+            <div class="section" id="previewSection" style="display: none;">
+                <h3>🖼️ 截图预览</h3>
+                <div class="preview-container">
+                    <div class="preview-image-container">
+                        <img id="previewImage" alt="截图预览">
+                    </div>
+                    <div class="preview-info">
+                        <div class="info-row">
+                            <span class="label">文件名：</span>
+                            <span id="fileName"></span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">尺寸：</span>
+                            <span id="imageDimensions"></span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">大小：</span>
+                            <span id="fileSize"></span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">格式：</span>
+                            <span id="imageFormat"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="preview-actions">
+                    <button id="downloadBtn" class="btn btn-success">
+                        💾 下载图片
+                    </button>
+                    <button id="copyBtn" class="btn btn-info">
+                        📋 复制到剪贴板
+                    </button>
+                    <button id="clearBtn" class="btn btn-warning">
+                        🗑️ 清空预览
+                    </button>
+                </div>
+            </div>
+
+            <!-- 历史记录 -->
+            <div class="section">
+                <h3>📚 截图历史</h3>
+                <div class="history-controls">
+                    <button id="clearHistoryBtn" class="btn btn-danger btn-small">
+                        🗑️ 清空历史
+                    </button>
+                    <span class="history-count">共 <span id="historyCount">0</span> 张截图</span>
+                </div>
+                <div id="historyList" class="history-list">
+                    <div class="empty-history">暂无截图历史</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 图片查看模态框 -->
+    <div id="imageModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <img id="modalImage" alt="截图查看">
+        </div>
+    </div>
+
+    <script src="../../shared/html2canvas.min.js"></script>
+    <script src="page-screenshot.js"></script>
+</body>
+</html>

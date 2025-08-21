@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>前端工具箱</title>
+    <link rel="stylesheet" href="../../shared/common.css">
+    <link rel="stylesheet" href="assets/frontend-toolbox.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 头部区域 -->
+        <header>
+            <h1>🛠️ 前端工具箱<p>CSS生成器、代码格式化、颜色工具等前端开发必备工具</p></h1>
+            <a href="../../pages/donate.html" class="donate-btn">💝 赞助</a>
+        </header>
+        
+        <!-- 工具选择栏 -->
+        <div class="tool-selector">
+            <button class="tool-tab active" data-tool="css-generator">CSS生成器</button>
+            <button class="tool-tab" data-tool="code-formatter">代码格式化</button>
+            <button class="tool-tab" data-tool="color-tools">颜色工具</button>
+            <button class="tool-tab" data-tool="gradient-generator">渐变生成器</button>
+            <button class="tool-tab" data-tool="box-shadow">阴影生成器</button>
+            <button class="tool-tab" data-tool="flexbox-generator">Flexbox生成器</button>
+            <button class="tool-tab" data-tool="css-grid">CSS Grid</button>
+            <button class="tool-tab" data-tool="animation-generator">动画生成器</button>
+            <button class="tool-tab" data-tool="responsive-breakpoints">响应式断点</button>
+            <button class="tool-tab" data-tool="svg-optimizer">SVG优化器</button>
+            <button class="tool-tab" data-tool="code-obfuscator">代码混淆器</button>
+            <button class="tool-tab" data-tool="performance-analyzer">性能分析器</button>
+            <button class="tool-tab" data-tool="regex-tester">正则测试器</button>
+            <button class="tool-tab" data-tool="base64-converter">Base64转换器</button>
+        </div>
+
+        <!-- CSS生成器工具 -->
+        <div class="tool-content active" id="css-generator">
+            <div class="content">
+                <div class="input-section">
+                    <h3>CSS生成器
+                        <div class="toolbar">
+                            <button id="generateCssBtn" class="btn btn-primary">生成CSS</button>
+                            <button id="clearCssBtn" class="btn btn-danger">清空</button>
+                            <button id="copyCssBtn" class="btn btn-success">复制CSS</button>
+                        </div>
+                    </h3>
+                    <div class="css-controls">
+                        <div class="control-group">
+                            <label>元素类型:</label>
+                            <select id="elementType">
+                                <option value="div">div</option>
+                                <option value="button">button</option>
+                                <option value="input">input</option>
+                                <option value="span">span</option>
+                                <option value="p">p</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <label>宽度:</label>
+                            <input type="range" id="widthRange" min="50" max="500" value="200">
+                            <span id="widthValue">200px</span>
+                        </div>
+                        <div class="control-group">
+                            <label>高度:</label>
+                            <input type="range" id="heightRange" min="20" max="200" value="50">
+                            <span id="heightValue">50px</span>
+                        </div>
+                        <div class="control-group">
+                            <label>背景色:</label>
+                            <input type="color" id="bgColor" value="#007bff">
+                        </div>
+                        <div class="control-group">
+                            <label>边框半径:</label>
+                            <input type="range" id="borderRadiusRange" min="0" max="50" value="0">
+                            <span id="borderRadiusValue">0px</span>
+                        </div>
+                    </div>
+                    <div class="preview-area">
+                        <h4>预览效果:</h4>
+                        <div id="cssPreview" class="css-preview"></div>
+                    </div>
+                </div>
+
+                <div class="output-section">
+                    <h3>生成的CSS代码</h3>
+                    <textarea id="cssOutput" readonly placeholder="CSS代码将在这里显示..."></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- 代码格式化工具 -->
+        <div class="tool-content" id="code-formatter">
+            <div class="content">
+                <div class="input-section">
+                    <h3>代码格式化
+                        <div class="toolbar">
+                            <button id="formatBtn" class="btn btn-primary">格式化</button>
+                            <button id="minifyBtn" class="btn btn-secondary">压缩</button>
+                            <button id="clearFormatBtn" class="btn btn-danger">清空</button>
+                            <button id="copyFormatBtn" class="btn btn-success">复制</button>
+                        </div>
+                    </h3>
+                    <select id="codeType">
+                        <option value="javascript">JavaScript</option>
+                        <option value="css">CSS</option>
+                        <option value="html">HTML</option>
+                        <option value="json">JSON</option>
+                    </select>
+                    <textarea id="codeInput" placeholder="请输入要格式化的代码..."></textarea>
+                </div>
+
+                <div class="output-section">
+                    <h3>格式化结果</h3>
+                    <textarea id="codeOutput" readonly placeholder="格式化后的代码将在这里显示..."></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- 颜色工具 -->
+        <div class="tool-content" id="color-tools">
+            <div class="content">
+                <div class="input-section">
+                    <h3>颜色工具
+                        <div class="toolbar">
+                            <button id="convertColorBtn" class="btn btn-primary">转换</button>
+                            <button id="clearColorBtn" class="btn btn-danger">清空</button>
+                            <button id="copyColorBtn" class="btn btn-success">复制</button>
+                        </div>
+                    </h3>
+                    <div class="color-inputs">
+                        <div class="color-input-group">
+                            <label>HEX:</label>
+                            <input type="text" id="hexInput" placeholder="#ff0000">
+                        </div>
+                        <div class="color-input-group">
+                            <label>RGB:</label>
+                            <input type="text" id="rgbInput" placeholder="255, 0, 0">
+                        </div>
+                        <div class="color-input-group">
+                            <label>HSL:</label>
+                            <input type="text" id="hslInput" placeholder="0, 100%, 50%">
+                        </div>
+                        <div class="color-input-group">
+                            <label>颜色选择器:</label>
+                            <input type="color" id="colorPicker" value="#ff0000">
+                        </div>
+                    </div>
+                    <div class="color-preview">
+                        <h4>颜色预览:</h4>
+                        <div id="colorPreview" class="color-preview-box"></div>
+                    </div>
+                </div>
+
+                <div class="output-section">
+                    <h3>转换结果</h3>
+                    <div id="colorOutput" class="color-output"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 渐变生成器 -->
+        <div class="tool-content" id="gradient-generator">
+            <div class="content">
+                <div class="input-section">
+                    <h3>渐变生成器
+                        <div class="toolbar">
+                            <button id="generateGradientBtn" class="btn btn-primary">生成渐变</button>
+                            <button id="clearGradientBtn" class="btn btn-danger">清空</button>
+                            <button id="copyGradientBtn" class="btn btn-success">复制CSS</button>
+                        </div>
+                    </h3>
+                    <div class="gradient-controls">
+                        <div class="control-group">
+                            <label>渐变类型:</label>
+                            <select id="gradientType">
+                                <option value="linear">线性渐变</option>
+                                <option value="radial">径向渐变</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <label>方向:</label>
+                            <select id="gradientDirection">
+                                <option value="to right">向右</option>
+                                <option value="to left">向左</option>
+                                <option value="to bottom">向下</option>
+                                <option value="to top">向上</option>
+                                <option value="45deg">45度</option>
+                                <option value="90deg">90度</option>
+                                <option value="135deg">135度</option>
+                                <option value="180deg">180度</option>
+                            </select>
+                        </div>
+                        <div class="gradient-colors">
+                            <h4>颜色停止点:</h4>
+                            <div id="colorStops">
+                                <div class="color-stop">
+                                    <input type="color" value="#ff0000">
+                                    <input type="range" min="0" max="100" value="0">
+                                    <span>0%</span>
+                                    <button class="remove-stop">×</button>
+                                </div>
+                                <div class="color-stop">
+                                    <input type="color" value="#0000ff">
+                                    <input type="range" min="0" max="100" value="100">
+                                    <span>100%</span>
+                                    <button class="remove-stop">×</button>
+                                </div>
+                            </div>
+                            <button id="addColorStop" class="btn btn-secondary">添加颜色</button>
+                        </div>
+                    </div>
+                    <div class="gradient-preview">
+                        <h4>渐变预览:</h4>
+                        <div id="gradientPreview" class="gradient-preview-box"></div>
+                    </div>
+                </div>
+
+                <div class="output-section">
+                    <h3>生成的CSS</h3>
+                    <textarea id="gradientOutput" readonly placeholder="渐变CSS代码将在这里显示..."></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- 阴影生成器 -->
+        <div class="tool-content" id="box-shadow">
+            <div class="content">
+                <div class="input-section">
+                    <h3>阴影生成器
+                        <div class="toolbar">
+                            <button id="generateShadowBtn" class="btn btn-primary">生成阴影</button>
+                            <button id="clearShadowBtn" class="btn btn-danger">清空</button>
+                            <button id="copyShadowBtn" class="btn btn-success">复制CSS</button>
+                        </div>
+                    </h3>
+                    <div class="shadow-controls">
+                        <div class="control-group">
+                            <label>水平偏移:</label>
+                            <input type="range" id="hOffset" min="-50" max="50" value="5">
+                            <span id="hOffsetValue">5px</span>
+                        </div>
+                        <div class="control-group">
+                            <label>垂直偏移:</label>
+                            <input type="range" id="vOffset" min="-50" max="50" value="5">
+                            <span id="vOffsetValue">5px</span>
+                        </div>
+                        <div class="control-group">
+                            <label>模糊半径:</label>
+                            <input type="range" id="blurRadius" min="0" max="50" value="10">
+                            <span id="blurRadiusValue">10px</span>
+                        </div>
+                        <div class="control-group">
+                            <label>扩散半径:</label>
+                            <input type="range" id="spreadRadius" min="0" max="50" value="0">
+                            <span id="spreadRadiusValue">0px</span>
+                        </div>
+                        <div class="control-group">
+                            <label>阴影颜色:</label>
+                            <input type="color" id="shadowColor" value="#000000">
+                        </div>
+                        <div class="control-group">
+                            <label>透明度:</label>
+                            <input type="range" id="shadowOpacity" min="0" max="100" value="30">
+                            <span id="shadowOpacityValue">30%</span>
+                        </div>
+                    </div>
+                    <div class="shadow-preview">
+                        <h4>阴影预览:</h4>
+                        <div id="shadowPreview" class="shadow-preview-box"></div>
+                    </div>
+                </div>
+
+                <div class="output-section">
+                    <h3>生成的CSS</h3>
+                    <textarea id="shadowOutput" readonly placeholder="阴影CSS代码将在这里显示..."></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Flexbox生成器 -->
+        <div class="tool-content" id="flexbox-generator">
+            <div class="content">
+                <div class="input-section">
+                    <h3>Flexbox生成器
+                        <div class="toolbar">
+                            <button id="generateFlexBtn" class="btn btn-primary">生成CSS</button>
+                            <button id="clearFlexBtn" class="btn btn-danger">清空</button>
+                            <button id="copyFlexBtn" class="btn btn-success">复制CSS</button>
+                        </div>
+                    </h3>
+                    <div class="flex-controls">
+                        <div class="control-group">
+                            <label>主轴方向:</label>
+                            <select id="flexDirection">
+                                <option value="row">row (水平)</option>
+                                <option value="column">column (垂直)</option>
+                                <option value="row-reverse">row-reverse</option>
+                                <option value="column-reverse">column-reverse</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <label>主轴对齐:</label>
+                            <select id="justifyContent">
+                                <option value="flex-start">flex-start</option>
+                                <option value="center">center</option>
+                                <option value="flex-end">flex-end</option>
+                                <option value="space-between">space-between</option>
+                                <option value="space-around">space-around</option>
+                                <option value="space-evenly">space-evenly</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <label>交叉轴对齐:</label>
+                            <select id="alignItems">
+                                <option value="stretch">stretch</option>
+                                <option value="flex-start">flex-start</option>
+                                <option value="center">center</option>
+                                <option value="flex-end">flex-end</option>
+                                <option value="baseline">baseline</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <label>换行:</label>
+                            <select id="flexWrap">
+                                <option value="nowrap">nowrap</option>
+                                <option value="wrap">wrap</option>
+                                <option value="wrap-reverse">wrap-reverse</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <label>间距:</label>
+                            <input type="range" id="flexGap" min="0" max="50" value="10">
+                            <span id="flexGapValue">10px</span>
+                        </div>
+                    </div>
+                    <div class="flex-preview">
+                        <h4>Flexbox预览:</h4>
+                        <div id="flexPreview" class="flex-preview-container">
+                            <div class="flex-item">1</div>
+                            <div class="flex-item">2</div>
+                            <div class="flex-item">3</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="output-section">
+                    <h3>生成的CSS</h3>
+                    <textarea id="flexOutput" readonly placeholder="Flexbox CSS代码将在这里显示..."></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- CSS Grid生成器 -->
+        <div class="tool-content" id="css-grid">
+            <div class="content">
+                <div class="input-section">
+                    <h3>CSS Grid生成器
+                        <div class="toolbar">
+                            <button id="generateGridBtn" class="btn btn-primary">生成CSS</button>
+                            <button id="clearGridBtn" class="btn btn-danger">清空</button>
+                            <button id="copyGridBtn" class="btn btn-success">复制CSS</button>
+                        </div>
+                    </h3>
+                    <div class="grid-controls">
+                        <div class="control-group">
+                            <label>列数:</label>
+                            <input type="range" id="gridColumns" min="1" max="12" value="3">
+                            <span id="gridColumnsValue">3</span>
+                        </div>
+                        <div class="control-group">
+                            <label>行数:</label>
+                            <input type="range" id="gridRows" min="1" max="8" value="3">
+                            <span id="gridRowsValue">3</span>
+                        </div>
+                        <div class="control-group">
+                            <label>列间距:</label>
+                            <input type="range" id="gridColumnGap" min="0" max="50" value="10">
+                            <span id="gridColumnGapValue">10px</span>
+                        </div>
+                        <div class="control-group">
+                            <label>行间距:</label>
+                            <input type="range" id="gridRowGap" min="0" max="50" value="10">
+                            <span id="gridRowGapValue">10px</span>
+                        </div>
+                        <div class="control-group">
+                            <label>对齐方式:</label>
+                            <select id="gridAlign">
+                                <option value="start">start</option>
+                                <option value="center">center</option>
+                                <option value="end">end</option>
+                                <option value="stretch">stretch</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <label>列模板:</label>
+                            <select id="gridTemplate">
+                                <option value="repeat">repeat()</option>
+                                <option value="manual">手动设置</option>
+                                <option value="auto-fit">auto-fit</option>
+                                <option value="auto-fill">auto-fill</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="grid-preview">
+                        <h4>Grid预览:</h4>
+                        <div id="gridPreview" class="grid-preview-container">
+                            <div class="grid-item">1</div>
+                            <div class="grid-item">2</div>
+                            <div class="grid-item">3</div>
+                            <div class="grid-item">4</div>
+                            <div class="grid-item">5</div>
+                            <div class="grid-item">6</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="output-section">
+                    <h3>生成的CSS</h3>
+                    <textarea id="gridOutput" readonly placeholder="CSS Grid代码将在这里显示..."></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- 动画生成器 -->
+        <div class="tool-content" id="animation-generator">
+            <div class="content">
+                <div class="input-section">
+                    <h3>动画生成器
+                        <div class="toolbar">
+                            <button id="generateAnimationBtn" class="btn btn-primary">生成动画</button>
+                            <button id="clearAnimationBtn" class="btn btn-danger">清空</button>
+                            <button id="copyAnimationBtn" class="btn btn-success">复制CSS</button>
+                        </div>
+                    </h3>
+                    <div class="animation-controls">
+                        <div class="control-group">
+                            <label>动画类型:</label>
+                            <select id="animationType">
+                                <option value="fade">淡入淡出</option>
+                                <option value="slide">滑动</option>
+                                <option value="scale">缩放</option>
+                                <option value="rotate">旋转</option>
+                                <option value="bounce">弹跳</option>
+                                <option value="custom">自定义</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <label>持续时间:</label>
+                            <input type="range" id="animationDuration" min="0.1" max="5" step="0.1" value="1">
+                            <span id="animationDurationValue">1s</span>
+                        </div>
+                        <div class="control-group">
+                            <label>延迟时间:</label>
+                            <input type="range" id="animationDelay" min="0" max="3" step="0.1" value="0">
+                            <span id="animationDelayValue">0s</span>
+                        </div>
+                        <div class="control-group">
+                            <label>缓动函数:</label>
+                            <select id="animationEasing">
+                                <option value="ease">ease</option>
+                                <option value="linear">linear</option>
+                                <option value="ease-in">ease-in</option>
+                                <option value="ease-out">ease-out</option>
+                                <option value="ease-in-out">ease-in-out</option>
+                                <option value="cubic-bezier">cubic-bezier</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <label>重复次数:</label>
+                            <select id="animationIteration">
+                                <option value="1">1次</option>
+                                <option value="infinite">无限</option>
+                                <option value="2">2次</option>
+                                <option value="3">3次</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <label>方向:</label>
+                            <select id="animationDirection">
+                                <option value="normal">normal</option>
+                                <option value="reverse">reverse</option>
+                                <option value="alternate">alternate</option>
+                                <option value="alternate-reverse">alternate-reverse</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="animation-preview">
+                        <h4>动画预览:</h4>
+                        <div id="animationPreview" class="animation-preview-box">
+                            <div class="animated-element">动画元素</div>
+                        </div>
+                        <button id="playAnimationBtn" class="btn btn-secondary">播放动画</button>
+                    </div>
+                </div>
+
+                <div class="output-section">
+                    <h3>生成的CSS</h3>
+                    <textarea id="animationOutput" readonly placeholder="动画CSS代码将在这里显示..."></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- 响应式断点生成器 -->
+        <div class="tool-content" id="responsive-breakpoints">
+            <div class="content">
+                <div class="input-section">
+                    <h3>响应式断点生成器
+                        <div class="toolbar">
+                            <button id="generateBreakpointsBtn" class="btn btn-primary">生成断点</button>
+                            <button id="clearBreakpointsBtn" class="btn btn-danger">清空</button>
+                            <button id="copyBreakpointsBtn" class="btn btn-success">复制CSS</button>
+                        </div>
+                    </h3>
+                    <div class="breakpoints-controls">
+                        <div class="control-group">
+                            <label>预设断点:</label>
+                            <select id="breakpointPreset">
+                                <option value="bootstrap">Bootstrap</option>
+                                <option value="tailwind">Tailwind CSS</option>
+                                <option value="material">Material Design</option>
+                                <option value="custom">自定义</option>
+                            </select>
+                        </div>
+                        <div class="breakpoints-list">
+                            <h4>断点设置:</h4>
+                            <div id="breakpointsList">
+                                <div class="breakpoint-item">
+                                    <label>移动端:</label>
+                                    <input type="number" value="576" min="320" max="1200">px
+                                    <span class="breakpoint-name">(xs)</span>
+                                </div>
+                                <div class="breakpoint-item">
+                                    <label>平板:</label>
+                                    <input type="number" value="768" min="320" max="1200">px
+                                    <span class="breakpoint-name">(sm)</span>
+                                </div>
+                                <div class="breakpoint-item">
+                                    <label>桌面:</label>
+                                    <input type="number" value="992" min="320" max="1200">px
+                                    <span class="breakpoint-name">(md)</span>
+                                </div>
+                                <div class="breakpoint-item">
+                                    <label>大屏:</label>
+                                    <input type="number" value="1200" min="320" max="1200">px
+                                    <span class="breakpoint-name">(lg)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label>容器最大宽度:</label>
+                            <input type="number" id="containerMaxWidth" value="1200" min="800" max="2000">px
+                        </div>
+                    </div>
+                    <div class="breakpoints-preview">
+                        <h4>响应式预览:</h4>
+                        <div class="viewport-controls">
+                            <button class="viewport-btn" data-width="320">手机</button>
+                            <button class="viewport-btn" data-width="768">平板</button>
+                            <button class="viewport-btn" data-width="1024">桌面</button>
+                            <button class="viewport-btn" data-width="1440">大屏</button>
+                        </div>
+                        <div id="breakpointsPreview" class="breakpoints-preview-container">
+                            <div class="responsive-content">
+                                <h3>响应式内容</h3>
+                                <p>这个内容会根据不同的屏幕尺寸进行调整</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="output-section">
+                    <h3>生成的CSS</h3>
+                    <textarea id="breakpointsOutput" readonly placeholder="响应式断点CSS代码将在这里显示..."></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- SVG优化器 -->
+        <div class="tool-content" id="svg-optimizer">
+            <div class="content">
+                <div class="input-section">
+                    <h3>SVG优化器
+                        <div class="toolbar">
+                            <button id="optimizeSvgBtn" class="btn btn-primary">优化SVG</button>
+                            <button id="clearSvgBtn" class="btn btn-danger">清空</button>
+                            <button id="copySvgBtn" class="btn btn-success">复制代码</button>
+                        </div>
+                    </h3>
+                    <div class="svg-controls">
+                        <div class="control-group">
+                            <label>优化级别:</label>
+                            <select id="svgOptimizationLevel">
+                                <option value="1">轻度优化</option>
+                                <option value="2" selected>中度优化</option>
+                                <option value="3">深度优化</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <label>保留属性:</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" id="keepIds" checked> ID属性</label>
+                                <label><input type="checkbox" id="keepClasses" checked> Class属性</label>
+                                <label><input type="checkbox" id="keepComments"> 注释</label>
+                                <label><input type="checkbox" id="keepMetadata"> 元数据</label>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label>精度设置:</label>
+                            <input type="range" id="svgPrecision" min="0" max="5" value="2">
+                            <span id="svgPrecisionValue">2位小数</span>
+                        </div>
+                    </div>
+                    <div class="svg-input-area">
+                        <h4>输入SVG代码:</h4>
+                        <textarea id="svgInput" placeholder="粘贴SVG代码到这里..."></textarea>
+                    </div>
+                    <div class="svg-preview">
+                        <h4>SVG预览:</h4>
+                        <div id="svgPreview" class="svg-preview-container"></div>
+                    </div>
+                </div>
+
+                <div class="output-section">
+                    <h3>优化结果</h3>
+                    <div class="optimization-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">原始大小:</span>
+                            <span id="originalSize" class="stat-value">0 KB</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">优化后大小:</span>
+                            <span id="optimizedSize" class="stat-value">0 KB</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">压缩率:</span>
+                            <span id="compressionRatio" class="stat-value">0%</span>
+                        </div>
+                    </div>
+                    <textarea id="svgOutput" readonly placeholder="优化后的SVG代码将在这里显示..."></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- 代码混淆器 -->
+        <div class="tool-content" id="code-obfuscator">
+            <div class="content">
+                <div class="input-section">
+                    <h3>代码混淆器
+                        <div class="toolbar">
+                            <button id="obfuscateBtn" class="btn btn-primary">混淆代码</button>
+                            <button id="clearObfuscateBtn" class="btn btn-danger">清空</button>
+                            <button id="copyObfuscateBtn" class="btn btn-success">复制代码</button>
+                        </div>
+                    </h3>
+                    <div class="obfuscator-controls">
+                        <div class="control-group">
+                            <label>混淆级别:</label>
+                            <select id="obfuscationLevel">
+                                <option value="low">低级别</option>
+                                <option value="medium" selected>中级别</option>
+                                <option value="high">高级别</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <label>混淆选项:</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" id="renameVariables" checked> 重命名变量</label>
+                                <label><input type="checkbox" id="renameFunctions" checked> 重命名函数</label>
+                                <label><input type="checkbox" id="removeComments" checked> 移除注释</label>
+                                <label><input type="checkbox" id="removeWhitespace" checked> 移除空白</label>
+                                <label><input type="checkbox" id="stringEncoding"> 字符串编码</label>
+                                <label><input type="checkbox" id="deadCodeInjection"> 死代码注入</label>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label>保留标识符:</label>
+                            <textarea id="reservedIdentifiers" placeholder="输入要保留的标识符，每行一个..."></textarea>
+                        </div>
+                    </div>
+                    <div class="code-input-area">
+                        <h4>输入JavaScript代码:</h4>
+                        <textarea id="obfuscateInput" placeholder="粘贴JavaScript代码到这里..."></textarea>
+                    </div>
+                </div>
+
+                <div class="output-section">
+                    <h3>混淆结果</h3>
+                    <div class="obfuscation-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">原始大小:</span>
+                            <span id="originalCodeSize" class="stat-value">0 KB</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">混淆后大小:</span>
+                            <span id="obfuscatedCodeSize" class="stat-value">0 KB</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">可读性:</span>
+                            <span id="readabilityScore" class="stat-value">100%</span>
+                        </div>
+                    </div>
+                    <textarea id="obfuscateOutput" readonly placeholder="混淆后的代码将在这里显示..."></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- 性能分析器 -->
+        <div class="tool-content" id="performance-analyzer">
+            <div class="content">
+                <div class="input-section">
+                    <h3>性能分析器
+                        <div class="toolbar">
+                            <button id="startAnalysisBtn" class="btn btn-primary">开始分析</button>
+                            <button id="stopAnalysisBtn" class="btn btn-danger">停止分析</button>
+                            <button id="exportReportBtn" class="btn btn-success">导出报告</button>
+                        </div>
+                    </h3>
+                    <div class="performance-controls">
+                        <div class="control-group">
+                            <label>分析类型:</label>
+                            <select id="analysisType">
+                                <option value="page-load">页面加载</option>
+                                <option value="resource-load">资源加载</option>
+                                <option value="memory-usage">内存使用</option>
+                                <option value="cpu-usage">CPU使用</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <label>监控项目:</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" id="monitorLoadTime" checked> 加载时间</label>
+                                <label><input type="checkbox" id="monitorResources" checked> 资源大小</label>
+                                <label><input type="checkbox" id="monitorMemory" checked> 内存使用</label>
+                                <label><input type="checkbox" id="monitorNetwork" checked> 网络请求</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="performance-display">
+                        <h4>实时性能数据:</h4>
+                        <div id="performanceMetrics" class="performance-metrics">
+                            <div class="metric-item">
+                                <span class="metric-label">页面加载时间:</span>
+                                <span id="loadTime" class="metric-value">--</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">DOM内容加载:</span>
+                                <span id="domContentLoaded" class="metric-value">--</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">资源总数:</span>
+                                <span id="resourceCount" class="metric-value">--</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">总资源大小:</span>
+                                <span id="totalSize" class="metric-value">--</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="output-section">
+                    <h3>性能报告</h3>
+                    <div id="performanceReport" class="performance-report">
+                        <div class="report-section">
+                            <h4>加载性能</h4>
+                            <div id="loadingPerformance"></div>
+                        </div>
+                        <div class="report-section">
+                            <h4>资源分析</h4>
+                            <div id="resourceAnalysis"></div>
+                        </div>
+                        <div class="report-section">
+                            <h4>优化建议</h4>
+                            <div id="optimizationSuggestions"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 正则表达式测试器 -->
+        <div class="tool-content" id="regex-tester">
+            <div class="content">
+                <div class="input-section">
+                    <h3>正则表达式测试器
+                        <div class="toolbar">
+                            <button id="testRegexBtn" class="btn btn-primary">测试正则</button>
+                            <button id="clearRegexBtn" class="btn btn-danger">清空</button>
+                            <button id="copyRegexBtn" class="btn btn-success">复制代码</button>
+                        </div>
+                    </h3>
+                    <div class="regex-controls">
+                        <div class="control-group">
+                            <label>正则表达式:</label>
+                            <input type="text" id="regexPattern" placeholder="输入正则表达式...">
+                        </div>
+                        <div class="control-group">
+                            <label>测试文本:</label>
+                            <textarea id="regexTestText" placeholder="输入要测试的文本..."></textarea>
+                        </div>
+                        <div class="control-group">
+                            <label>正则选项:</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" id="regexGlobal"> 全局匹配 (g)</label>
+                                <label><input type="checkbox" id="regexIgnoreCase"> 忽略大小写 (i)</label>
+                                <label><input type="checkbox" id="regexMultiline"> 多行匹配 (m)</label>
+                                <label><input type="checkbox" id="regexUnicode"> Unicode (u)</label>
+                                <label><input type="checkbox" id="regexSticky"> 粘性匹配 (y)</label>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label>常用正则:</label>
+                            <select id="commonRegex">
+                                <option value="">选择常用正则...</option>
+                                <option value="email">邮箱地址</option>
+                                <option value="phone">手机号码</option>
+                                <option value="url">URL地址</option>
+                                <option value="ip">IP地址</option>
+                                <option value="date">日期格式</option>
+                                <option value="password">密码强度</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="regex-preview">
+                        <h4>匹配结果:</h4>
+                        <div id="regexResults" class="regex-results"></div>
+                    </div>
+                </div>
+
+                <div class="output-section">
+                    <h3>测试结果</h3>
+                    <div class="regex-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">匹配数量:</span>
+                            <span id="matchCount" class="stat-value">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">执行时间:</span>
+                            <span id="executionTime" class="stat-value">0ms</span>
+                        </div>
+                    </div>
+                    <textarea id="regexOutput" readonly placeholder="匹配结果和代码示例将在这里显示..."></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Base64转换器 -->
+        <div class="tool-content" id="base64-converter">
+            <div class="content">
+                <div class="input-section">
+                    <h3>Base64转换器
+                        <div class="toolbar">
+                            <button id="encodeBtn" class="btn btn-primary">编码</button>
+                            <button id="decodeBtn" class="btn btn-secondary">解码</button>
+                            <button id="clearBase64Btn" class="btn btn-danger">清空</button>
+                            <button id="copyBase64Btn" class="btn btn-success">复制</button>
+                        </div>
+                    </h3>
+                    <div class="base64-controls">
+                        <div class="control-group">
+                            <label>转换类型:</label>
+                            <select id="base64Type">
+                                <option value="text">文本</option>
+                                <option value="image">图片</option>
+                                <option value="file">文件</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <label>编码选项:</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" id="base64UrlSafe"> URL安全</label>
+                                <label><input type="checkbox" id="base64Padding"> 填充字符</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="base64-input-area">
+                        <h4>输入内容:</h4>
+                        <div id="base64InputContainer">
+                            <textarea id="base64Input" placeholder="输入要转换的文本..."></textarea>
+                            <input type="file" id="base64FileInput" style="display: none;">
+                            <button id="selectFileBtn" class="btn btn-secondary">选择文件</button>
+                        </div>
+                    </div>
+                    <div class="base64-preview">
+                        <h4>预览:</h4>
+                        <div id="base64Preview" class="base64-preview-container"></div>
+                    </div>
+                </div>
+
+                <div class="output-section">
+                    <h3>转换结果</h3>
+                    <div class="base64-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">原始大小:</span>
+                            <span id="base64OriginalSize" class="stat-value">0 KB</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">编码后大小:</span>
+                            <span id="base64EncodedSize" class="stat-value">0 KB</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">编码率:</span>
+                            <span id="base64EncodingRatio" class="stat-value">133%</span>
+                        </div>
+                    </div>
+                    <textarea id="base64Output" readonly placeholder="转换结果将在这里显示..."></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- 状态栏 -->
+        <div id="statusBar" class="status-bar"></div>
+    </div>
+
+    <!-- 引入脚本 -->
+    <script src="../../shared/jquery-3.3.1.min.js"></script>
+    <script src="scripts/frontendToolboxTool.js"></script>
+    <script src="scripts/frontend-toolbox.js"></script>
+    <!-- 新工具脚本 -->
+    <script src="tools/css-grid-tool.js"></script>
+    <script src="tools/animation-generator.js"></script>
+    <script src="tools/responsive-breakpoints.js"></script>
+    <script src="tools/svg-optimizer.js"></script>
+    <script src="tools/code-obfuscator.js"></script>
+    <script src="tools/performance-analyzer.js"></script>
+    <script src="tools/regex-tester.js"></script>
+    <script src="tools/base64-converter.js"></script>
+</body>
+</html> 

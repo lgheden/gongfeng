@@ -1,0 +1,368 @@
+/* 弹出窗口样式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    min-width: 380px;
+    min-height: 600px;
+}
+
+.popup-container {
+    width: 380px;
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* 头部样式 */
+.popup-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.logo-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.logo h1 {
+    font-size: 14px;
+    font-weight: 200;
+    margin: 0;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.header-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    padding: 4px 6px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 200;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    backdrop-filter: blur(10px);
+}
+
+.header-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.header-btn:active {
+
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.btn-icon {
+    font-size: 14px;
+}
+
+.btn-text {
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.version {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* 搜索框样式 */
+.search-container {
+    position: relative;
+    padding: 16px 20px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+    flex-shrink: 0;
+}
+
+.search-input {
+    width: 100%;
+    padding: 8px 16px 8px 40px;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 12px;
+    background: white;
+    outline: none;
+}
+
+.search-input:focus {
+    border-color: #4285f4;
+    box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.1);
+}
+
+.search-icon {
+    position: absolute;
+    left: 32px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6c757d;
+    font-size: 16px;
+    pointer-events: none;
+}
+
+/* 工具列表样式 */
+.tools-container {
+    flex: 1;
+    overflow-y: auto;
+    min-height: 0;
+}
+
+.tool-item {
+    display: flex;
+    align-items: center;
+    padding: 16px 20px;
+    cursor: pointer;
+
+    border-bottom: 1px solid #f1f3f4;
+    position: relative;
+}
+
+.tool-item:hover {
+    background: #f8f9fa;
+
+}
+
+.tool-item:active {
+    background: #e9ecef;
+
+}
+
+.tool-item.hidden {
+    display: none;
+}
+
+.tool-icon {
+    font-size: 14px;
+    margin-right: 14px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f1f3f4 0%, #e8eaed 100%);
+    border-radius: 10px;
+
+}
+
+.tool-item:hover .tool-icon {
+    background: #fff;
+}
+
+.tool-info {
+    flex: 1;
+}
+
+.tool-info h3 {
+    font-size: 14px;
+    font-weight: 400;
+    margin: 0 0 4px 0;
+    color: #202124;
+}
+
+.tool-info p {
+    font-size: 12px;
+    color: #c4c2c2;
+    margin: 0;
+    line-height: 1.4;
+    width: 216px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tool-arrow {
+    font-size: 18px;
+    color: #9aa0a6;
+    margin-left: 12px;
+}
+
+.tool-item:hover .tool-arrow {
+    color: #4285f4;
+
+}
+
+/* 底部样式 */
+.popup-footer {
+    background: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+    flex-shrink: 0;
+    padding: 6px 0px;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.footer-links a {
+    color: #5f6368;
+    text-decoration: none;
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.footer-links a:hover {
+    color: #4285f4;
+    background: rgba(66, 133, 244, 0.1);
+}
+
+/* 打赏按钮特殊样式 */
+#donateLink {
+    background: linear-gradient(135deg, #f9a688 0%, #f97272 100%);
+    color: white !important;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(238, 90, 36, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+#donateLink:hover {
+    background: linear-gradient(135deg, #f5865e 0%, #f7a7a7 100%) !important;
+
+    box-shadow: 0 4px 16px rgba(252, 134, 91, 0.4);
+    color: white !important;
+}
+
+#donateLink::before {
+    content: '💝';
+    margin-right: 4px;
+    font-size: 14px;
+}
+
+
+
+.separator {
+    color: #dadce0;
+    font-size: 12px;
+}
+
+/* 滚动条样式 */
+.tools-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.tools-container::-webkit-scrollbar-track {
+    background: #f1f3f4;
+}
+
+.tools-container::-webkit-scrollbar-thumb {
+    background: #dadce0;
+    border-radius: 3px;
+}
+
+.tools-container::-webkit-scrollbar-thumb:hover {
+    background: #bdc1c6;
+}
+
+/* 动画效果 */
+
+
+.popup-container {
+
+}
+
+/* 响应式设计 */
+@media (max-width: 400px) {
+    body {
+        min-width: 320px;
+    }
+
+    .popup-container {
+        width: 100%;
+        min-width: 320px;
+    }
+
+    .popup-header {
+        padding: 8px 12px;
+    }
+
+    .search-container {
+        padding: 8px 14px;
+    }
+
+    .tool-item {
+        padding: 8px 12px;
+    }
+}
+
+/* 无搜索结果提示 */
+.no-results {
+    text-align: center;
+    padding: 40px 20px;
+    color: #5f6368;
+}
+
+.no-results-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+}
+
+.no-results h3 {
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: #202124;
+}
+
+.no-results p {
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* 加载状态 */
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+}
+
+.loading-spinner {
+    width: 24px;
+    height: 24px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #4285f4;
+    border-radius: 50%;
+
+}

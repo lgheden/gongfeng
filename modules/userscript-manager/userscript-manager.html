@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>油猴脚本管理器</title>
+    <link rel="stylesheet" href="../../shared/common.css">
+     <link rel="stylesheet" href="assets/userscript-manager.css">
+ <link rel="stylesheet" href="../../shared/codemirror.min.css">
+ <link rel="stylesheet" href="../../shared/foldgutter.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 顶部工具栏 -->
+         <header>
+             <h1>🐒 油猴脚本管理器<p class="subtitle">专业的用户脚本开发与管理工具</p></h1>
+             <a href="../../pages/donate.html" class="donate-btn">💝 赞助</a>
+        </header>
+        
+        <!-- 快速统计面板 -->
+        <div class="stats-panel">
+            <div class="stat-card">
+                <div class="stat-icon">📄</div>
+                <div class="stat-number" id="totalScripts">0</div>
+                <div class="stat-label">总脚本数</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">⚡</div>
+                <div class="stat-number" id="runningTasks">0</div>
+                <div class="stat-label">运行中任务</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div class="stat-number" id="todayExecutions">0</div>
+                <div class="stat-label">今日执行</div>
+            </div>
+        </div>
+        
+        <!-- 标签页导航 -->
+        <div class="tab-navigation">
+            <button class="tab-btn active" data-tab="script-config">
+                <span class="tab-icon">📝</span>
+                <span class="tab-text">脚本配置</span>
+            </button>
+            <button class="tab-btn" data-tab="task-management">
+                <span class="tab-icon">📋</span>
+                <span class="tab-text">任务管理</span>
+            </button>
+            <button class="tab-btn" data-tab="script-examples">
+                <span class="tab-icon">💡</span>
+                <span class="tab-text">脚本示例</span>
+            </button>
+            <button class="tab-btn" data-tab="script-market">
+                <span class="tab-icon">🏪</span>
+                <span class="tab-text">脚本市场</span>
+            </button>
+
+        </div>
+        
+        <!-- 脚本配置标签页 -->
+        <div class="tab-content active" id="script-config">
+            <h2>脚本配置</h2>
+            <div class="config-layout">
+                <div class="config-left">
+                    <div class="form-group">
+                        <label for="scriptName">脚本名称:</label>
+                        <input type="text" id="scriptName" placeholder="输入脚本名称" value="测试一下">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="matchRules">网址匹配规则:</label>
+                        <textarea id="matchRules" placeholder="输入匹配规则，每行一个\n例如：https://www.baidu.com/*\nhttps://www.google.com/*">https://www.baidu.com/</textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="refreshInterval">刷新间隔(秒):</label>
+                        <input type="number" id="refreshInterval" value="0" min="0" placeholder="0表示不启动自动刷新">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="dependencies">第三方JS依赖:</label>
+                        <textarea id="dependencies" placeholder="输入第三方JS库URL，每行一个\n例如：https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></textarea>
+                    </div>
+                    <div class="button-group">
+                        <button id="saveScript" class="btn btn-primary">保存脚本</button>
+                        <button id="clearForm" class="btn btn-warning">清空表单</button>
+                    </div>
+                </div>
+                
+                <div class="config-right">
+                    
+                    <div class="form-group">
+                        <label for="scriptCode">注入脚本:
+                            <button id="fullscreenBtn" class="btn btn-fullscreen" title="全屏编辑">⛶</button>
+                        </label>
+                        <div class="editor-container" id="editorContainer">
+                             <div class="fullscreen-toolbar">
+                                 已进入全屏编辑模式 (F11切换，ESC退出)<button id="exitFullscreenBtn" class="fullscreen-exit-btn" title="退出全屏">✕ 退出全屏</button>
+                             </div>
+                             <textarea id="scriptCode" placeholder="输入要注入的JavaScript代码">alert('欢迎你来到百度！');</textarea>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 任务管理标签页 -->
+        <div class="tab-content" id="task-management">
+            <h2>任务管理</h2>
+            <div class="task-controls">
+                <div class="action-group">
+                    <select id="statusFilter">
+                        <option value="all">全部状态</option>
+                        <option value="pending">待执行</option>
+                        <option value="running">运行中</option>
+                        <option value="completed">已完成</option>
+                        <option value="failed">失败</option>
+                    </select>
+                    <select id="priorityFilter">
+                        <option value="all">全部优先级</option>
+                        <option value="high">高</option>
+                        <option value="medium">中</option>
+                        <option value="low">低</option>
+                    </select>
+                    <input type="text" id="taskSearch" placeholder="搜索任务...">
+                    <button id="runAllTasks" class="btn btn-success">运行全部</button>
+                    <button id="stopAllTasks" class="btn btn-danger">停止全部</button>
+                    <button id="refreshTasks" class="btn btn-info">刷新状态</button>
+                </div>
+            </div>
+            
+            <div id="taskListContainer" class="task-items">
+                <!-- 任务项将在这里动态生成 -->
+            </div>
+        
+        </div>
+        
+       
+        <!-- 脚本示例标签页 -->
+        <div class="tab-content" id="script-examples">
+            <h2>脚本示例库</h2>
+            <div class="examples-toolbar">
+                <div class="search-group">
+                    <input type="text" id="exampleSearch" placeholder="搜索脚本示例...">
+                    <select id="exampleCategory">
+                        <option value="all">全部分类</option>
+                        <option value="dom">DOM操作</option>
+                        <option value="ui">界面增强</option>
+                        <option value="automation">自动化</option>
+                        <option value="utility">实用工具</option>
+                        <option value="api">API调用</option>
+                    </select>
+                </div>
+
+            </div>
+            
+            <div class="examples-grid" id="examplesContainer">
+                <!-- 示例卡片将在这里动态生成 -->
+            </div>
+            <div class="example-grid" id="exampleGrid">
+                <!-- 示例将在这里动态生成 -->
+            </div>
+        </div>
+        
+        <!-- 脚本市场标签页 -->
+        <div class="tab-content" id="script-market">
+            <h2>脚本市场</h2>
+            
+            <div class="market-header">
+                <div class="search-bar">
+                    <input type="text" id="marketSearch" placeholder="搜索脚本...">
+                    <button class="btn btn-primary" id="searchBtn">🔍 搜索</button>
+                </div>
+                <div class="market-filters">
+                    <select id="categoryFilter">
+                        <option value="all">全部分类</option>
+                        <option value="productivity">效率工具</option>
+                        <option value="enhancement">页面增强</option>
+                        <option value="automation">自动化</option>
+                        <option value="utility">实用工具</option>
+                    </select>
+                    <select id="sortFilter">
+                        <option value="popular">最受欢迎</option>
+                        <option value="newest">最新发布</option>
+                        <option value="rating">评分最高</option>
+                        <option value="downloads">下载最多</option>
+                    </select>
+                </div>
+            </div>
+            <div class="market-grid" id="marketGrid">
+                <!-- 市场脚本将在这里动态生成 -->
+            </div>
+        </div>
+        
+
+        
+        <!-- 脚本预览区域 -->
+        <div class="script-preview" id="scriptPreview" style="display: none;">
+            <h2>脚本预览</h2>
+            <div class="preview-controls">
+                <button id="copyScript" class="btn btn-primary">复制脚本</button>
+                <button id="downloadScript" class="btn btn-secondary">下载脚本</button>
+                <button id="closePreview" class="btn btn-warning">关闭预览</button>
+            </div>
+            <pre id="scriptContent"></pre>
+        </div>
+    </div>
+    
+    <script src="../../shared/codemirror.min.js"></script>
+  <script src="../../shared/javascript.min.js"></script>
+  <script src="../../shared/foldcode.js"></script>
+  <script src="../../shared/foldgutter.js"></script>
+  <script src="../../shared/jquery-3.3.1.min.js"></script>
+ <script src="scripts/userscript-manager.js"></script>
+</body>
+</html>

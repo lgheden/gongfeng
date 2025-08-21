@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>词频统计工具测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .test-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .test-button:hover {
+            background: #0056b3;
+        }
+        .result {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <h1>词频统计工具功能测试</h1>
+    
+    <div class="test-section">
+        <h3>测试数据</h3>
+        <button class="test-button" onclick="testChinese()">中文文本测试</button>
+        <button class="test-button" onclick="testEnglish()">英文文本测试</button>
+        <button class="test-button" onclick="testMixed()">混合文本测试</button>
+        <button class="test-button" onclick="testCode()">代码文本测试</button>
+    </div>
+    
+    <div class="test-section">
+        <h3>功能测试</h3>
+        <button class="test-button" onclick="testWordAnalysis()">词频分析测试</button>
+        <button class="test-button" onclick="testSorting()">排序功能测试</button>
+        <button class="test-button" onclick="testFiltering()">过滤功能测试</button>
+    </div>
+    
+    <div class="test-section">
+        <h3>测试结果</h3>
+        <div id="testResult" class="result">点击上方按钮开始测试...</div>
+    </div>
+
+    <script>
+        // 测试数据
+        const testData = {
+            chinese: `人工智能是计算机科学的一个分支，它企图了解智能的实质，并生产出一种新的能以人类智能相似的方式做出反应的智能机器。该领域的研究包括机器人、语言识别、图像识别、自然语言处理和专家系统等。人工智能从诞生以来，理论和技术日益成熟，应用领域也不断扩大，可以设想，未来人工智能带来的科技产品，将会是人类智慧的"容器"。`,
+            english: `Artificial intelligence (AI) is intelligence demonstrated by machines, in contrast to the natural intelligence displayed by humans and animals. Leading AI textbooks define the field as the study of "intelligent agents": any device that perceives its environment and takes actions that maximize its chance of successfully achieving its goals.`,
+            mixed: `人工智能 AI 是计算机科学 computer science 的一个重要分支。它结合了机器学习 machine learning、深度学习 deep learning 和自然语言处理 natural language processing 等技术。在2023年，AI技术取得了重大突破，ChatGPT等大语言模型的出现改变了人们的工作方式。`,
+            code: `function analyzeText(text) {
+    const words = text.split('\\s+');
+    const wordCount = {};
+    
+    words.forEach(word => {
+        wordCount[word] = (wordCount[word] || 0) + 1;
+    });
+    
+    return wordCount;
+}
+
+const result = analyzeText("hello world hello javascript");
+console.log(result);`
+        };
+
+        // 词频分析函数
+        function analyzeText(text, options = {}) {
+            const {
+                ignoreCase = true,
+                ignoreNumbers = false,
+                ignorePunctuation = true,
+                minWordLength = 2
+            } = options;
+
+            // 文本预处理
+            let processedText = text;
+            
+            if (ignoreCase) {
+                processedText = processedText.toLowerCase();
+            }
+            
+            if (ignorePunctuation) {
+                processedText = processedText.replace(/[^\w\s\u4e00-\u9fff]/g, ' ');
+            }
+            
+            // 分词处理
+            const words = processedText
+                .split(/\s+/)
+                .filter(word => word.length > 0)
+                .map(word => word.trim());
+            
+            // 过滤条件
+            const filteredWords = words.filter(word => {
+                if (word.length < minWordLength) return false;
+                if (ignoreNumbers && /^\d+$/.test(word)) return false;
+                return true;
+            });
+            
+            // 统计词频
+            const wordCount = {};
+            filteredWords.forEach(word => {
+                wordCount[word] = (wordCount[word] || 0) + 1;
+            });
+            
+            // 转换为数组
+            const wordFrequency = Object.entries(wordCount).map(([word, count]) => ({
+                word,
+                count,
+                percentage: (count / filteredWords.length * 100).toFixed(2)
+            }));
+            
+            return {
+                words: wordFrequency,
+                stats: {
+                    total: filteredWords.length,
+                    unique: wordFrequency.length,
+                    avgLength: filteredWords.length > 0 
+                        ? (filteredWords.reduce((sum, word) => sum + word.length, 0) / filteredWords.length).toFixed(1)
+                        : 0
+                }
+            };
+        }
+
+        // 测试函数
+        function testChinese() {
+            const result = analyzeText(testData.chinese);
+            displayResult('中文文本测试', result);
+        }
+
+        function testEnglish() {
+            const result = analyzeText(testData.english);
+            displayResult('英文文本测试', result);
+        }
+
+        function testMixed() {
+            const result = analyzeText(testData.mixed);
+            displayResult('混合文本测试', result);
+        }
+
+        function testCode() {
+            const result = analyzeText(testData.code);
+            displayResult('代码文本测试', result);
+        }
+
+        function testWordAnalysis() {
+            const text = "hello world hello javascript world programming";
+            const result = analyzeText(text);
+            displayResult('词频分析测试', result);
+        }
+
+        function testSorting() {
+            const text = "apple banana apple cherry banana apple";
+            const result = analyzeText(text);
+            
+            // 按频率排序
+            const byFrequency = [...result.words].sort((a, b) => b.count - a.count);
+            // 按字母排序
+            const byAlphabetical = [...result.words].sort((a, b) => a.word.localeCompare(b.word));
+            // 按长度排序
+            const byLength = [...result.words].sort((a, b) => b.word.length - a.word.length);
+            
+            const testResult = {
+                original: result,
+                byFrequency: byFrequency,
+                byAlphabetical: byAlphabetical,
+                byLength: byLength
+            };
+            
+            displayResult('排序功能测试', testResult);
+        }
+
+        function testFiltering() {
+            const text = "hello 123 world 456 hello abc def 789";
+            
+            // 不过滤数字
+            const noFilter = analyzeText(text, { ignoreNumbers: false });
+            // 过滤数字
+            const filterNumbers = analyzeText(text, { ignoreNumbers: true });
+            // 最小词长为3
+            const minLength3 = analyzeText(text, { minWordLength: 3 });
+            
+            const testResult = {
+                noFilter: noFilter,
+                filterNumbers: filterNumbers,
+                minLength3: minLength3
+            };
+            
+            displayResult('过滤功能测试', testResult);
+        }
+
+        function displayResult(testName, result) {
+            const resultDiv = document.getElementById('testResult');
+            let output = `=== ${testName} ===\n\n`;
+            
+            if (result.stats) {
+                // 单个结果
+                output += `统计信息:\n`;
+                output += `总词数: ${result.stats.total}\n`;
+                output += `不重复词数: ${result.stats.unique}\n`;
+                output += `平均词长: ${result.stats.avgLength}\n\n`;
+                output += `词频统计 (前10个):\n`;
+                result.words.slice(0, 10).forEach((item, index) => {
+                    output += `${index + 1}. ${item.word}: ${item.count}次 (${item.percentage}%)\n`;
+                });
+            } else {
+                // 多个结果
+                Object.entries(result).forEach(([key, value]) => {
+                    output += `--- ${key} ---\n`;
+                    if (value.stats) {
+                        output += `总词数: ${value.stats.total}, 不重复: ${value.stats.unique}\n`;
+                        output += `前5个词汇: ${value.words.slice(0, 5).map(w => `${w.word}(${w.count})`).join(', ')}\n`;
+                    }
+                    output += '\n';
+                });
+            }
+            
+            resultDiv.textContent = output;
+        }
+
+        // 页面加载完成后的初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('词频统计工具测试页面已加载');
+            document.getElementById('testResult').textContent = '测试页面已准备就绪，请点击上方按钮开始测试...';
+        });
+    </script>
+</body>
+</html> 

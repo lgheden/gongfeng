@@ -1,0 +1,950 @@
+/* 时间戳转换工具专用样式 */
+
+/* 当前时间显示区域 */
+.current-time-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 4px;
+    border-radius: 3px;
+    margin-bottom: 4px;
+    box-shadow: 0 1px 2px rgba(102, 126, 234, 0.2);
+}
+
+.current-time-section h3 {
+    margin: 0 0 8px 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.time-display {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.time-item {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    align-items: center;
+}
+
+.time-item label {
+    font-size: 12px;
+    opacity: 0.9;
+    font-weight: 500;
+}
+
+.time-item input {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 14px;
+}
+
+.time-item input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* 全屏紧凑布局 */
+.container {
+    height: 100vh;
+    overflow: hidden;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+/* 主要内容区域 - 左右分栏 */
+.main-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    flex: 1;
+    min-height: 0;
+    box-sizing: border-box;
+    overflow: auto;
+}
+
+/* 左侧区域：时间戳转日期 */
+.left-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 0;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+/* 右侧区域：日期转时间戳 */
+.right-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 0;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+/* 主要内容区域布局 */
+.content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex: 1;
+    min-height: 0;
+}
+
+/* 输入输出区域 */
+.input-section, .output-section {
+    background: white;
+    border-radius: 6px;
+    padding: 10px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    min-height: 400px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+/* 功能区域通用样式 */
+.quick-timestamps, .format-examples, .time-calculator {
+    background: white;
+    border-radius: 6px;
+    padding: 10px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    min-height: 320px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+/* 快速时间戳区域（在input-section内部） */
+.quick-timestamps-section {
+    padding-top: 15px;
+    border-top: 1px solid #e9ecef;
+}
+
+.quick-timestamps-section h4 {
+    margin: 0 0 10px 0;
+    color: #495057;
+    font-size: 12px;
+    font-weight: 600;
+    border-bottom: 1px solid #667eea;
+    padding-bottom: 6px;
+}
+
+.input-section h3,
+.output-section h3,
+.quick-timestamps h3,
+.format-examples h3,
+.time-calculator h3 {
+    margin: 0 0 10px 0;
+    color: #495057;
+    font-size: 12px;
+    font-weight: 600;
+    border-bottom: 1px solid #667eea;
+    padding-bottom: 6px;
+}
+
+/* 时间戳输入组 */
+.timestamp-input-group {
+    margin-bottom: 12px;
+}
+
+.timestamp-input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #495057;
+}
+
+.input-with-unit {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    flex: 1;
+}
+
+.input-with-unit input {
+    flex: 1;
+    min-width: 0;
+    padding: 10px 12px;
+    border: 2px solid #dee2e6;
+    border-radius: 6px;
+    font-family: 'Consolas', 'Monaco', monospace;
+    transition: border-color 0.3s ease;
+}
+
+.input-with-unit input:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.input-with-unit select {
+    min-width: 60px;
+    flex-shrink: 0;
+    padding: 10px 12px;
+    border: 2px solid #dee2e6;
+    border-radius: 6px;
+    background: white;
+}
+
+/* 结果显示区域 */
+.timestamp-results,
+.datetime-results {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+
+
+/* 底部功能区域 */
+.bottom-functions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+/* 统一标题样式 - 移除重复定义，使用统一的样式 */
+
+/* 统一按钮样式 */
+.btn {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-width: auto;
+    position: relative;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-primary {
+    background: #667eea;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #5a6fd8;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(102, 126, 234, 0.3);
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #5a6268;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(108, 117, 125, 0.3);
+}
+
+.btn-danger {
+    background: #dc3545;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #c82333;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(220, 53, 69, 0.3);
+}
+
+.btn-success {
+    background: #28a745;
+    color: white;
+}
+
+.btn-success:hover {
+    background: #218838;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(40, 167, 69, 0.3);
+}
+
+.btn-info {
+    background: #17a2b8;
+    color: white;
+}
+
+.btn-info:hover {
+    background: #138496;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(23, 162, 184, 0.3);
+}
+
+/* 移除重复的快速时间戳样式定义 */
+
+/* 移除重复的快速时间戳标题样式 */
+
+.timestamp-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 2px;
+    flex: 1;
+}
+
+.timestamp-btn {
+    padding: 8px 10px;
+    border: 1px solid #667eea;
+    background: white;
+    color: #667eea;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    text-align: center;
+    line-height: 1.4;
+    min-height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.timestamp-btn:hover {
+    background: #667eea;
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(102, 126, 234, 0.3);
+}
+
+.timestamp-btn:active {
+    transform: translateY(0);
+}
+
+/* 移除重复的格式示例样式定义 */
+
+/* 移除重复的格式示例标题样式 */
+
+.format-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+}
+
+
+
+/* 移除重复的时间计算器样式定义 */
+
+/* 移除重复的时间计算器标题样式 */
+
+.calculator-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* 计算器操作按钮 */
+.calc-operations {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin: 3px 0;
+}
+
+.operation-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.operation-row input, .operation-row select {
+    padding: 4px 6px;
+    border: 2px solid #e9ecef;
+    border-radius: 4px;
+    font-size: 10px;
+    transition: border-color 0.3s ease;
+}
+
+.operation-row input:focus, .operation-row select:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.operation-row button {
+    flex: 1;
+    padding: 8px 10px;
+    border: 1px solid #dee2e6;
+    background: white;
+    color: #495057;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    min-width: 60px;
+    line-height: 1.4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.operation-row button:hover {
+    background: #5a6fd8;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(102, 126, 234, 0.3);
+}
+
+.calc-btn {
+    flex: 1;
+    padding: 8px 10px;
+    border: 1px solid #667eea;
+    background: white;
+    color: #667eea;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    min-width: 60px;
+    line-height: 1.4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.calc-btn:hover {
+    background: #667eea;
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(102, 126, 234, 0.3);
+}
+
+
+
+/* 相对时间样式 */
+.relative-time {
+    color: #6f42c1;
+    font-weight: 600;
+}
+
+/* 错误状态 */
+.error {
+    border-color: #dc3545 !important;
+    background-color: #fff5f5 !important;
+}
+
+.error-message {
+    color: #dc3545;
+    font-size: 12px;
+    margin-top: 5px;
+    font-weight: 500;
+}
+
+/* 成功状态 */
+.success {
+    border-color: #28a745 !important;
+    background-color: #f8fff9 !important;
+}
+
+/* 复制通知 */
+.copy-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #28a745;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 1000;
+    animation: slideInRight 0.3s ease, slideOutRight 0.3s ease 2.7s;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutRight {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+/* 表单元素样式 */
+input[type="text"], input[type="number"], textarea, select {
+    padding: 8px 10px;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 12px;
+    line-height: 1.4;
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus, input[type="number"]:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 80px;
+    flex: 1;
+    width: 100%;
+}
+
+/* 表单组样式 - label和input在同一行 */
+.form-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.form-group label {
+    min-width: 80px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #495057;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.form-group input, .form-group select, .form-group textarea {
+    flex: 1;
+    min-width: 0;
+    padding: 8px 10px;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    font-size: 12px;
+    font-family: 'Consolas', 'Monaco', monospace;
+    transition: border-color 0.3s ease;
+    background: white;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+}
+
+/* 只读输入框样式 */
+.form-group input[readonly] {
+    background-color: #f8f9fa;
+    border-color: #e9ecef;
+    color: #6c757d;
+    cursor: default;
+}
+
+.form-group input[readonly]:focus {
+    box-shadow: none;
+    border-color: #e9ecef;
+}
+
+/* 隐藏原有的工具栏和当前时间区域 */
+.toolbar, .current-time-section {
+    display: none;
+}
+
+/* 大屏幕优化 */
+@media (min-width: 1400px) {
+    .timestamp-grid {
+        grid-template-columns: repeat(6, 1fr);
+    }
+    
+    .format-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* 控制区域 - 合并toolbar和current-time-section */
+.control-section {
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.toolbar-time-row {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+
+.current-time-inline {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin-left: 10px;
+    flex: 1;
+}
+
+.time-item-inline {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.time-item-inline label {
+    min-width: 100px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #495057;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+}
+
+.time-item-inline input {
+    flex: 1;
+    min-width: 0;
+    padding: 8px 10px;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 12px;
+    background: #f8f9fa;
+    display: flex;
+    align-items: center;
+}
+
+/* 移除原有的toolbar和current-time-section样式 */
+.toolbar {
+    display: none;
+}
+
+.current-time-section {
+    display: none;
+}
+
+/* 状态栏样式 */
+.status-bar {
+    padding: 10px;
+    background: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+    font-size: 12px;
+    color: #6c757d;
+    text-align: center;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+/* 响应式设计 */
+@media (max-width: 1200px) {
+    .main-content {
+        grid-template-columns: 1fr;
+        gap: 3px;
+    }
+    
+    .left-section, .right-section {
+        gap: 3px;
+    }
+    
+    .timestamp-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2px;
+    }
+    
+    .format-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2px;
+    }
+    
+    .toolbar-time-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+    }
+    
+    .current-time-inline {
+        width: 100%;
+        justify-content: space-between;
+        gap: 3px;
+    }
+    
+    .time-item-inline label {
+        min-width: 60px;
+        font-size: 9px;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 1px;
+    }
+    
+    .main-content {
+        gap: 2px;
+    }
+    
+    .left-section, .right-section {
+        gap: 2px;
+    }
+    
+    .input-section, .output-section, .quick-timestamps, .format-examples, .time-calculator {
+        padding: 3px;
+    }
+    
+    .timestamp-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1px;
+    }
+    
+    .format-grid {
+        grid-template-columns: 1fr;
+        gap: 1px;
+    }
+    
+    .operation-row {
+        grid-template-columns: 1fr;
+        gap: 1px;
+    }
+    
+    .current-time-inline {
+        flex-direction: column;
+        gap: 2px;
+        align-items: stretch;
+    }
+    
+    .time-item-inline {
+        min-width: auto;
+        width: 100%;
+    }
+    
+    .time-item-inline label {
+        min-width: 55px;
+        font-size: 8px;
+    }
+    
+    .action-buttons {
+        width: 100%;
+        justify-content: center;
+        gap: 1px;
+    }
+    
+    .toolbar-time-row {
+        flex-direction: column;
+        gap: 3px;
+        min-height: auto;
+    }
+    
+    .control-section {
+        padding: 2px 3px;
+    }
+    
+    .btn {
+        padding: 2px 4px;
+        font-size: 8px;
+    }
+    
+    .calc-btn {
+        padding: 1px 2px;
+        font-size: 8px;
+        min-width: 35px;
+    }
+}
+
+@media (max-width: 768px) {
+    .content {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+    
+    .bottom-functions {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+    
+    .time-display {
+        grid-template-columns: 1fr;
+    }
+    
+    .timestamp-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .format-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .operation-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .input-with-unit {
+        flex-direction: column;
+    }
+    
+    .input-with-unit select {
+        min-width: auto;
+    }
+    
+    .input-section,
+    .output-section {
+        min-height: auto;
+        padding: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .timestamp-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .operation-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .toolbar {
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+    
+    .toolbar .btn {
+        flex: 1;
+        min-width: 100px;
+        padding: 6px 8px;
+        font-size: 12px;
+    }
+}
+
+/* 加载动画 */
+.loading {
+    position: relative;
+    overflow: hidden;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    0% {
+        left: -100%;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
+/* 高亮显示 */
+.highlight {
+    background: linear-gradient(135deg, #ffeaa7, #fab1a0);
+    border-color: #e17055;
+    animation: pulse 0.6s ease;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.02);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* 工具提示 */
+.tooltip {
+    position: relative;
+    cursor: help;
+}
+
+.tooltip::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.tooltip::after {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(100%);
+    border: 5px solid transparent;
+    border-top-color: #333;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.tooltip:hover::before,
+.tooltip:hover::after {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(-5px);
+}
+
+/* 状态栏增强 */
+.status-bar {
+    background: linear-gradient(135deg, #74b9ff, #0984e3);
+    color: white;
+    font-weight: 500;
+}
+
+.status-bar.error {
+    background: linear-gradient(135deg, #fd79a8, #e84393);
+}
+
+.status-bar.success {
+    background: linear-gradient(135deg, #55efc4, #00b894);
+}
+
+.status-bar.warning {
+    background: linear-gradient(135deg, #fdcb6e, #e17055);
+}

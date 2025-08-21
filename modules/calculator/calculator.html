@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>多功能计算器</title>
+    <link rel="stylesheet" href="../../shared/common.css">
+    <script src="../../shared/pageAnalyze/tailwindcss.js"></script>
+    <style>
+        .tab-content {
+            transform-origin: top left;
+            transition: transform 0.3s ease;
+        }
+        
+        /* 根据窗口宽度自动缩放 */
+        @media (max-width: 1536px) {
+            .tab-content {
+                transform: scale(0.95);
+            }
+        }
+        
+        @media (max-width: 1280px) {
+            .tab-content {
+                transform: scale(0.9);
+            }
+        }
+        
+        @media (max-width: 1024px) {
+            .tab-content {
+                transform: scale(0.85);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .tab-content {
+                transform: scale(0.8);
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .tab-content {
+                transform: scale(0.75);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .tab-content {
+                transform: scale(0.7);
+            }
+        }
+        
+        /* 根据窗口高度也进行调整 */
+        @media (max-height: 800px) {
+            .tab-content {
+                transform: scale(0.9);
+            }
+        }
+        
+        @media (max-height: 600px) {
+            .tab-content {
+                transform: scale(0.8);
+            }
+        }
+        
+        /* 确保缩放后的内容不会溢出 */
+        .tab-content {
+            width: 100%;
+            overflow: visible;
+        }
+        
+        /* 动态缩放的JavaScript支持 */
+        .auto-scale {
+            transform-origin: top left;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="max-w-7xl mx-auto p-1">
+        <header class="flex justify-between items-center mb-4 bg-blue-600 p-1 rounded-lg">
+            <div class="flex items-center space-x-4">
+                <h1 class="text-xl font-semibold text-white">🧮 多功能计算器</h1>
+                <span class="text-sm text-white opacity-90">程序员计算器、单位换算、贷款计算器、个税计算器</span>
+            </div>
+            <a href="../../pages/donate.html" class="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-lg transition-colors">💝 赞助</a>
+        </header>
+        
+        <!-- Tab 导航 -->
+        <div class="flex space-x-1 bg-gray-200 p-1 rounded-lg mb-4">
+            <button class="tab-btn flex-1 py-1.5 px-4 rounded-md text-sm font-medium transition-colors bg-white text-blue-600 shadow-sm" data-tab="programmer">程序员计算器</button>
+            <button class="tab-btn flex-1 py-1.5 px-4 rounded-md text-sm font-medium transition-colors text-gray-600 hover:text-gray-800" data-tab="financial">金融计算器</button>
+        </div>
+        
+        <!-- Tab 内容 -->
+        <div class="tab-content">
+            <!-- 程序员计算器 Tab -->
+            <div class="tab-panel block" id="programmer-tab">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    <!-- 左侧：程序员计算器 -->
+                    <div class="bg-white rounded-lg shadow-lg p-6">
+
+                        <div class="calculator-container">
+            <div class="mb-4">
+                <div class="grid grid-cols-1 gap-2">
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="flex items-center space-x-2">
+                            <label class="w-8 text-xs font-medium text-gray-600">HEX</label>
+                            <input type="text" id="hexDisplay" readonly class="flex-1 px-2 py-1.5 bg-gray-50 border border-gray-300 rounded-md text-right font-mono text-xs">
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <label class="w-8 text-xs font-medium text-gray-600">DEC</label>
+                            <input type="text" id="decDisplay" readonly class="flex-1 px-2 py-1.5 bg-gray-50 border border-gray-300 rounded-md text-right font-mono text-xs">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="flex items-center space-x-2">
+                            <label class="w-8 text-xs font-medium text-gray-600">OCT</label>
+                            <input type="text" id="octDisplay" readonly class="flex-1 px-2 py-1.5 bg-gray-50 border border-gray-300 rounded-md text-right font-mono text-xs">
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <label class="w-8 text-xs font-medium text-gray-600">BIN</label>
+                            <input type="text" id="binDisplay" readonly class="flex-1 px-2 py-1.5 bg-gray-50 border border-gray-300 rounded-md text-right font-mono text-xs">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-4 mt-4">
+                    <input type="text" id="formulaDisplay" readonly placeholder="输入公式或使用按钮操作" class="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md text-right font-mono text-sm">
+                </div>
+                
+                <div class="mb-6">
+                    <input type="text" id="mainDisplay" readonly value="0" class="w-full px-4 py-3 bg-gray-100 border-2 border-gray-300 rounded-lg text-right font-mono text-xl font-bold">
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <div class="flex space-x-2">
+                    <input type="text" id="formulaInput" placeholder="输入数学公式，如: 2+3*4, (5+3)*2, sqrt(16), pow(2,3)" class="flex-1 px-3 py-2 border border-gray-300 rounded-md font-mono text-sm">
+                    <button class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-3 rounded-md transition-colors text-sm" id="calculateFormula">计算</button>
+                    <button class="bg-gray-500 hover:bg-gray-600 text-white py-2 px-3 rounded-md transition-colors text-sm" id="clearFormula">清空</button>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-4 gap-1 mb-4">
+                <button class="mode-btn py-2 px-2 rounded-md text-sm font-medium transition-colors bg-blue-500 text-white" data-mode="dec">DEC</button>
+                <button class="mode-btn py-2 px-2 rounded-md text-sm font-medium transition-colors bg-gray-200 text-gray-700 hover:bg-gray-300" data-mode="hex">HEX</button>
+                <button class="mode-btn py-2 px-2 rounded-md text-sm font-medium transition-colors bg-gray-200 text-gray-700 hover:bg-gray-300" data-mode="oct">OCT</button>
+                <button class="mode-btn py-2 px-2 rounded-md text-sm font-medium transition-colors bg-gray-200 text-gray-700 hover:bg-gray-300" data-mode="bin">BIN</button>
+            </div>
+            
+            <div class="grid grid-cols-4 gap-1 mb-3">
+                <!-- 第一行 - 清除和退格 -->
+                <button class="btn btn-function py-2 px-2 bg-red-500 hover:bg-red-600 text-white rounded-md font-medium transition-colors text-sm" data-action="clear">C</button>
+                <button class="btn btn-function py-2 px-2 bg-orange-500 hover:bg-orange-600 text-white rounded-md font-medium transition-colors text-sm" data-action="clearEntry">CE</button>
+                <button class="btn btn-function py-2 px-2 bg-gray-500 hover:bg-gray-600 text-white rounded-md font-medium transition-colors text-sm" data-action="backspace">⌫</button>
+                <button class="btn btn-operator py-2 px-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md font-medium transition-colors text-sm" data-action="divide">÷</button>
+                
+                <!-- 第二行 - 位运算 -->
+                <button class="btn btn-bitwise py-2 px-1 bg-purple-500 hover:bg-purple-600 text-white rounded-md font-medium transition-colors text-xs" data-action="and">AND</button>
+                <button class="btn btn-bitwise py-2 px-1 bg-purple-500 hover:bg-purple-600 text-white rounded-md font-medium transition-colors text-xs" data-action="or">OR</button>
+                <button class="btn btn-bitwise py-2 px-1 bg-purple-500 hover:bg-purple-600 text-white rounded-md font-medium transition-colors text-xs" data-action="xor">XOR</button>
+                <button class="btn btn-operator py-2 px-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md font-medium transition-colors text-sm" data-action="multiply">×</button>
+                
+                <!-- 第三行 - 数字和运算 -->
+                <button class="btn btn-number py-2 px-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-md font-medium transition-colors text-sm" data-value="7">7</button>
+                <button class="btn btn-number py-2 px-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-md font-medium transition-colors text-sm" data-value="8">8</button>
+                <button class="btn btn-number py-2 px-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-md font-medium transition-colors text-sm" data-value="9">9</button>
+                <button class="btn btn-operator py-2 px-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md font-medium transition-colors text-sm" data-action="subtract">-</button>
+                
+                <!-- 第四行 -->
+                <button class="btn btn-number py-2 px-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-md font-medium transition-colors text-sm" data-value="4">4</button>
+                <button class="btn btn-number py-2 px-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-md font-medium transition-colors text-sm" data-value="5">5</button>
+                <button class="btn btn-number py-2 px-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-md font-medium transition-colors text-sm" data-value="6">6</button>
+                <button class="btn btn-operator py-2 px-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md font-medium transition-colors text-sm" data-action="add">+</button>
+                
+                <!-- 第五行 -->
+                <button class="btn btn-number py-2 px-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-md font-medium transition-colors text-sm" data-value="1">1</button>
+                <button class="btn btn-number py-2 px-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-md font-medium transition-colors text-sm" data-value="2">2</button>
+                <button class="btn btn-number py-2 px-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-md font-medium transition-colors text-sm" data-value="3">3</button>
+                <button class="btn btn-equals row-span-2 py-2 px-2 bg-green-500 hover:bg-green-600 text-white rounded-md font-medium transition-colors text-sm" data-action="equals">=</button>
+                
+                <!-- 第六行 -->
+                <button class="btn btn-number col-span-2 py-2 px-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-md font-medium transition-colors text-sm" data-value="0">0</button>
+                <button class="btn btn-number py-2 px-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-md font-medium transition-colors text-sm" data-value=".">.</button>
+            </div>
+            
+            <div class="grid grid-cols-4 gap-1">
+                <!-- 十六进制字母 -->
+                <button class="btn btn-hex py-2 px-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-md font-medium transition-colors text-sm" data-value="A">A</button>
+                <button class="btn btn-hex py-2 px-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-md font-medium transition-colors text-sm" data-value="B">B</button>
+                <button class="btn btn-hex py-2 px-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-md font-medium transition-colors text-sm" data-value="C">C</button>
+                <button class="btn btn-bitwise py-2 px-1 bg-purple-500 hover:bg-purple-600 text-white rounded-md font-medium transition-colors text-xs" data-action="not">NOT</button>
+                
+                <button class="btn btn-hex py-2 px-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-md font-medium transition-colors text-sm" data-value="D">D</button>
+                <button class="btn btn-hex py-2 px-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-md font-medium transition-colors text-sm" data-value="E">E</button>
+                <button class="btn btn-hex py-2 px-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-md font-medium transition-colors text-sm" data-value="F">F</button>
+                <button class="btn btn-bitwise py-2 px-2 bg-purple-500 hover:bg-purple-600 text-white rounded-md font-medium transition-colors text-sm" data-action="lshift"><<</button>
+                
+                <!-- 位移运算 -->
+                <button class="btn btn-bitwise py-2 px-2 bg-purple-500 hover:bg-purple-600 text-white rounded-md font-medium transition-colors text-sm" data-action="rshift">>></button>
+                <button class="btn btn-function py-2 px-1 bg-yellow-500 hover:bg-yellow-600 text-white rounded-md font-medium transition-colors text-xs" data-action="mod">MOD</button>
+                <button class="btn btn-function py-2 px-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-md font-medium transition-colors text-sm" data-action="sqrt">√</button>
+                <button class="btn btn-function py-2 px-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-md font-medium transition-colors text-sm" data-action="power">x²</button>
+            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 右侧：单位换算 -->
+                    <div class="bg-white rounded-lg shadow-lg p-6">
+                        <div class="unit-converter">
+                            <div class="flex justify-between items-center mb-6">
+                                <h3 class="text-xl font-bold text-gray-800">🔄 常用单位换算</h3>
+                                <!-- 模式开关 -->
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-xs text-gray-500">计算器</span>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" id="calculator-mode-switch" class="sr-only peer">
+                                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                    </label>
+                                    <span class="text-xs text-gray-500">单位换算</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <h4 class="text-lg font-semibold text-gray-700 mb-3">长度换算</h4>
+                                <div class="grid grid-cols-5 gap-2 items-center">
+                                    <input type="number" id="length-input" placeholder="输入数值" class="px-3 py-2 border border-gray-300 rounded-md text-sm">
+                                    <select id="length-from" class="px-3 py-2 border border-gray-300 rounded-md text-sm">
+                                        <option value="m">米(m)</option>
+                                        <option value="cm">厘米(cm)</option>
+                                        <option value="mm">毫米(mm)</option>
+                                        <option value="km">千米(km)</option>
+                                        <option value="inch">英寸(inch)</option>
+                                        <option value="ft">英尺(ft)</option>
+                                    </select>
+                                    <span class="text-center text-gray-500">=</span>
+                                    <input type="text" id="length-output" readonly class="px-3 py-2 bg-gray-50 border border-gray-300 rounded-md text-sm">
+                                    <select id="length-to" class="px-3 py-2 border border-gray-300 rounded-md text-sm">
+                                        <option value="m">米(m)</option>
+                                        <option value="cm" selected>厘米(cm)</option>
+                                        <option value="mm">毫米(mm)</option>
+                                        <option value="km">千米(km)</option>
+                                        <option value="inch">英寸(inch)</option>
+                                        <option value="ft">英尺(ft)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <h4 class="text-lg font-semibold text-gray-700 mb-3">重量换算</h4>
+                                <div class="grid grid-cols-5 gap-2 items-center">
+                                    <input type="number" id="weight-input" placeholder="输入数值" class="px-3 py-2 border border-gray-300 rounded-md text-sm">
+                                    <select id="weight-from" class="px-3 py-2 border border-gray-300 rounded-md text-sm">
+                                        <option value="kg">千克(kg)</option>
+                                        <option value="g">克(g)</option>
+                                        <option value="mg">毫克(mg)</option>
+                                        <option value="t">吨(t)</option>
+                                        <option value="lb">磅(lb)</option>
+                                        <option value="oz">盎司(oz)</option>
+                                    </select>
+                                    <span class="text-center text-gray-500">=</span>
+                                    <input type="text" id="weight-output" readonly class="px-3 py-2 bg-gray-50 border border-gray-300 rounded-md text-sm">
+                                    <select id="weight-to" class="px-3 py-2 border border-gray-300 rounded-md text-sm">
+                                        <option value="kg">千克(kg)</option>
+                                        <option value="g" selected>克(g)</option>
+                                        <option value="mg">毫克(mg)</option>
+                                        <option value="t">吨(t)</option>
+                                        <option value="lb">磅(lb)</option>
+                                        <option value="oz">盎司(oz)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <h4 class="text-lg font-semibold text-gray-700 mb-3">温度换算</h4>
+                                <div class="grid grid-cols-5 gap-2 items-center">
+                                    <input type="number" id="temp-input" placeholder="输入数值" class="px-3 py-2 border border-gray-300 rounded-md text-sm">
+                                    <select id="temp-from" class="px-3 py-2 border border-gray-300 rounded-md text-sm">
+                                        <option value="c">摄氏度(°C)</option>
+                                        <option value="f">华氏度(°F)</option>
+                                        <option value="k">开尔文(K)</option>
+                                    </select>
+                                    <span class="text-center text-gray-500">=</span>
+                                    <input type="text" id="temp-output" readonly class="px-3 py-2 bg-gray-50 border border-gray-300 rounded-md text-sm">
+                                    <select id="temp-to" class="px-3 py-2 border border-gray-300 rounded-md text-sm">
+                                        <option value="c">摄氏度(°C)</option>
+                                        <option value="f" selected>华氏度(°F)</option>
+                                        <option value="k">开尔文(K)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <h4 class="text-lg font-semibold text-gray-700 mb-3">面积换算</h4>
+                                <div class="grid grid-cols-5 gap-2 items-center">
+                                    <input type="number" id="area-input" placeholder="输入数值" class="px-3 py-2 border border-gray-300 rounded-md text-sm">
+                                    <select id="area-from" class="px-3 py-2 border border-gray-300 rounded-md text-sm">
+                                        <option value="m2">平方米(m²)</option>
+                                        <option value="cm2">平方厘米(cm²)</option>
+                                        <option value="km2">平方千米(km²)</option>
+                                        <option value="acre">英亩(acre)</option>
+                                        <option value="hectare">公顷(hectare)</option>
+                                    </select>
+                                    <span class="text-center text-gray-500">=</span>
+                                    <input type="text" id="area-output" readonly class="px-3 py-2 bg-gray-50 border border-gray-300 rounded-md text-sm">
+                                    <select id="area-to" class="px-3 py-2 border border-gray-300 rounded-md text-sm">
+                                        <option value="m2">平方米(m²)</option>
+                                        <option value="cm2" selected>平方厘米(cm²)</option>
+                                        <option value="km2">平方千米(km²)</option>
+                                        <option value="acre">英亩(acre)</option>
+                                        <option value="hectare">公顷(hectare)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 金融计算器 Tab -->
+            <div class="tab-panel hidden" id="financial-tab">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    <!-- 左侧：贷款计算器 -->
+                    <div class="bg-white rounded-lg shadow-lg p-6">
+                        <div class="loan-calculator">
+                            <h3 class="text-xl font-bold text-gray-800 mb-6">🏠 贷款计算器</h3>
+                            
+                            <div class="mb-3">
+                                <div class="flex items-center gap-3">
+                                    <label class="text-sm font-medium text-gray-700 w-24 flex-shrink-0">贷款金额</label>
+                                    <input type="number" id="loan-amount" placeholder="100" class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                                    <span class="text-sm text-gray-500 w-8">万元</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <div class="flex items-center gap-3">
+                                    <label class="text-sm font-medium text-gray-700 w-24 flex-shrink-0">贷款期限</label>
+                                    <input type="number" id="loan-years" placeholder="30" class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                                    <span class="text-sm text-gray-500 w-8">年</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <div class="flex items-center gap-3">
+                                    <label class="text-sm font-medium text-gray-700 w-24 flex-shrink-0">年利率</label>
+                                    <input type="number" id="loan-rate" step="0.01" placeholder="4.9" class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                                    <span class="text-sm text-gray-500 w-8">%</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <div class="flex items-center gap-3">
+                                    <label class="text-sm font-medium text-gray-700 w-24 flex-shrink-0">还款方式</label>
+                                    <select id="loan-type" class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                                        <option value="equal-payment">等额本息</option>
+                                        <option value="equal-principal">等额本金</option>
+                                    </select>
+                                    <span class="w-8"></span>
+                                </div>
+                            </div>
+                            
+                            <button class="w-full bg-blue-600 text-white py-2 px-3 rounded-md hover:bg-blue-700 transition-colors font-medium mb-4 text-sm" id="calculate-loan">计算贷款</button>
+                            
+                            <div class="space-y-2" id="loan-result">
+                                <div class="flex justify-between items-center p-2 bg-gray-50 rounded-md">
+                                    <span class="text-xs font-medium text-gray-700">每月还款本金：</span>
+                                    <span class="text-sm font-bold text-blue-600" id="monthly-principal">-</span>
+                                </div>
+                                <div class="flex justify-between items-center p-2 bg-gray-50 rounded-md">
+                                    <span class="text-xs font-medium text-gray-700">每月支付利息：</span>
+                                    <span class="text-sm font-bold text-orange-600" id="monthly-interest">-</span>
+                                </div>
+                                <div class="flex justify-between items-center p-2 bg-gray-50 rounded-md">
+                                    <span class="text-xs font-medium text-gray-700">每月还款金额：</span>
+                                    <span class="text-sm font-bold text-blue-600" id="monthly-payment">-</span>
+                                </div>
+                                <div class="flex justify-between items-center p-2 bg-gray-50 rounded-md">
+                                    <span class="text-xs font-medium text-gray-700">累计支付利息：</span>
+                                    <span class="text-sm font-bold text-red-600" id="cumulative-interest">-</span>
+                                </div>
+                                <div class="flex justify-between items-center p-2 bg-gray-50 rounded-md">
+                                    <span class="text-xs font-medium text-gray-700">累计还款总额：</span>
+                                    <span class="text-sm font-bold text-green-600" id="cumulative-payment">-</span>
+                                </div>
+                                <div class="flex justify-between items-center p-2 bg-gray-50 rounded-md">
+                                    <span class="text-xs font-medium text-gray-700">总利息：</span>
+                                    <span class="text-sm font-bold text-red-600" id="total-interest">-</span>
+                                </div>
+                                <div class="flex justify-between items-center p-2 bg-gray-50 rounded-md">
+                                    <span class="text-xs font-medium text-gray-700">总还款：</span>
+                                    <span class="text-sm font-bold text-green-600" id="total-payment">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 右侧：个人所得税计算器 -->
+                    <div class="bg-white rounded-lg shadow-lg p-6">
+                        <div class="tax-calculator">
+                            <h3 class="text-xl font-bold text-gray-800 mb-6">💰 个人所得税计算器</h3>
+                            
+                            <div class="mb-3">
+                                <div class="flex items-center gap-3">
+                                    <label class="text-sm font-medium text-gray-700 w-28 flex-shrink-0">税前月薪</label>
+                                    <input type="number" id="gross-salary" placeholder="15000" class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                                    <span class="text-sm text-gray-500 w-8">元</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <div class="flex items-center gap-3">
+                                    <label class="text-sm font-medium text-gray-700 w-28 flex-shrink-0">五险一金</label>
+                                    <input type="number" id="insurance" placeholder="2000" class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                                    <span class="text-sm text-gray-500 w-8">元</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <div class="flex items-center gap-3">
+                                    <label class="text-sm font-medium text-gray-700 w-28 flex-shrink-0">专项附加扣除</label>
+                                    <input type="number" id="special-deduction" placeholder="1000" class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                                    <span class="text-sm text-gray-500 w-8">元</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <div class="flex items-center gap-3">
+                                    <label class="text-sm font-medium text-gray-700 w-28 flex-shrink-0">其他扣除</label>
+                                    <input type="number" id="other-deduction" placeholder="0" class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                                    <span class="text-sm text-gray-500 w-8">元</span>
+                                </div>
+                            </div>
+                            
+                            <button class="w-full bg-blue-600 text-white py-2 px-3 rounded-md hover:bg-blue-700 transition-colors font-medium mb-4 text-sm" id="calculate-tax">计算个税</button>
+                            
+                            <div class="grid grid-cols-2 gap-1" id="tax-result">
+                                <div class="flex justify-between items-center p-2 bg-gray-50 rounded-md">
+                                    <span class="text-xs font-medium text-gray-700">应纳税所得额：</span>
+                                    <span class="text-sm font-bold text-blue-600" id="taxable-income">-</span>
+                                </div>
+                                <div class="flex justify-between items-center p-2 bg-gray-50 rounded-md">
+                                    <span class="text-xs font-medium text-gray-700">适用税率：</span>
+                                    <span class="text-sm font-bold text-purple-600" id="tax-rate">-</span>
+                                </div>
+                                <div class="flex justify-between items-center p-2 bg-gray-50 rounded-md">
+                                    <span class="text-xs font-medium text-gray-700">速算扣除数：</span>
+                                    <span class="text-sm font-bold text-orange-600" id="quick-deduction">-</span>
+                                </div>
+                                <div class="flex justify-between items-center p-2 bg-gray-50 rounded-md">
+                                    <span class="text-xs font-medium text-gray-700">累计应缴税款：</span>
+                                    <span class="text-sm font-bold text-red-600" id="income-tax">-</span>
+                                </div>
+                                <div class="flex justify-between items-center p-2 bg-gray-50 rounded-md">
+                                    <span class="text-xs font-medium text-gray-700">累计已缴税款：</span>
+                                    <span class="text-sm font-bold text-gray-600" id="paid-tax">-</span>
+                                </div>
+                                <div class="flex justify-between items-center p-2 bg-gray-50 rounded-md">
+                                    <span class="text-xs font-medium text-gray-700">应补(退)税款：</span>
+                                    <span class="text-sm font-bold text-yellow-600" id="tax-diff">-</span>
+                                </div>
+                                <div class="flex justify-between items-center p-2 bg-gray-50 rounded-md">
+                                    <span class="text-xs font-medium text-gray-700">实发工资：</span>
+                                    <span class="text-sm font-bold text-green-600" id="net-salary">-</span>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-gray-50 mt-2 p-3 rounded-md">
+                                <h4 class="text-sm font-semibold text-gray-800 mb-2">个税税率表</h4>
+                                <div class="overflow-x-auto max-h-48 overflow-y-auto">
+                                    <table class="w-full text-xs">
+                                        <thead class="sticky top-0 bg-gray-50">
+                                            <tr class="border-b border-gray-300">
+                                                <th class="text-left py-1 px-1 font-medium text-gray-700">级数</th>
+                                                <th class="text-left py-1 px-1 font-medium text-gray-700">应纳税所得额</th>
+                                                <th class="text-left py-1 px-1 font-medium text-gray-700">税率</th>
+                                                <th class="text-left py-1 px-1 font-medium text-gray-700">速算扣除数</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="border-b border-gray-200"><td class="py-1 px-1">1</td><td class="py-1 px-1">不超过3000元</td><td class="py-1 px-1">3%</td><td class="py-1 px-1">0</td></tr>
+                                            <tr class="border-b border-gray-200"><td class="py-1 px-1">2</td><td class="py-1 px-1">3000-12000元</td><td class="py-1 px-1">10%</td><td class="py-1 px-1">210</td></tr>
+                                            <tr class="border-b border-gray-200"><td class="py-1 px-1">3</td><td class="py-1 px-1">12000-25000元</td><td class="py-1 px-1">20%</td><td class="py-1 px-1">1410</td></tr>
+                                            <tr class="border-b border-gray-200"><td class="py-1 px-1">4</td><td class="py-1 px-1">25000-35000元</td><td class="py-1 px-1">25%</td><td class="py-1 px-1">2660</td></tr>
+                                            <tr class="border-b border-gray-200"><td class="py-1 px-1">5</td><td class="py-1 px-1">35000-55000元</td><td class="py-1 px-1">30%</td><td class="py-1 px-1">4410</td></tr>
+                                            <tr class="border-b border-gray-200"><td class="py-1 px-1">6</td><td class="py-1 px-1">55000-80000元</td><td class="py-1 px-1">35%</td><td class="py-1 px-1">7160</td></tr>
+                                            <tr><td class="py-1 px-1">7</td><td class="py-1 px-1">超过80000元</td><td class="py-1 px-1">45%</td><td class="py-1 px-1">15160</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 动态缩放函数
+        function autoScaleContent() {
+            const tabContent = document.querySelector('.tab-content');
+            if (!tabContent) return;
+            
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+            
+            // 基准尺寸（设计时的理想尺寸）
+            const baseWidth = 1400;
+            const baseHeight = 900;
+            
+            // 计算缩放比例
+            const widthScale = Math.min(windowWidth / baseWidth, 1);
+            const heightScale = Math.min(windowHeight / baseHeight, 1);
+            
+            // 取较小的缩放比例，确保内容完全可见
+            let scale = Math.min(widthScale, heightScale);
+            
+            // 设置最小和最大缩放比例
+            scale = Math.max(0.6, Math.min(scale, 1));
+            
+            // 应用缩放
+            tabContent.style.transform = `scale(${scale})`;
+            tabContent.style.transformOrigin = 'top left';
+            
+            // 调整容器高度以适应缩放后的内容
+            const scaledHeight = tabContent.scrollHeight * scale;
+            tabContent.parentElement.style.minHeight = `${scaledHeight}px`;
+        }
+        
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            autoScaleContent();
+            
+            // 监听窗口大小变化
+            window.addEventListener('resize', function() {
+                clearTimeout(window.resizeTimer);
+                window.resizeTimer = setTimeout(autoScaleContent, 100);
+            });
+        });
+    </script>
+    
+    <script src="scripts/calculator.js"></script>
+</body>
+</html>

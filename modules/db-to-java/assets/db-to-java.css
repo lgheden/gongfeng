@@ -1,0 +1,994 @@
+/* 全局样式重置 */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-size: 12px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #f5f6fa;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
+    margin: 0;
+    padding: 10px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 8px;
+    padding: 8px 16px;
+    color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+}
+
+header h1 {
+    text-align: left;
+    font-size: 16px;
+    margin-bottom: 4px;
+    font-weight: 600;
+    margin: 0;
+    color: white;
+}
+
+header p {
+    text-align: left;
+    margin: 2px 0 0 0;
+    font-size: 12px;
+    opacity: 0.9;
+    color: white;
+}
+
+/* Tab导航样式 */
+.tab-navigation {
+    display: flex;
+    background: white;
+    border-bottom: 1px solid #e9ecef;
+    flex-shrink: 0;
+    border-radius: 6px;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    background: #f8f9fa;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+    color: #666;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.tab-btn:hover {
+    background: #e9ecef;
+    color: #333;
+}
+
+.tab-btn.active {
+    background: #667eea;
+    color: white;
+    border-bottom-color: #667eea;
+    font-weight: 600;
+}
+
+/* Tab内容样式 */
+.tab-content {
+    display: none;
+    flex: 1;
+    overflow: hidden;
+}
+
+.tab-content.active {
+    display: flex;
+    flex-direction: column;
+}
+
+/* 主要区域样式 */
+.main-section {
+    display: flex;
+    gap: 15px;
+    background: white;
+    padding: 15px;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    width: 100%;
+    border-radius: 6px;
+    margin-top: 10px;
+}
+
+.input-area {
+    flex: 2;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    max-height: 100%;
+    overflow: hidden;
+}
+
+.config-area {
+    flex: 0 0 360px;
+    border-left: 1px solid #e9ecef;
+    padding-left: 15px;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    max-height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.input-area h3, .config-area h3, .output-section h3 {
+    margin: 0 0 10px 0;
+    color: #333;
+    font-size: 12px;
+    font-weight: 600;
+    border-bottom: 1px solid #667eea;
+    padding-bottom: 6px;
+}
+
+/* CodeMirror 编辑器样式 */
+.CodeMirror {
+    border: 2px solid #e9ecef;
+    border-radius: 4px;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 13px;
+    height: 100%;
+    max-height: 100%;
+    background: #ffffff;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+
+/* 配置区域滚动条样式 */
+.config-area::-webkit-scrollbar {
+    width: 6px;
+}
+
+.config-area::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.config-area::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+.config-area::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* Java代码编辑器特定样式 */
+#javaInput .CodeMirror,
+#javaOutput .CodeMirror {
+    background: #fafafa;
+}
+
+/* Java语法高亮样式 - 提高优先级 */
+#javaInput .CodeMirror .cm-keyword,
+#javaOutput .CodeMirror .cm-keyword,
+.CodeMirror .cm-keyword {
+    color: #0000ff !important;
+    font-weight: bold !important;
+}
+
+#javaInput .CodeMirror .cm-string,
+#javaOutput .CodeMirror .cm-string,
+.CodeMirror .cm-string {
+    color: #008000 !important;
+}
+
+#javaInput .CodeMirror .cm-comment,
+#javaOutput .CodeMirror .cm-comment,
+.CodeMirror .cm-comment {
+    color: #808080 !important;
+    font-style: italic !important;
+}
+
+#javaInput .CodeMirror .cm-number,
+#javaOutput .CodeMirror .cm-number,
+.CodeMirror .cm-number {
+    color: #ff6600 !important;
+}
+
+#javaInput .CodeMirror .cm-variable,
+#javaOutput .CodeMirror .cm-variable,
+.CodeMirror .cm-variable {
+    color: #000000 !important;
+}
+
+#javaInput .CodeMirror .cm-type,
+#javaOutput .CodeMirror .cm-type,
+.CodeMirror .cm-type {
+    color: #0000ff !important;
+}
+
+#javaInput .CodeMirror .cm-annotation,
+#javaOutput .CodeMirror .cm-annotation,
+.CodeMirror .cm-annotation {
+    color: #808000 !important;
+}
+
+.CodeMirror.json-valid {
+    border-color: #28a745;
+    background-color: #f8fff9;
+}
+
+.CodeMirror.json-invalid {
+    border-color: #dc3545;
+    background-color: #fff8f8;
+}
+
+.CodeMirror-focused {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+/* CodeMirror 滚动条样式优化 */
+.CodeMirror-scroll {
+    overflow: auto !important;
+    max-height: 100% !important;
+}
+
+.CodeMirror-scrollbar-filler {
+    background-color: transparent;
+}
+
+/* 优化大数据量时的性能 */
+.CodeMirror-lines {
+    padding: 4px 0;
+}
+
+.CodeMirror pre {
+    padding: 0 4px;
+    line-height: 1.4;
+}
+
+.CodeMirror-placeholder {
+    color: #6c757d;
+    font-style: italic;
+}
+
+.CodeMirror-gutters {
+    background: #f8f9fa;
+    border-right: 1px solid #e9ecef;
+}
+
+.CodeMirror-linenumber {
+    color: #6c757d;
+    font-size: 12px;
+}
+
+.CodeMirror-cursor {
+    border-left: 2px solid #667eea;
+}
+
+.CodeMirror-selected {
+    background: rgba(102, 126, 234, 0.1);
+}
+
+.CodeMirror-line::selection,
+.CodeMirror-line > span::selection,
+.CodeMirror-line > span > span::selection {
+    background: rgba(102, 126, 234, 0.2);
+}
+
+.CodeMirror-line::-moz-selection,
+ .CodeMirror-line > span::-moz-selection,
+ .CodeMirror-line > span > span::-moz-selection {
+     background: rgba(102, 126, 234, 0.2);
+ }
+
+/* 输入和输出区域的CodeMirror样式 */
+.input-area .CodeMirror,
+.output-section .CodeMirror {
+    max-height: 100%;
+    overflow: hidden;
+}
+
+.input-area #ddlInput,
+.input-area #javaInput,
+.output-section #ddlOutput,
+.output-section #javaOutput {
+    min-height: 0;
+    max-height: 100%;
+    overflow: hidden;
+}
+
+/* 输出区域样式 */
+.output-section {
+    background: white;
+    padding: 0px;
+    flex: 1;
+    min-height: 0;
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.text-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    font-size: 12px;
+    color: #666;
+    padding: 6px 10px;
+    background: #f8f9fa;
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
+    flex-wrap: wrap;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.input-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.input-header h3 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+}
+
+.input-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.input-actions .btn {
+    padding: 4px 8px;
+    font-size: 11px;
+    min-width: auto;
+    border-radius: 4px;
+}
+
+.output-examples-container {
+    display: flex;
+    gap: 15px;
+    background: white;
+    padding: 15px;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    width: 100%;
+    margin-top: 10px;
+    border-radius: 6px;
+}
+
+.output-section {
+    flex: 2;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 200px;
+    box-shadow: none;
+}
+
+.examples-section {
+    flex: 0 0 360px;
+    border-left: 1px solid #e9ecef;
+    padding-left: 15px;
+    display: flex;
+    flex-direction: column;
+    min-height: 200px;
+}
+
+.output-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.output-header h3, .examples-section h3 {
+    margin: 0 0 10px 0;
+    color: #333;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.result-actions {
+    display: flex;
+    gap: 6px;
+    margin-left: auto;
+}
+
+.result-actions .btn {
+    padding: 4px 8px;
+    font-size: 11px;
+    border-radius: 4px;
+}
+
+/* 工具栏样式 */
+.toolbar {
+    background: white;
+    padding: 10px;
+    border-top: 1px solid #e9ecef;
+    border-bottom: 1px solid #e9ecef;
+    flex-shrink: 0;
+}
+
+.action-row {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* 紧凑配置区域样式 */
+.config-compact {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+}
+
+.config-row {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.config-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.config-item.full-width {
+    flex: 1;
+}
+
+.config-label {
+    font-weight: 600;
+    color: #333;
+    font-size: 12px;
+    margin: 0;
+}
+
+.package-input {
+    padding: 6px 8px;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    font-size: 12px;
+    width: 100%;
+    transition: border-color 0.2s ease;
+    box-sizing: border-box;
+}
+
+.package-input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+}
+
+/* Radio按钮样式 */
+.radio-group {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.radio-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 8px 12px;
+    border: 2px solid #e9ecef;
+    border-radius: 6px;
+    background: #f8f9fa;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    color: #333;
+    min-width: 80px;
+    justify-content: center;
+}
+
+.radio-label:hover {
+    background: #e9ecef;
+    border-color: #667eea;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+}
+
+.radio-label input[type="radio"] {
+    display: none;
+}
+
+.radio-custom {
+    width: 16px;
+    height: 16px;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.radio-label input[type="radio"]:checked + .radio-custom {
+    border-color: #667eea;
+    background: #667eea;
+}
+
+.radio-label input[type="radio"]:checked + .radio-custom::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 6px;
+    height: 6px;
+    background: white;
+    border-radius: 50%;
+}
+
+.radio-label:has(input[type="radio"]:checked) {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+/* 内联Radio按钮样式 */
+.radio-group-inline {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.radio-label-inline {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    padding: 6px 8px;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    background: #f8f9fa;
+    transition: all 0.2s ease;
+    font-weight: 500;
+    color: #333;
+    font-size: 12px;
+    min-width: 60px;
+    justify-content: center;
+}
+
+.radio-label-inline:hover {
+    background: #e9ecef;
+    border-color: #667eea;
+}
+
+.radio-label-inline input[type="radio"] {
+    display: none;
+}
+
+.radio-custom-inline {
+    width: 10px;
+    height: 10px;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.radio-label-inline input[type="radio"]:checked + .radio-custom-inline {
+    border-color: #667eea;
+    background: #667eea;
+}
+
+.radio-label-inline input[type="radio"]:checked + .radio-custom-inline::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 4px;
+    height: 4px;
+    background: white;
+    border-radius: 50%;
+}
+
+.radio-label-inline:has(input[type="radio"]:checked) {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
+/* Checkbox样式 */
+.checkbox-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 8px 12px;
+    border: 2px solid #e9ecef;
+    border-radius: 6px;
+    background: #f8f9fa;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    color: #333;
+}
+
+.checkbox-label:hover {
+    background: #e9ecef;
+    border-color: #28a745;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(40, 167, 69, 0.2);
+}
+
+.checkbox-label input[type="checkbox"] {
+    display: none;
+}
+
+.checkbox-custom {
+    width: 16px;
+    height: 16px;
+    border: 2px solid #ccc;
+    border-radius: 3px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkbox-custom {
+    border-color: #28a745;
+    background: #28a745;
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkbox-custom::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.checkbox-label:has(input[type="checkbox"]:checked) {
+    background: #28a745;
+    color: white;
+    border-color: #28a745;
+    box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+}
+
+/* 内联Checkbox样式 */
+.checkbox-group-inline {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.checkbox-label-inline {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    padding: 6px 8px;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    background: #f8f9fa;
+    transition: all 0.2s ease;
+    font-weight: 500;
+    color: #333;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.checkbox-label-inline:hover {
+    background: #e9ecef;
+    border-color: #28a745;
+}
+
+.checkbox-label-inline input[type="checkbox"] {
+    display: none;
+}
+
+.checkbox-custom-inline {
+    width: 10px;
+    height: 10px;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.checkbox-label-inline input[type="checkbox"]:checked + .checkbox-custom-inline {
+    border-color: #28a745;
+    background: #28a745;
+}
+
+.checkbox-label-inline input[type="checkbox"]:checked + .checkbox-custom-inline::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 8px;
+    font-weight: bold;
+}
+
+.checkbox-label-inline:has(input[type="checkbox"]:checked) {
+    background: #28a745;
+    color: white;
+    border-color: #28a745;
+}
+
+/* 输入框样式 */
+.config-group input[type="text"] {
+    padding: 10px 15px;
+    border: 2px solid #e9ecef;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+.config-group input[type="text"]:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* 输出区域样式 */
+.output-tabs {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.tab-btn {
+    padding: 10px 20px;
+    border: none;
+    background: transparent;
+    color: #666;
+    font-weight: 500;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.tab-btn:hover {
+    color: #667eea;
+    background: #f8f9fa;
+}
+
+.tab-btn.active {
+    color: #f8f9fa;
+    border-bottom-color: #667eea;
+    background: #667eea;
+    border-radius: 6px;
+}
+
+.output-content {
+    position: relative;
+}
+
+.output-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.code-output {
+    width: 100%;
+    flex: 1;
+    min-height: 150px;
+    padding: 10px;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    background: #f8f9fa;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 12px;
+    line-height: 1.4;
+    white-space: pre-wrap;
+    overflow: auto;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+/* 示例区域样式 */
+.examples-section {
+    background: white;
+    padding: 10px;
+    flex-shrink: 0;
+}
+
+.examples-section h3 {
+    margin: 0 0 10px 0;
+    color: #333;
+    font-size: 12px;
+    font-weight: 600;
+    border-bottom: 1px solid #667eea;
+    padding-bottom: 6px;
+}
+
+.examples-grid {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.example-btn {
+    padding: 6px 10px;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    background: #f8f9fa;
+    color: #333;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.example-btn:hover {
+    background: #17a2b8;
+    color: white;
+    border-color: #17a2b8;
+}
+
+/* 状态栏样式 */
+.status-bar {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    color: white;
+    font-weight: 500;
+    font-size: 12px;
+    z-index: 1000;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.status-bar.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.status-bar.success {
+    background: #28a745;
+}
+
+.status-bar.error {
+    background: #dc3545;
+}
+
+.status-bar.info {
+    background: #17a2b8;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .main-section {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .config-area {
+        flex: none;
+        border-left: none;
+        border-top: 2px solid #e9ecef;
+        padding-left: 0;
+        padding-top: 10px;
+        min-height: 150px;
+    }
+    
+    .input-area {
+        min-height: 150px;
+    }
+    
+    .config-row {
+        flex-direction: column;
+        gap: 6px;
+    }
+    
+    .config-item {
+        min-width: auto;
+        width: 100%;
+    }
+    
+    .package-input {
+        width: 100%;
+    }
+    
+    .radio-group-inline {
+        justify-content: flex-start;
+        flex-direction: column;
+        gap: 4px;
+    }
+    
+    .checkbox-group-inline {
+        justify-content: flex-start;
+        flex-direction: column;
+        gap: 4px;
+    }
+    
+    .radio-group {
+        flex-direction: column;
+    }
+    
+    .checkbox-group {
+        grid-template-columns: 1fr;
+    }
+    
+    .action-row {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .examples-grid {
+        flex-direction: column;
+        gap: 4px;
+    }
+    
+    .status-bar {
+        bottom: 5px;
+        right: 5px;
+        left: 5px;
+        text-align: center;
+        font-size: 11px;
+        padding: 5px 8px;
+    }
+}
+
+/* 代码高亮样式 */
+.code-output .keyword {
+    color: #0066cc;
+    font-weight: 600;
+}
+
+.code-output .string {
+    color: #009900;
+}
+
+.code-output .comment {
+    color: #666666;
+    font-style: italic;
+}
+
+.code-output .annotation {
+    color: #cc6600;
+    font-weight: 600;
+}
+
+.code-output .type {
+    color: #cc0066;
+    font-weight: 600;
+}

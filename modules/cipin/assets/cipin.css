@@ -1,0 +1,451 @@
+/* 词频统计工具特定样式 */
+.container {
+    margin: 0 auto;
+    padding: 10px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+header h1 {
+    margin: 0;
+    color: #ffffff;
+    font-size: 18px;
+}
+
+header h1 p {
+    margin: 5px 0 0 0;
+    font-size: 14px;
+    color: #ffffff;
+    font-weight: normal;
+}
+
+.donate-btn {
+    background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 12px;
+}
+
+.donate-btn:hover {
+    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+}
+
+.options-bar {
+    background: #ffffff;
+    padding: 10px;
+    border-radius: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.option-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.option-group label {
+    font-size: 14px;
+    color: #555;
+    margin-right: 5px;
+    white-space: nowrap;
+}
+
+.option-group select {
+    padding: 4px 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.input-section, .output-section {
+    background: white;
+    border: 1px solid #efefef;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.input-section h3, .output-section h3 {
+    color: #333;
+    font-size: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.toolbar {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 0px;
+}
+
+.view-controls {
+    display: flex;
+    gap: 4px;
+}
+
+.btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s ease;
+}
+
+.btn-sm {
+    padding: 4px 8px;
+    font-size: 11px;
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid #007bff;
+    color: #007bff;
+}
+
+.btn-outline:hover, .btn-outline.active {
+    background: #007bff;
+    color: white;
+}
+
+.btn-primary {
+    background: #007bff;
+    color: white;
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-success {
+    background: #28a745;
+    color: white;
+}
+
+.btn-danger {
+    background: #dc3545;
+    color: white;
+}
+
+.btn:hover {
+    opacity: 0.8;
+    transform: translateY(-1px);
+}
+
+/* CodeMirror编辑器样式 */
+.CodeMirror {
+    height: 300px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+}
+
+/* 统计信息区域 */
+.stats-section {
+    background: #ffffff;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background: white;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.stat-label {
+    font-size: 14px;
+    color: #666;
+    font-weight: 500;
+}
+
+.stat-value {
+    font-size: 16px;
+    color: #333;
+    font-weight: bold;
+}
+
+
+.word-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.word-table th {
+    background: #f8f9fa;
+    padding: 10px;
+    text-align: left;
+    border-bottom: 2px solid #dee2e6;
+    font-weight: 600;
+    color: #495057;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.word-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.word-table tr:hover {
+    background: #f8f9fa;
+}
+
+.word-table .rank {
+    width: 60px;
+    text-align: center;
+    font-weight: bold;
+    color: #007bff;
+}
+
+.word-table .word {
+    font-weight: 500;
+    color: #333;
+}
+
+.word-table .frequency {
+    width: 80px;
+    text-align: center;
+    color: #28a745;
+    font-weight: bold;
+}
+
+.word-table .percentage {
+    width: 80px;
+    text-align: center;
+    color: #6c757d;
+}
+
+.word-table .bar {
+    width: 120px;
+}
+
+.bar-container {
+    width: 100%;
+    height: 20px;
+    background: #e9ecef;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #007bff, #0056b3);
+    transition: width 0.3s ease;
+}
+
+/* 视图切换 */
+.view-content {
+    display: none;
+    min-height: 300px;
+}
+
+.view-content.active {
+    display: block;
+}
+
+#chartView {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* 状态栏 */
+.status-bar {
+    background: #f8f9fa;
+    padding: 10px 10px;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #666;
+    min-height: 20px;
+    height: 43px;
+    max-height: 43px;
+}
+
+/* 响应式设计 */
+@media (max-width: 1024px) {
+    .content {
+        grid-template-columns: 1fr;
+    }
+
+    .stats-section {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    header {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+
+    .options-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .option-group {
+        justify-content: space-between;
+    }
+
+    .toolbar {
+        flex-direction: column;
+    }
+
+    .stats-section {
+        grid-template-columns: 1fr;
+    }
+
+    .word-table {
+        font-size: 12px;
+    }
+
+    .word-table th,
+    .word-table td {
+        padding: 6px 8px;
+    }
+
+    .bar {
+        display: none;
+    }
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-in;
+}
+
+/* 加载动画 */
+.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #007bff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 高亮效果 */
+.highlight {
+    background: #fff3cd;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-weight: bold;
+}
+
+/* 工具提示 */
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 200px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -100px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 12px;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+#inputArea{
+    display: grid;
+    height: calc(100% - 40px);
+    grid-template-rows: 1fr;
+    max-height: calc(100% - 40px);
+}
+
+#outputArea{
+    height: calc(100% - 40px);
+    max-height: calc(100% - 40px);
+}
+
+#tableView{
+    display: grid;
+    height: 100%;
+    grid-template-rows: 1fr;
+    max-height: 100%;
+}
+
+/* 表格样式 */
+#wordTable {
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    height: 100%;
+    max-height: 100%;
+}
+
+.CodeMirror {
+    height: 100% !important;
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 0;
+    max-height: 100%;
+}

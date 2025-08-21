@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>汉字拼音互换器</title>
+    <link rel="stylesheet" href="../../shared/common.css">
+    <link rel="stylesheet" href="assets/pinyin-converter.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 头部区域 -->
+        <header>
+            <h1>🔄 汉字拼音互换器<p>汉字转拼音，拼音转汉字，支持多音字</p></h1>
+            <a href="../../pages/donate.html" class="donate-btn">💝 赞助</a>
+        </header>
+        
+        <!-- 配置选项栏 -->
+        <div class="options-bar">
+            <div class="option-group">
+                <label>
+                    <input type="radio" name="mode" value="hanzi-to-pinyin" checked> 汉字→拼音
+                </label>
+                <label>
+                    <input type="radio" name="mode" value="pinyin-to-hanzi"> 拼音→汉字
+                </label>
+            </div>
+            <div class="option-group">
+                <label>
+                    <input type="checkbox" id="showTone"> 显示声调
+                </label>
+                <label>
+                    <input type="checkbox" id="showAllPronunciation"> 显示多音字
+                </label>
+                <label>
+                    <input type="checkbox" id="addSpaces"> 拼音加空格
+                </label>
+            </div>
+        </div>
+
+        <!-- 主要内容区域 -->
+        <div class="content">
+            <!-- 输入区域 -->
+            <div class="input-section">
+                <h3>输入内容
+                    <div class="toolbar">
+                        <button id="processBtn" class="btn btn-primary">转换</button>
+                        <button id="clearBtn" class="btn btn-danger">清空</button>
+                        <button id="loadSampleBtn" class="btn btn-secondary">加载示例</button>
+                    </div>
+                </h3>
+                <div id="inputArea">
+                    <textarea id="textInput" placeholder="请输入汉字或拼音..."></textarea>
+                </div>
+            </div>
+
+            <!-- 输出区域 -->
+            <div class="output-section">
+                <h3>转换结果
+                    <div class="toolbar">
+                        <button id="copyBtn" class="btn btn-success">复制结果</button>
+                        <button id="downloadBtn" class="btn btn-secondary">下载</button>
+                    </div>
+                </h3>
+                <div id="outputArea">
+                    <textarea id="textOutput" readonly placeholder="转换结果将在这里显示..."></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- 统计信息栏 -->
+        <div class="stats-bar">
+            <div class="stat-item">
+                <span class="stat-label">字符数:</span>
+                <span id="charCount" class="stat-value">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">汉字数:</span>
+                <span id="hanziCount" class="stat-value">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">多音字:</span>
+                <span id="polyphoneCount" class="stat-value">0</span>
+            </div>
+        </div>
+
+        <!-- 状态栏 -->
+        <div id="statusBar" class="status-bar"></div>
+    </div>
+
+    <!-- 多音字选择模态框 -->
+    <div id="polyphoneModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>选择读音</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="polyphoneOptions"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="confirmPolyphoneBtn" class="btn btn-primary">确认</button>
+                <button id="cancelPolyphoneBtn" class="btn btn-secondary">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入脚本 -->
+    <script src="../../shared/jquery-3.3.1.min.js"></script>
+    <script src="scripts/fourCharDict.js"></script>
+    <script src="scripts/threeCharDict.js"></script>
+    <script src="scripts/twoCharDict.js"></script>
+    <script src="scripts/singleCharDict.js"></script>
+    <script src="scripts/pinyinConverterTool.js"></script>
+    <script src="scripts/pinyin-converter.js"></script>
+</body>
+</html> 

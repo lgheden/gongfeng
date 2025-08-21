@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文本对比工具</title>
+    <link rel="stylesheet" href="../../shared/common.css">
+    <link rel="stylesheet" href="text-diff.css">
+    <link rel="stylesheet" href="../../shared/codemirror.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>📝 文本对比工具 <p>比较两段文本的差异</p>
+            </h1>
+            <a href="../../pages/donate.html" class="donate-btn">💝 赞助</a>
+        </header>
+
+        <!-- 标签页导航 -->
+        <div class="tab-navigation">
+            <div class="tab-nav">
+                <button class="tab-btn active" data-tab="text">📄 文本对比</button>
+                <button class="tab-btn" data-tab="json">🔧 JSON对比</button>
+            </div>
+        </div>
+
+        <div class="diff-container">
+            <!-- 文本对比标签页 -->
+            <div class="tab-content" id="textTab">
+
+                <!-- 控制面板 -->
+                <div class="control-panel">
+                    <div class="control-card">
+                        <div class="control-group">
+                            <div class="control-options">
+                                <label class="option-item">
+                                    <input type="checkbox" id="ignoreWhitespace" checked>
+                                    <span>忽略空白字符</span>
+                                </label>
+                                <label class="option-item">
+                                    <input type="checkbox" id="ignoreCase">
+                                    <span>忽略大小写</span>
+                                </label>
+                                <label class="option-item">
+                                    <input type="checkbox" id="ignoreEmptyLines">
+                                    <span>忽略空行</span>
+                                </label>
+                                <label class="option-item">
+                                    <input type="checkbox" id="wordLevel">
+                                    <span>单词级对比</span>
+                                </label>
+                                <label class="option-item">
+                                    <input type="checkbox" id="showDiffOnly">
+                                    <span>只显示差异行</span>
+                                </label>
+                                <label class="option-item">
+                                    <input type="checkbox" id="showResultSection">
+                                    <span>显示对比结果</span>
+                                </label>
+                            </div>
+                            <div class="control-buttons">
+                                <button id="compareBtn" class="btn btn-primary">🔍 开始对比</button>
+                                <button id="clearBtn" class="btn btn-secondary">🗑️ 清空内容</button>
+                                <button id="swapBtn" class="btn btn-info">🔄 交换文本</button>
+                                <button id="loadTextExampleBtn" class="btn btn-warning">📝 加载示例</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 输入区域 -->
+                <div class="input-section">
+                    <div class="input-column">
+                        <h3>📄 原始文本</h3>
+                        <div id="originalText" class="codemirror-container"></div>
+                        <div class="text-info">
+                            <span>字符数: <span id="originalCount">0</span></span>
+                            <span>行数: <span id="originalLines">0</span></span>
+                        </div>
+                    </div>
+
+                    <div class="input-column">
+                        <h3>📄 对比文本</h3>
+                        <div id="comparedText" class="codemirror-container"></div>
+                        <div class="text-info">
+                            <span>字符数: <span id="comparedCount">0</span></span>
+                            <span>行数: <span id="comparedLines">0</span></span>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <!-- JSON对比标签页 -->
+            <div class="tab-content" id="jsonTab" style="display:none;">
+                <!-- JSON对比选项 -->
+                <div class="control-panel">
+                    <div class="control-card">
+                        <div class="control-group">
+                            <div class="control-options">
+                                <label class="option-item">
+                                    <input type="checkbox" id="jsonIgnoreOrder" checked>
+                                    <span>忽略属性顺序</span>
+                                </label>
+                                <label class="option-item">
+                                    <input type="checkbox" id="jsonIgnoreArrayOrder">
+                                    <span>忽略数组顺序</span>
+                                </label>
+                                <label class="option-item">
+                                    <input type="checkbox" id="jsonStrictMode">
+                                    <span>严格模式</span>
+                                </label>
+                                <label class="option-item">
+                                    <input type="checkbox" id="jsonShowPath" checked>
+                                    <span>显示路径</span>
+                                </label>
+                                <label class="option-item">
+                                    <input type="checkbox" id="jsonShowResultSection">
+                                    <span>显示对比结果</span>
+                                </label>
+                            </div>
+
+                            <div class="control-buttons">
+                                <button id="compareJsonBtn" class="btn btn-primary">🔍 对比JSON</button>
+                                <button id="clearJsonBtn" class="btn btn-secondary">🗑️ 清空内容</button>
+                                <button id="swapJsonBtn" class="btn btn-info">🔄 交换JSON</button>
+                                <button id="loadJsonExampleBtn" class="btn btn-warning">📝 加载示例</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- JSON输入区域 -->
+                <div class="input-section">
+                    <div class="input-column">
+                        <h3>🔧 原始JSON</h3>
+                        <div id="originalJson" class="codemirror-container"></div>
+                        <div class="text-info">
+                            <span>字符数: <span id="originalJsonCount">0</span></span>
+                            <span>状态: <span id="originalJsonStatus">待验证</span></span>
+                        </div>
+                        <div class="json-actions">
+                            <button id="formatOriginalBtn" class="btn btn-sm btn-info">格式化</button>
+                            <button id="compressOriginalBtn" class="btn btn-sm btn-secondary">压缩</button>
+                        </div>
+                    </div>
+
+                    <div class="input-column">
+                        <h3>🔧 对比JSON</h3>
+                        <div id="comparedJson" class="codemirror-container"></div>
+                        <div class="text-info">
+                            <span>字符数: <span id="comparedJsonCount">0</span></span>
+                            <span>状态: <span id="comparedJsonStatus">待验证</span></span>
+                        </div>
+                        <div class="json-actions">
+                            <button id="formatComparedBtn" class="btn btn-sm btn-info">格式化</button>
+                            <button id="compressComparedBtn" class="btn btn-sm btn-secondary">压缩</button>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+
+            <!-- 结果区域 -->
+            <div class="result-section" id="resultSection" style="display:none;">
+                <div class="result-card">
+                    <h3>📊 对比结果</h3>
+
+                    <!-- 统计信息 -->
+                    <div class="stats-panel">
+                        <div class="stat-item">
+                            <span class="stat-label">相同行:</span>
+                            <span class="stat-value" id="sameLines">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">新增行:</span>
+                            <span class="stat-value added" id="addedLines">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">删除行:</span>
+                            <span class="stat-value removed" id="removedLines">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">修改行:</span>
+                            <span class="stat-value modified" id="modifiedLines">0</span>
+                        </div>
+                    </div>
+
+                    <!-- 对比视图 -->
+                    <div class="diff-view">
+                        <div class="diff-column">
+                            <h4>原始文本</h4>
+                            <div id="originalDiff" class="diff-content"></div>
+                        </div>
+                        <div class="diff-column">
+                            <h4>对比文本</h4>
+                            <div id="comparedDiff" class="diff-content"></div>
+                        </div>
+                    </div>
+
+                    <!-- 操作按钮 -->
+                    <div class="result-actions">
+                        <button id="exportBtn" class="btn btn-success">📥 导出结果</button>
+                        <button id="copyResultBtn" class="btn btn-info">📋 复制差异</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="statusBar" class="status-bar"></div>
+    </div>
+
+    <!-- 引入jQuery库 -->
+    <script src="../../shared/jquery-3.3.1.min.js"></script>
+    <!-- 引入CodeMirror -->
+    <script src="../../shared/codemirror.min.js"></script>
+    <script src="../../shared/codemirror-modes.js"></script>
+    <!-- 引入主脚本 -->
+    <script src="text-diff.js"></script>
+</body>
+
+</html>
